@@ -1,0 +1,40 @@
+# Ignore operating system generated files
+.DS_Store
+Thumbs.db
+
+# Ignore common editor/IDE temporary files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.iml
+
+# Frontend specific ignores
+frontend/node_modules/
+frontend/.env
+frontend/.env.*.local # Ignore local development environment files
+
+# Backend specific ignores
+server/node_modules/
+server/.env
+server/.env.*.local # Ignore local development environment files
+
+# root level node_modules
+node_modules/
+.env
+.env.*.local
+
+# Ignore common build output directories (adjust as needed)
+frontend/build/
+backend/build/
+dist/
+out/
+
+# Ignore log files (if any)
+logs/
+*.log
+
+# Add any other project-specific temporary or generated files/folders here
+# Example:
+# temp/
+# coverage/

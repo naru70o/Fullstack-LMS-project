@@ -1,10 +1,24 @@
 import dotenv from "dotenv";
 import express from "express"
 import morgan from "morgan"
+import { rateLimit } from 'express-rate-limit'
+import helmet from "helmet"
 
 dotenv.config()
 
 const app = express();
+
+const limiter= rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+	standardHeaders: 'draft-8', // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+	// store: ... , // Redis, Memcached, etc. See below.
+})
+
+// SECURITY MIDDLEWARES
+app.use("/api",limiter)
+app.use(helmet())
 
 // Body parser 
 app.use(express.json({limit:"10kb"}))
@@ -21,7 +35,7 @@ app.use((err,req,res,next)=>{
 })
 
 // logger
-app.use(morgan("tiny",(req ,res )=>{
+app.use(morgan("dev",(req ,res )=>{
     console.log(`${req} / ${res}`)
 }))
 

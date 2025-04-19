@@ -3,7 +3,9 @@ import express from "express"
 import morgan from "morgan"
 import { rateLimit } from 'express-rate-limit'
 import helmet from "helmet"
-
+import mongoSanitize from "express-mongo-sanitize";
+import cookieParser from "cookie-parser";
+import cors from "cors"
 dotenv.config()
 
 const app = express();
@@ -19,10 +21,20 @@ const limiter= rateLimit({
 // SECURITY MIDDLEWARES
 app.use("/api",limiter)
 app.use(helmet())
+app.use(mongoSanitize());
 
 // Body parser 
 app.use(express.json({limit:"10kb"}))
 app.use(express.urlencoded({extended:true,limit:"10kb"}))
+app.use(cors({
+    cors:"http//localhost:5173",
+    methods:["GET","POST","PUT","PATCH"],
+    credentials:true,
+    allowedHeaders:[
+       'Content-Type', 'Authorization', 'X-Custom-Header'
+    ]
+}));
+app.use(cookieParser())
 
 // GLOBAL ERROR HANDLER
 app.use((err,req,res,next)=>{

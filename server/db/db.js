@@ -49,6 +49,9 @@ class CreateDatabaseConnection {
             // Sets the maximum number of connections Mongoose will keep open in its connection pool.
             // Helps manage database connections efficiently. Default is often 100 in recent drivers.
             maxPoolSize:10,
+
+            minPoolSize: 2, // Minimum number of connections to keep in the pool
+            maxIdleTimeMS: 30000, // Close idle connections after 30 seconds
             
             // Sets the maximum time (in milliseconds) the driver will wait to find a suitable
             // database server (e.g., the primary in a replica set) before timing out. (5 seconds here)

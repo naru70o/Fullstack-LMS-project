@@ -60,4 +60,4 @@ lectureSchema.pre("save", async function (next) {
 
 const Lecture = mongoose.model("Lecture", lectureSchema);
 
-default export Lecture;
+export default Lecture;

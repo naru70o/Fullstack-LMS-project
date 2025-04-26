@@ -5,15 +5,15 @@ const Schema = mongoose.Schema;
 const coursePurchaseSchema = new Schema({
   course: {
     type: Schema.Types.ObjectId,
-    ref: 'Course', // Assumes you have a 'Course' model
+    ref: 'Course',
     required: [true, 'Course ID is required.'],
-    index: true, // Index for faster lookups by course
+    index: true, 
   },
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'User', // Assumes you have a 'User' model
+    ref: 'User', 
     required: [true, 'User ID is required.'],
-    index: true, // Index for faster lookups by user
+    index: true, 
   },
   amount: {
     type: Number,
@@ -23,10 +23,9 @@ const coursePurchaseSchema = new Schema({
   currency: {
     type: String,
     required: [true, 'Currency code is required.'],
-    uppercase: true, // Standardize currency codes (e.g., 'USD', 'EUR')
+    uppercase: true, 
     trim: true,
-    // Consider adding an enum if you only support specific currencies:
-    // enum: { values: ['USD', 'EUR', 'GBP'], message: '{VALUE} is not a supported currency.' }
+    enum: { values: ['USD'], message: '{VALUE} is not a supported currency.' }
   },
   status: {
     type: String,
@@ -42,8 +41,7 @@ const coursePurchaseSchema = new Schema({
     type: String,
     required: [true, 'Payment method is required.'],
     trim: true,
-    // Consider adding an enum for known payment methods:
-    // enum: ['stripe', 'paypal', 'credit_card', 'bank_transfer']
+    enum: ['stripe']
   },
   paymentId: { // Transaction ID from the payment gateway
     type: String,
@@ -84,6 +82,8 @@ const coursePurchaseSchema = new Schema({
   },
 }, {
   timestamps: true, // Automatically adds createdAt and updatedAt fields
+  toJSON:{virtuals:true},
+  toObject:{virtuals:true}
 });
 
 // Optional: Compound index for efficiently finding a specific user's purchase of a specific course
@@ -110,7 +110,5 @@ coursePurchaseSchema.methods.refundProcess = function(amount,reason) {
 
 // Create the Mongoose model
 const CoursePurchase = mongoose.model('CoursePurchase', coursePurchaseSchema);
-
-
 
 export default CoursePurchase;

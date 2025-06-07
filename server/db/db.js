@@ -12,7 +12,6 @@ class CreateDatabaseConnection {
         // mongoose configure settings
         mongoose.set("strictQuery",false);
         
-        
         mongoose.connection.on("connect",()=>{
             console.log("database connected successfully")
             this.isConnected=true
@@ -40,11 +39,11 @@ class CreateDatabaseConnection {
         const connectionOptions = {
             // Tells the MongoDB driver to use its newer URL string parser.
             // Note: This is the default in Mongoose v6+ and the option is no longer needed.
-            useNewUrlParser:true,
+            // useNewUrlParser:true,
             
             // Opts into using the driver's newer connection management engine (Server Discovery and Monitoring).
             // Note: This is the default in Mongoose v6+ and the option is no longer needed.
-            useUnifiedTopology:true,
+            // useUnifiedTopology:true,
             
             // Sets the maximum number of connections Mongoose will keep open in its connection pool.
             // Helps manage database connections efficiently. Default is often 100 in recent drivers.
@@ -67,6 +66,8 @@ class CreateDatabaseConnection {
         
         }
             
+        console.log("database connected")
+
          if(process.env.NODE_ENV==="development"){
             mongoose.set("debug",true)
          }           
@@ -129,6 +130,5 @@ class CreateDatabaseConnection {
 
 // Create singleton instance
 const dbConnection = new CreateDatabaseConnection()
-
 export default dbConnection.connect.bind(dbConnection)
 export const getConnectionStatus = dbConnection.getConnectionStatus.bind(dbConnection)

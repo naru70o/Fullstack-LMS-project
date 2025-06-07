@@ -6,7 +6,10 @@ import helmet from "helmet"
 import mongoSanitize from "express-mongo-sanitize";
 import cookieParser from "cookie-parser";
 import cors from "cors"
+import dbConnection from "./db/db.js"
 dotenv.config()
+
+dbConnection()
 
 const app = express();
 

@@ -56,24 +56,10 @@ const userSchema = mongoose.Schema({
     toObject: { virtuals: true }
 })
 
-// pre-save hooks for password hashing here using bcrypt
 
-userSchema.pre("save", async function (next) {
-    if (!this.isModified("password")) {
-        next()
-    }
-    try {
-        this.password = await bcrypt.hash(this.password, 10)
-        next()
-    } catch (error) {
-        next(error)
-    }
-}
-)
-
-
-userSchema.methods.comparePassword = async function (candidatePassword, userpassword) {
-    return await bcrypt.compare(userpassword, candidatePassword);
+userSchema.methods.comparePassword = async function (enteredPassword, candidatePassword) {
+    if (!candidatePassword || !enteredPassword) return false;
+    return await bcrypt.compare(enteredPassword, candidatePassword);
 };
 
 userSchema.methods.getResetPasswordToken = function () {

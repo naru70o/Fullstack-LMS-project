@@ -1,5 +1,4 @@
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken"
 import User from "../models/user.model.js";
 import generateToken from "../utils/jsonWebTokens.js";
 
@@ -37,18 +36,20 @@ export const signup = async (req, res) => {
     }
 }
 
-const signin = async (req, res) => {
+export const signin = async (req, res) => {
     const { email, password } = req.body;
 
     try {
         // user Exist
         const user = await User.findOne({ email }).select("+password")
+        console.log(user.password)
 
         // checking if the password is correct
-        if (!user || !await User.comparePassword(user.password, password)) {
+        const verified = await user.comparePassword(password, user.password)
+        if (!user || !verified) {
             return res.status(400).json({
-                status: 400,
-                message: "user does not exist"
+                status: 401,
+                message: "invalid credentials"
             })
         }
 
@@ -58,5 +59,21 @@ const signin = async (req, res) => {
 
     } catch (error) {
         console.error(error)
+    }
+}
+
+// logout
+export const logout = (req, res) => {
+    try {
+        res.cookie("token", "", {
+            maxAage: 0,
+
+        })
+        return res.status(200).json({
+            success: true,
+            message: "logout successful"
+        })
+    } catch (error) {
+        console.log(error)
     }
 }

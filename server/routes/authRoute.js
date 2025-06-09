@@ -1,5 +1,5 @@
 import express from "express";
-import { signup, signin } from "../controllers/authController.js"
+import { signup, signin, logout } from "../controllers/authController.js"
 import { routeProtector } from "../middlewares/protectRoute.js";
 const authRouter = express.Router()
 
@@ -14,8 +14,7 @@ const test = (req, res) => {
 
 authRouter.route("/signup").post(signup)
 authRouter.route("/login").post(signin)
-authRouter.route("/logout").get(test).post(routeProtector, test)
-authRouter.route("/test").get(routeProtector, test)
+authRouter.route("/logout").post(logout)
 
 export default authRouter;
 

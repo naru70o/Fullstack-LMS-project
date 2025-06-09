@@ -1,5 +1,6 @@
-import { promisify } from "util"
+// import { promisify } from "util"
 import jwt from "jsonwebtoken"
+import AppError from "../utils/error.js";
 
 export async function routeProtector(req, res, next) {
     try {
@@ -10,20 +11,20 @@ export async function routeProtector(req, res, next) {
         }
 
         if (!token) {
-            next(
-                res.status(401).json({
-                    status: "failed",
-                    message: "can't find token"
-                })
+            return next(
+                new AppError("can't find token", 401)
             )
         }
 
         // verify the token
         const user = await jwt.verify(token, process.env.JWT_SECRET);
+        if (!user) {
+            return next(new AppError("invalid token", 401))
+        }
         req.user = user;
         next()
     }
     catch (error) {
-        console.log("error in route protector", error.message)
+        return next(new AppError(error.message, 401))
     }
 }

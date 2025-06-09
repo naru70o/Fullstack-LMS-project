@@ -10,6 +10,7 @@ import dbConnection from "./db/db.js"
 
 // file imports
 import authRouter from "./routes/authRoute.js"
+import userRouter from "./routes/userRoutes.js";
 dotenv.config()
 
 dbConnection()
@@ -59,6 +60,7 @@ app.use(morgan("dev", (req, res) => {
 
 // ROUTES
 app.use("/api/v1/auth", authRouter)
+app.use("/api/v1/user", userRouter)
 
 app.listen(process.env.PORT, () => {
     console.log(`app is running at ${process.env.PORT}`)

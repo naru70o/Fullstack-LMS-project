@@ -94,6 +94,14 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
     return false;
 };
 
+// change password
+userSchema.methods.updatePassword = async function (newPassword, passwordConfirm) {
+    this.password = newPassword;
+    this.passwordConfirm = passwordConfirm;
+    this.passwordChangedAt = Date.now();
+    await this.save();
+};
+
 
 userSchema.methods.getResetPasswordToken = function () {
     const resetToken = crypto.randomBytes(20).toString("hex")

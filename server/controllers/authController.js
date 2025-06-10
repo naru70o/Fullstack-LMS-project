@@ -7,7 +7,7 @@ import appError from "../utils/error.js";
 
 
 export const signup = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, passwordConfirm } = req.body;
     try {
         // check user is signedup
         const userExists = await User.findOne({ email });
@@ -19,15 +19,14 @@ export const signup = async (req, res) => {
             })
         }
 
-        // hashing the password
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
+        // hashing the password | was done by mongoose midlleware
 
         // create user
         const user = await User.create({
             name,
             email,
-            password: hashedPassword
+            password,
+            passwordConfirm
         })
 
         generateToken(res, user, "user created successfully")

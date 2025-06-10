@@ -1,8 +1,9 @@
 // import { promisify } from "util"
 import jwt from "jsonwebtoken"
+import User from "../models/user.model.js"
 import AppError from "../utils/error.js";
 
-export async function routeProtector(req, res, next) {
+export async function protectRoute(req, res, next) {
     try {
         // Check if there is a token
         let token;
@@ -10,6 +11,7 @@ export async function routeProtector(req, res, next) {
             token = req.headers.authorization.split(' ')[1];
         }
 
+        console.log("this is the token", token)
         if (!token) {
             return next(
                 new AppError("can't find token", 401)
@@ -17,11 +19,24 @@ export async function routeProtector(req, res, next) {
         }
 
         // verify the token
-        const user = await jwt.verify(token, process.env.JWT_SECRET);
-        if (!user) {
+        const decoded = await jwt.verify(token, process.env.SECRET);
+        if (!decoded) {
             return next(new AppError("invalid token", 401))
         }
-        req.user = user;
+
+        // checking if user still exists
+        const currentUser = await User.findById(decoded.userId)
+        if (!currentUser) {
+            return next(new AppError("user not found", 401))
+        }
+
+        // check if user changed password after Token was issued
+        if (currentUser.changedPasswordAfter(decoded.iat)) {
+            return next(new AppError("user recently changed password", 401))
+        }
+
+        // grant access to the user
+        req.user = currentUser;
         next()
     }
     catch (error) {

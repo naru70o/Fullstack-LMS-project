@@ -25,6 +25,16 @@ const userSchema = mongoose.Schema({
         minLength: [8, "password should be greater than 8 characters"],
         select: false,
     },
+    passwordConfirm: {
+        type: String,
+        required: true,
+        validate: {
+            validator: function (el) {
+                return el === this.password;
+            },
+            message: "Passwords are not the same!"
+        }
+    },
     role: {
         type: String,
         enum: { values: ["student", "instructor", "admin"], message: "role is not supported" },
@@ -46,6 +56,7 @@ const userSchema = mongoose.Schema({
     }],
     resetPasswordTaken: String,
     resetPasswordExpireDate: Date,
+    passwordChangedAt: Date,
     lastActive: {
         type: Date,
         default: Date.now
@@ -56,11 +67,33 @@ const userSchema = mongoose.Schema({
     toObject: { virtuals: true }
 })
 
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) return next();
+    this.password = await bcrypt.hash(this.password, 12);
+    this.passwordConfirm = undefined;
+    next();
+});
+
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password") || this.isNew) return next();
+    this.passwordChangedAt = Date.now() - 1000;
+    next();
+});
 
 userSchema.methods.comparePassword = async function (enteredPassword, candidatePassword) {
     if (!candidatePassword || !enteredPassword) return false;
     return await bcrypt.compare(enteredPassword, candidatePassword);
 };
+
+userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+    if (this.passwordChangedAt) {
+        const changedTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
+        // JWTTimestamp is in seconds, passwordChangedAt is a Date object
+        return JWTTimestamp < changedTimestamp;
+    }
+    return false;
+};
+
 
 userSchema.methods.getResetPasswordToken = function () {
     const resetToken = crypto.randomBytes(20).toString("hex")

@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import nodemailer from "nodemailer";
+import crypto from "crypto";
 import User from "../models/user.model.js";
 import generateToken from "../utils/jsonWebTokens.js";
 import sendEmail from "../utils/email.js";
@@ -83,7 +83,7 @@ export const logout = (req, res) => {
 }
 
 // forget password
-export const forgetPassword = async (req, res) => {
+export const forgetPassword = async (req, res, next) => {
     //1 get the user based on a posted email
     const { email } = req.body
     try {
@@ -98,7 +98,7 @@ export const forgetPassword = async (req, res) => {
         await user.save({ validateBeforeSave: false })
 
         //3 send the token token via email;
-        const resetUrl = `${req.protocol}//${req.get("host")}/api/v1/user/forgetpassword/${resetToken}`
+        const resetUrl = `${req.protocol}//${req.get("host")}/api/v1/user/resetpassword/${resetToken}`
         // FORGET PASSWORD MESSAGE
         const message = `Forget your password ? Confirm your password ${resetUrl}`
 
@@ -128,6 +128,52 @@ export const forgetPassword = async (req, res) => {
 }
 
 // reset password
-export const resetPassword = async (req, res) => {
-    return null
+export const resetPassword = async (req, res, next) => {
+    try {
+        //1 get the user based on a token
+        const { token } = req.params
+        if (!token) {
+            return next(
+                new appError(
+                    "token is invalid or has expired",
+                    400
+                )
+            )
+        }
+
+        const hashedToken = crypto.createHash("sha256").update(token).digest("hex")
+        //2 if the user exist and the token not expired
+        const user = await User.findOne({
+            resetPasswordTaken: hashedToken,
+            resetPasswordExpireDate: { $gt: Date.now() }
+        })
+
+        if (!user) {
+            return next(
+                new appError(
+                    "token is invalid or has expired",
+                    400
+                )
+            )
+        }
+
+        user.password = req.body.password
+        user.passwordConfirm = req.body.passwordConfirm
+        user.resetPasswordTaken = undefined
+        user.resetPasswordExpireDate = undefined
+        await user.save()
+
+
+        //3 update the changedPasswordAt field (mongoose pre middleware was used)
+
+        //4 Generate new Token
+        generateToken(res, user, "password reset successful")
+    } catch (err) {
+        console.log(err)
+        return next(
+            new appError(err.message, 500)
+        )
+    }
 }
+
+

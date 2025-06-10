@@ -3,6 +3,7 @@ import express from "express"
 import morgan from "morgan"
 import { rateLimit } from 'express-rate-limit'
 import helmet from "helmet"
+import hpp from "hpp"
 import mongoSanitize from "express-mongo-sanitize";
 import cookieParser from "cookie-parser";
 import cors from "cors"
@@ -29,6 +30,7 @@ const limiter = rateLimit({
 app.use("/api", limiter)
 app.use(helmet())
 // app.use(mongoSanitize());
+app.use(hpp())
 
 // Body parser 
 app.use(express.json({ limit: "10kb" }))

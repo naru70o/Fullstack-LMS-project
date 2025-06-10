@@ -1,4 +1,3 @@
-// import { promisify } from "util"
 import jwt from "jsonwebtoken"
 import User from "../models/user.model.js"
 import AppError from "../utils/error.js";

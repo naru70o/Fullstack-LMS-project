@@ -1,4 +1,3 @@
-import bcrypt from "bcrypt";
 import crypto from "crypto";
 import User from "../models/user.model.js";
 import generateToken from "../utils/jsonWebTokens.js";
@@ -174,5 +173,3 @@ export const resetPassword = async (req, res, next) => {
         )
     }
 }
-
-

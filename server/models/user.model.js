@@ -35,6 +35,10 @@ const userSchema = mongoose.Schema({
             message: "Passwords are not the same!"
         }
     },
+    profile: {
+        type: String,
+        default: "default.jpg"
+    },
     role: {
         type: String,
         enum: { values: ["student", "instructor", "admin"], message: "role is not supported" },

@@ -1,4 +1,5 @@
 import User from "../models/user.model.js";
+import { uploadImage } from "../utils/cloudinary.js"
 import AppError from "../utils/error.js";
 
 export const getAllUsers = async (req, res) => {
@@ -51,7 +52,6 @@ export const updateProfile = async (req, res, next) => {
 }
 
 // update user password
-
 export const changepassword = async (req, res, next) => {
     // getting the password inputs
     const { oldpassword, password, passwordConfirm } = req.body;
@@ -93,5 +93,50 @@ export const changepassword = async (req, res, next) => {
         return next(
             new AppError("internal server error", 500)
         )
+    }
+}
+
+// update user's profile picture
+export const updateProfileImage = async (req, res, next) => {
+    //1 getting the image from the req.file becouse of multer middleware running
+    const profile = req.file
+    console.log(profile)
+    try {
+        if (!profile) {
+            return next(
+                new AppError(
+                    "No file uploaded",
+                    400
+                )
+            )
+        }
+        //2 uploading the image to cloudinary
+        const user = req.user;
+        const public_id = await uploadImage(profile.path)
+        console.log("this is the public_ID", public_id)
+        const updatedUser = await User.findByIdAndUpdate(user._id, { profile: public_id }, { new: true });
+        if (!updatedUser) {
+            return next(
+                new AppError(
+                    "User not found",
+                    404
+                )
+            )
+        }
+        return res.status(200).json({
+            status: "success",
+            data: {
+                updatedUser
+            },
+            message: "User updated successfully"
+        })
+    } catch (err) {
+        return next(
+            new AppError(
+                "Something went wrong",
+                500
+            )
+        )
+
     }
 }

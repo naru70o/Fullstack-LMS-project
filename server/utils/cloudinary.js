@@ -1,12 +1,17 @@
-import {v2 as cloudinary} from "cloudinary"
+import { v2 as cloudinary } from "cloudinary"
+import dotenv from "dotenv"
+
+dotenv.config()
+
+console.log("here are your api keys", process.env.CLOUDINARY_APIKEY)
 
 cloudinary.config({
-    cloud_name:process.env.CLOUDINARY_CLOUD_NAME,
-    api_key:process.env.CLOUDINARY_APIKEY,
-    api_secret:process.env.CLOUDINARY_APISECRET
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_APIKEY,
+    api_secret: process.env.CLOUDINARY_APISECRET
 })
 
-const uploadImage = async (imagePath) => {
+export const uploadImage = async (imagePath) => {
 
     const options = {
         resource_type: 'auto',
@@ -17,16 +22,17 @@ const uploadImage = async (imagePath) => {
 
     try {
         const result = await cloudinary.uploader.upload(imagePath, options)
+        console.log(result)
         return result.public_id;
-       } catch (error) {
+    } catch (error) {
         console.log("error uploading image from cloudinary")
         console.error(error)
     }
 }
 
-const deleteImage = async (publicId) => {
+export const deleteImage = async (publicId) => {
     try {
-        const result = await cloudinary.uploader.destroy(publicId, {resource_type:"vedio"})
+        const result = await cloudinary.uploader.destroy(publicId, { resource_type: "vedio" })
         return result;
     } catch (error) {
         console.log("error deleting image from cloudinary")

@@ -11,18 +11,30 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_APISECRET
 })
 
-export const uploadImage = async (imagePath) => {
+export const uploadImage = async (file) => {
 
     const options = {
-        resource_type: 'auto',
-        use_filename: true,
-        unique_filename: false,
+        resource_type: 'image',
         overwrite: true
     }
 
     try {
-        const result = await cloudinary.uploader.upload(imagePath, options)
-        console.log(result)
+        // Checking if the file is a path (string) or a buffer
+        let result;
+        if (typeof file === 'string') {
+            // Upload from file path
+            result = await cloudinary.uploader.upload(file, options);
+        } else if (file instanceof Buffer) {
+            // Upload from buffer
+            result = await new Promise((resolve, reject) => {
+                cloudinary.uploader.upload_stream(options, (error, uploadResult) => {
+                    if (error) return reject(error);
+                    return resolve(uploadResult);
+                }).end(file);
+            });
+        } else {
+            throw new Error("Invalid file input for Cloudinary upload");
+        }
         return result.public_id;
     } catch (error) {
         console.log("error uploading image from cloudinary")
@@ -32,11 +44,10 @@ export const uploadImage = async (imagePath) => {
 
 export const deleteImage = async (publicId) => {
     try {
-        const result = await cloudinary.uploader.destroy(publicId, { resource_type: "vedio" })
+        const result = await cloudinary.uploader.destroy(publicId, { resource_type: "image" })
         return result;
     } catch (error) {
         console.log("error deleting image from cloudinary")
         console.error(error)
     }
 }
-

@@ -100,6 +100,15 @@ export const changepassword = async (req, res, next) => {
 export const updateProfileImage = async (req, res, next) => {
     //1 getting the image from the req.file becouse of multer middleware running
     const profile = req.file
+    if (!profile) {
+        return next(
+            new AppError(
+                "No file uploaded",
+                400
+            )
+
+        )
+    }
     console.log(profile)
     try {
         if (!profile) {
@@ -112,7 +121,7 @@ export const updateProfileImage = async (req, res, next) => {
         }
         //2 uploading the image to cloudinary
         const user = req.user;
-        const public_id = await uploadImage(profile.path)
+        const public_id = await uploadImage(profile.buffer)
         console.log("this is the public_ID", public_id)
         const updatedUser = await User.findByIdAndUpdate(user._id, { profile: public_id }, { new: true });
         if (!updatedUser) {

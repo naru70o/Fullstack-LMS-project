@@ -39,10 +39,9 @@ const courseSchema = new mongoose.Schema({
       required: true,
     },
   },
-  lectures: [{
-    type:mongoose.Schema.Types.ObjectId,
-    ref: 'Lecture',
-    required: [true, 'Lectures are required'],
+  modules: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Module',
   }],
   instructor: {
     type: mongoose.Schema.Types.ObjectId,
@@ -63,22 +62,16 @@ const courseSchema = new mongoose.Schema({
   },
 }, {
   timestamps: true,
-  toJSON:{virtuals:true},
-  toObject:{virtuals:true},
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true },
 });
 
 // TODO
-courseSchema.virtual("overalRating",function(){
-    // 
+courseSchema.virtual("overalRating", function () {
+  // 
 })
 
-courseSchema.pre('save', async function (next) {
-    if(this.luctures){
-        this.numberOfLectures = this.lectures.length;
-    }
-    next()
-});
-
+// TODO, the sum of the total lectures
 
 
 const Course = mongoose.model('Course', courseSchema);

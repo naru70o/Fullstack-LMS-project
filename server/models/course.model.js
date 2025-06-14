@@ -15,7 +15,7 @@ const courseSchema = new mongoose.Schema({
     maxLength: [200, 'Description must be less than 200 characters'],
     trim: true,
   },
-  level: {
+  level: [{
     type: String,
     enum: {
       values: ['Beginner', 'Intermediate', 'Advanced'],
@@ -23,12 +23,12 @@ const courseSchema = new mongoose.Schema({
     },
     required: [true, 'Level is required'],
     trim: true,
-  },
-  category: {
-    type: String,
-    required: [true, 'Category is required'],
-    trim: true,
-  },
+  }],
+  category: [
+    {
+      type: String,
+    }
+  ],
   thumbnail: {
     public_id: {
       type: String,

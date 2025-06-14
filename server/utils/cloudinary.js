@@ -35,7 +35,10 @@ export const uploadImage = async (file) => {
         } else {
             throw new Error("Invalid file input for Cloudinary upload");
         }
-        return result.public_id;
+        return {
+            public_id: result.public_id,
+            secure_url: result.secure_url
+        };
     } catch (error) {
         console.log("error uploading image from cloudinary")
         console.error(error)

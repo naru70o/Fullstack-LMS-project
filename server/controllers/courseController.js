@@ -4,8 +4,30 @@
 // important fields, title , dis , level ,  category , thumplain 
 
 import Course from "../models/course.model.js"
+import Module from "../models/module.model.js"
 import { uploadImage } from "../utils/cloudinary.js"
 import AppError from "../utils/error.js"
+
+// Get all courses
+export async function getAllCourses(req, res, next) {
+    try {
+        const courses = await Course.find();
+        return res.status(200).json({
+            status: "success",
+            data: {
+                courses
+            },
+            message: "courses fetched successfully"
+        })
+    } catch (error) {
+        return next(
+            new AppError(
+                "internal server error",
+                500
+            )
+        )
+    }
+}
 
 export async function createNewCourse(req, res, next) {
     //1) getting the fields from the body
@@ -69,6 +91,61 @@ export async function createNewCourse(req, res, next) {
                 course
             },
             message: "course created successfully"
+        })
+    } catch (error) {
+        return next(
+            new AppError(
+                "internal server error",
+                500
+            )
+        )
+    }
+}
+
+// TODO, create new module for a course
+export async function createNewModule(req, res, next) {
+    // get the modules course id
+    const { courseId } = req.params
+    if (!courseId) return next(
+        new AppError(
+            "course id is required",
+            400
+        )
+    )
+    // get the module fields
+    const { title, description } = req.body
+    if (!title || !description) return next(
+        new AppError(
+            "title and description are required",
+            400
+        )
+    )
+    try {
+        // Finding the course to get the current number of modules
+        const course = await Course.findById(courseId).populate('modules');
+        if (!course) {
+            return next(new AppError("Course not found", 404));
+        }
+
+        // Determine the order for the new module
+        const newOrder = course.modules.length + 1;
+
+        // save the module
+        const module = await Module.create({
+            title,
+            description,
+            course: courseId,
+            order: newOrder,
+        })
+        // Adding the new module to the course's modules array
+        await Course.findByIdAndUpdate(courseId, { $push: { modules: module._id } });
+
+        return res.status(200).json({
+            status: "success",
+            data: {
+                module
+            },
+            message: "module created successfully"
         })
     } catch (error) {
         return next(

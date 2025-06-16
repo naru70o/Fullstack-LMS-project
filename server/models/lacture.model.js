@@ -13,20 +13,20 @@ const lectureSchema = new mongoose.Schema(
       trim: true,
     },
     url: {
-      vedioUrl: {
+      videoUrl: {
         type: String,
         required: [true, "Please provide a lecture url"],
         trim: true,
       },
       secureUrl: {
         type: String,
-        required: [true, "Please provide a lecture url"]
+        required: [true, "Please provide a lecture url"],
         trim: true
       }
     },
-    courseId: {
+    moduleId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Course",
+      ref: "Module",
       required: true,
     },
     instructor: {

@@ -5,7 +5,8 @@
 
 import Course from "../models/course.model.js"
 import Module from "../models/module.model.js"
-import { uploadImage } from "../utils/cloudinary.js"
+import Lecture from "../models/lacture.model.js"
+import { uploadImage, vedeoUploader } from "../utils/cloudinary.js"
 import AppError from "../utils/error.js"
 
 // Get all courses
@@ -154,5 +155,84 @@ export async function createNewModule(req, res, next) {
                 500
             )
         )
+    }
+}
+
+//TODO creating a new lecture for a course
+export async function createNewLecture(req, res, next) {
+    //1) Getting the moduleId from params
+    const { moduleId } = req.params;
+    if (!moduleId) {
+        return next(new AppError("Module ID is required", 400));
+    }
+
+    //2) Getting the fields from the body
+    const { title, description } = req.body
+    if (!title || !description) {
+        return next(new AppError("Title and description are required for the lecture", 400));
+    }
+
+    //3) Checking the user (instructor)
+    const user = req.user;
+    console.log(user.roles)
+    if (!user.roles.includes("instructor")) {
+        return next(new AppError("User not found, please login", 404));
+    }
+
+    try {
+        //4) Getting the video file from multer
+        const lectureVideoFile = req.file;
+        if (!lectureVideoFile) {
+            return next(
+                new AppError(
+                    "No lecture video file uploaded",
+                    400
+                )
+            );
+        }
+
+        //5) Uploading the video to Cloudinary
+        const videoUploadResult = await vedeoUploader(lectureVideoFile.buffer);
+        if (!videoUploadResult || !videoUploadResult.public_id || !videoUploadResult.secure_url) {
+            return next(new AppError("Failed to upload video to Cloudinary", 500));
+        }
+
+        //6) Finding the module to get the current number of lectures for order
+        const module = await Module.findById(moduleId).populate('lectures');
+        if (!module) {
+            return next(new AppError("Module not found", 404));
+        }
+
+        // Determine the order for the new lecture
+        const newOrder = module.lectures.length + 1;
+
+        //7) Creating the new lecture
+        const newLecture = await Lecture.create({
+            title,
+            description,
+            url: {
+                videoUrl: videoUploadResult.secure_url, // Cloudinary secure URL
+                secureUrl: videoUploadResult.secure_url // Cloudinary secure URL
+            },
+            moduleId: moduleId,
+            instructor: user._id,
+            duration: videoUploadResult.duration || 0,
+            publicId: videoUploadResult.public_id, // Cloudinary public ID
+            order: newOrder,
+        });
+
+        //8) Adding the new lecture to the module's lectures array
+        await Module.findByIdAndUpdate(moduleId, { $push: { lectures: newLecture._id } });
+
+        return res.status(200).json({
+            status: "success",
+            data: {
+                lecture: newLecture
+            },
+            message: "Lecture created and added to module successfully"
+        });
+    } catch (error) {
+        console.error("Error creating new lecture:", error);
+        return next(new AppError("Internal server error while creating lecture", 500));
     }
 }

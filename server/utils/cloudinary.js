@@ -1,4 +1,5 @@
 import { v2 as cloudinary } from "cloudinary"
+// import Buffer from "buffer"
 import dotenv from "dotenv"
 
 dotenv.config()
@@ -51,6 +52,30 @@ export const deleteImage = async (publicId) => {
         return result;
     } catch (error) {
         console.log("error deleting image from cloudinary")
+        console.error(error)
+    }
+}
+
+// vedio uploader
+export async function vedeoUploader(vedeo) {
+    const options = {
+        resource_type: "video"
+    }
+    try {
+        let result;
+        if (typeof vedeo === 'string') {
+            result = await cloudinary.uploader.upload(vedeo, options)
+        } else if (vedeo instanceof Buffer) {
+            result = new Promise((resolve, reject) => {
+                cloudinary.uploader.upload_stream(options, (error, uploadResult) => {
+                    if (error) return reject(error)
+                    return resolve(uploadResult)
+                }).end(vedeo)
+            })
+        }
+        return result
+    } catch (error) {
+        console.log("error uploading vedio from cloudinary")
         console.error(error)
     }
 }

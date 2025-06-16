@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { deleteVideo } from "../utils/cloudinary.js";
 
 const lectureSchema = new mongoose.Schema(
   {
@@ -66,6 +67,18 @@ lectureSchema.pre("save", async function (next) {
 
   next()
 })
+
+lectureSchema.pre('remove', async function (next) {
+  try {
+    if (this.publicId) {
+      await deleteVideo(this.publicId);
+    }
+    next();
+  } catch (error) {
+    console.error(`Failed to delete video ${this.publicId} from Cloudinary for lecture ${this._id}:`, error);
+    next(error);
+  }
+});
 
 const Lecture = mongoose.model("Lecture", lectureSchema);
 

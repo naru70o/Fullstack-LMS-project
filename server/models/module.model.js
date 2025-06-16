@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import Lecture from './lacture.model.js';
 
 const moduleSchema = new mongoose.Schema(
     {
@@ -28,6 +29,16 @@ const moduleSchema = new mongoose.Schema(
     },
     { timestamps: true }
 );
+
+// Delete all the related lectures when a module deleted
+moduleSchema.pre('findByIdAndDelete', async function (next) {
+    try {
+        await Promise.all(this.lectures.map(lectureId => Lecture.findByIdAndDelete(lectureId)));
+        next();
+    } catch (error) {
+        next(error);
+    }
+})
 
 const Module = mongoose.model('Module', moduleSchema);
 export default Module;

@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import Module from './module.model.js';
+import AppError from '../utils/error.js';
 
 const courseSchema = new mongoose.Schema({
   title: {
@@ -71,8 +73,18 @@ courseSchema.virtual("overalRating", function () {
   // 
 })
 
-// TODO, the sum of the total lectures
 
+// Delete all the related modules when a course deleted
+courseSchema.pre('remove', async function (next) {
+  try {
+    await Promise.all(this.modules.map(module => Module.findByIdAndDelete(module._id)));
+    next();
+  } catch (error) {
+    return next(
+      new AppError("internal server error when deleting course in the course middleware", 500)
+    );
+  }
+})
 
 const Course = mongoose.model('Course', courseSchema);
 

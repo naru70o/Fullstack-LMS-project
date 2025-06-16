@@ -224,6 +224,14 @@ export async function createNewLecture(req, res, next) {
         //8) Adding the new lecture to the module's lectures array
         await Module.findByIdAndUpdate(moduleId, { $push: { lectures: newLecture._id } });
 
+        //9) Updating the course's numberOfLectures and totalOfHours
+        await Course.findByIdAndUpdate(module.course, {
+            $inc: { numberOfLectures: 1, totalOfHours: newLecture.duration }
+        });
+
+        //10) save the lecture
+        await newLecture.save();
+
         return res.status(200).json({
             status: "success",
             data: {
@@ -232,7 +240,83 @@ export async function createNewLecture(req, res, next) {
             message: "Lecture created and added to module successfully"
         });
     } catch (error) {
-        console.error("Error creating new lecture:", error);
-        return next(new AppError("Internal server error while creating lecture", 500));
+        // return next(new AppError("Internal server error while creating lecture", 500));
+        console.error("Error creating new lecture:", error.message);
+        return next(error)
     }
+}
+
+///////////////////////////
+///////////////////////////
+///////// DELETE OPERATIONS
+
+export async function deleteCourse(req, res, next) {
+    //1 getting the params
+    const { courseId } = req.params
+    if (!courseId) {
+        return next(
+            new AppError(
+                "course id is required",
+                400
+            )
+        )
+    }
+
+    try {
+        //2 check if the user exist
+        const user = req.user
+        if (!user) {
+            return next(
+                new AppError(
+                    "user not found",
+                    404
+                )
+            )
+        }
+        //3 get the course
+        const course = await Course.findOne({ _id: courseId }).populate("instructor");
+        console.log("here is the course", typeof course)
+        if (!course) {
+            return next(
+                new AppError(
+                    "course not found",
+                    404
+                )
+            )
+        }
+
+
+        //4 checking if the course has the id of the current instructor
+        const isCorrect = course.instructor.id.toString() === user.id.toString()
+        if (!isCorrect) {
+            return next(
+                new AppError(
+                    "you are not authorized to delete this course",
+                    403
+                )
+            )
+        }
+
+        //5 delete the course
+        await Course.findByIdAndDelete(course._id)
+
+        return res.status(200).json({
+            status: "success",
+            data: {
+                course
+            },
+            message: "course deleted successfully",
+        })
+
+    } catch (error) {
+        console.error("Error in deleteCourse controller:", error);
+        return next(
+            new AppError(
+                "internal server error when deleting course",
+                500
+            )
+        )
+
+    }
+
 }

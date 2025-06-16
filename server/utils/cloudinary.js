@@ -79,3 +79,17 @@ export async function vedeoUploader(vedeo) {
         console.error(error)
     }
 }
+
+
+export const deleteVideo = async (publicId) => {
+    try {
+        const result = await cloudinary.uploader.destroy(publicId, { resource_type: "video" });
+        if (result.result !== 'ok' && result.result !== 'not found') {
+            console.warn(`Cloudinary video deletion may not have been successful for public_id: ${publicId}`, result);
+        }
+        return result;
+    } catch (error) {
+        console.error(`Error deleting video ${publicId} from Cloudinary:`, error);
+        throw error; // Re-throw to be handled by the calling pre-remove hook
+    }
+};

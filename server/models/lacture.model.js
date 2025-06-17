@@ -68,7 +68,7 @@ lectureSchema.pre("save", async function (next) {
   next()
 })
 
-lectureSchema.pre('remove', async function (next) {
+lectureSchema.pre('findByIdAndDelete', async function (next) {
   try {
     if (this.publicId) {
       await deleteVideo(this.publicId);

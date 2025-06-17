@@ -1,7 +1,6 @@
 // Todos
 // 1 CRUD a course
 // 2 using a virtuals and methods to make the code alot cleaner
-// important fields, title , dis , level ,  category , thumplain 
 
 import Course from "../models/course.model.js"
 import Module from "../models/module.model.js"

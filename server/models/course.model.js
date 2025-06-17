@@ -75,16 +75,20 @@ courseSchema.virtual("overalRating", function () {
 
 
 // Delete all the related modules when a course deleted
-courseSchema.pre('remove', async function (next) {
+courseSchema.pre('findOneAndDelete', async function (next) {
   try {
-    await Promise.all(this.modules.map(module => Module.findByIdAndDelete(module._id)));
+    const course = await this.model.findOne(this.getQuery());
+    if (!course) return next();
+
+    // Delete all modules associated with the course
+    await Module.deleteMany({ _id: { $in: course.modules } });
     next();
   } catch (error) {
-    return next(
-      new AppError("internal server error when deleting course in the course middleware", 500)
+    next(
+      new AppError("Internal server error when deleting modules in course middleware", 500)
     );
   }
-})
+});
 
 const Course = mongoose.model('Course', courseSchema);
 

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-import { deleteVideo } from "../utils/cloudinary.js";
+import { deleteMultipleVideos, deleteVideo } from "../utils/cloudinary.js";
+import AppError from "../utils/error.js";
 
 const lectureSchema = new mongoose.Schema(
   {
@@ -68,18 +69,33 @@ lectureSchema.pre("save", async function (next) {
   next()
 })
 
-// TODO this pre hook isn't working as intended (fix it)
-lectureSchema.pre('findByIdAndDelete', async function (next) {
+lectureSchema.statics.deleteLecturesByModuleId = async function (moduleId) {
   try {
-    if (this.publicId) {
-      await deleteVideo(this.publicId);
+    // Find all lectures for the given moduleId
+    const lectures = await this.find({ moduleId: moduleId });
+
+    if (!lectures || lectures.length === 0) {
+      return { deletedDbCount: 0, deletedVideoCount: 0 };
     }
-    next();
+
+    // Collect all publicIds for video deletion
+    const publicIds = lectures
+      .map(lecture => lecture.publicId)
+      .filter(id => id);
+
+    if (publicIds.length > 0) {
+      await deleteMultipleVideos(publicIds);
+    }
+
+    // Delete the lecture documents from the database
+    const deleteResult = await this.deleteMany({ moduleId: moduleId });
+
+    return { deletedDbCount: deleteResult.deletedCount, deletedVideoCount: publicIds.length };
   } catch (error) {
-    console.error(`Failed to delete video ${this.publicId} from Cloudinary for lecture ${this._id}:`, error);
-    next(error);
+    console.error(`Error deleting lectures for moduleId ${moduleId}: ${error.message}`);
+    throw new AppError(`Failed to delete lectures for module ${moduleId}. ${error.message}`, 500);
   }
-});
+}
 
 const Lecture = mongoose.model("Lecture", lectureSchema);
 

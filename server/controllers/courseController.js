@@ -29,6 +29,27 @@ export async function getAllCourses(req, res, next) {
     }
 }
 
+// Get all modules
+export async function getAllModules(req, res, next) {
+    try {
+        const modules = await Module.find();
+        return res.status(200).json({
+            message: "modules fetched successfully",
+            status: "success",
+            data: {
+                modules
+            },
+        })
+    } catch (error) {
+        return next(
+            new AppError(
+                "internal server error",
+                500
+            )
+        )
+    }
+}
+
 export async function createNewCourse(req, res, next) {
     //1) getting the fields from the body
     const { title, description, level, category } = req.body

@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import Module from './module.model.js';
 import AppError from '../utils/error.js';
+import Lecture from './lacture.model.js';
+import { deleteMultipleVideos } from '../utils/cloudinary.js';
 
 const courseSchema = new mongoose.Schema({
   title: {
@@ -78,14 +80,45 @@ courseSchema.virtual("overalRating", function () {
 courseSchema.pre('findOneAndDelete', async function (next) {
   try {
     const course = await this.model.findOne(this.getQuery());
-    if (!course) return next();
+    if (!course || !course.modules || course.modules.length === 0) {
+      return next();
+    }
 
-    // Delete all modules associated with the course
+    // 1. Find all module documents associated with the course to get their lecture IDs
+    const modulesWithLectures = await Module.find({ _id: { $in: course.modules } }).select('lectures').lean();
+
+    if (modulesWithLectures.length > 0) {
+      // 2. Collect all lecture IDs from these modules
+      const allLectureIds = modulesWithLectures.flatMap(module => module.lectures.map(id => id.toString()));
+
+      if (allLectureIds.length > 0) {
+        // 3. Find all lecture documents to get their publicIds for video deletion
+        const lecturesToDelete = await Lecture.find({ _id: { $in: allLectureIds } }).select('publicId').lean();
+
+        if (lecturesToDelete.length > 0) {
+          // 4. Collect all publicIds for video deletion, filtering out any undefined/null ids
+          const publicIdsForVideoDeletion = lecturesToDelete
+            .map(lecture => lecture.publicId)
+            .filter(id => id);
+
+          if (publicIdsForVideoDeletion.length > 0) {
+            // 5. Delete videos from Cloudinary
+            await deleteMultipleVideos(publicIdsForVideoDeletion);
+          }
+        }
+        // 6. Delete lecture documents from the database
+        await Lecture.deleteMany({ _id: { $in: allLectureIds } });
+      }
+    }
+
+    // 7. Delete all module documents associated with the course
     await Module.deleteMany({ _id: { $in: course.modules } });
+
     next();
   } catch (error) {
+    console.error("Error in course pre 'findOneAndDelete' hook:", error);
     next(
-      new AppError("Internal server error when deleting modules in course middleware", 500)
+      new AppError(`Error during course deletion cascade: ${error.message}`, 500)
     );
   }
 });

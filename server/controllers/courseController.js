@@ -340,3 +340,57 @@ export async function deleteCourse(req, res, next) {
     }
 
 }
+
+// delete module
+export async function deleteModule(req, res, next) {
+    //1 getting the params
+    const { moduleId } = req.params
+    if (!moduleId) {
+        return next(
+            new AppError("module id is required", 400)
+        )
+    }
+
+    try {
+        //2 check if the user exist
+        const user = req.user
+        if (!user) {
+            return next(
+                new AppError(
+                    "user not found",
+                    404
+                ))
+        }
+
+        //3 get the course and then the instructor
+        const course = await Course.findOne({ modules: moduleId }).populate("instructor");
+        if (!course) {
+            return next(
+                new AppError("course not found", 404)
+            )
+        }
+
+        //4 checking the if the user has the permition to delete
+        if (!user.id.toString() === course.instructor.id.toString()) {
+            return next(
+                new AppError("you are not authorized to delete this module", 403)
+            )
+        }
+
+        const module = await Module.find({ _id: moduleId });
+
+        //5 delete the module
+        await Module.findByIdAndDelete(moduleId)
+
+        return res.status(200).json({
+            status: "success",
+            data: {
+                module
+            },
+            message: "module deleted successfully"
+        })
+    } catch (error) {
+        return next("internal server error while deleting module", 500)
+    }
+
+}

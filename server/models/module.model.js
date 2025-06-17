@@ -33,7 +33,8 @@ const moduleSchema = new mongoose.Schema(
 // Delete all the related lectures when a module deleted
 moduleSchema.pre('findByIdAndDelete', async function (next) {
     try {
-        await Promise.all(this.lectures.map(lectureId => Lecture.findByIdAndDelete(lectureId)));
+        const module = await this.model.findById(this.getQuery());
+        console.log("fooooooooooooooooooooooooo", module)
         next();
     } catch (error) {
         next(error);

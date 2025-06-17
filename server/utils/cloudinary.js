@@ -93,3 +93,13 @@ export const deleteVideo = async (publicId) => {
         throw error; // Re-throw to be handled by the calling pre-remove hook
     }
 };
+
+export const deleteMultipleVideos = async (publicIds) => {
+    try {
+        const results = await Promise.all(publicIds.map(publicId => deleteVideo(publicId)));
+        return results;
+    } catch (error) {
+        console.error("Error deleting multiple videos:", error);
+        throw error;
+    }
+};

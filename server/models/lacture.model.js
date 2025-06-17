@@ -68,6 +68,7 @@ lectureSchema.pre("save", async function (next) {
   next()
 })
 
+// TODO this pre hook isn't working as intended (fix it)
 lectureSchema.pre('findByIdAndDelete', async function (next) {
   try {
     if (this.publicId) {

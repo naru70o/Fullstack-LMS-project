@@ -69,31 +69,19 @@ lectureSchema.pre("save", async function (next) {
   next()
 })
 
-lectureSchema.statics.deleteLecturesByModuleId = async function (moduleId) {
+lectureSchema.methods.deletelactureVedio = async function () {
   try {
-    // Find all lectures for the given moduleId
-    const lectures = await this.find({ moduleId: moduleId });
-
-    if (!lectures || lectures.length === 0) {
-      return { deletedDbCount: 0, deletedVideoCount: 0 };
-    }
-
     // Collect all publicIds for video deletion
-    const publicIds = lectures
-      .map(lecture => lecture.publicId)
-      .filter(id => id);
-
-    if (publicIds.length > 0) {
-      await deleteMultipleVideos(publicIds);
+    const publicId = this.publicId;
+    if (!publicId) {
+      return { status: "failed", message: "no public id found" }
     }
 
-    // Delete the lecture documents from the database
-    const deleteResult = await this.deleteMany({ moduleId: moduleId });
-
-    return { deletedDbCount: deleteResult.deletedCount, deletedVideoCount: publicIds.length };
+    // delete the lacture vedeo
+    await deleteVideo(publicId)
+    return { status: "success", message: "lecture vedio deleted successfully" };
   } catch (error) {
-    console.error(`Error deleting lectures for moduleId ${moduleId}: ${error.message}`);
-    throw new AppError(`Failed to delete lectures for module ${moduleId}. ${error.message}`, 500);
+    throw new AppError(`Failed to delete lacture vedio: ${error.message}`, 500);
   }
 }
 

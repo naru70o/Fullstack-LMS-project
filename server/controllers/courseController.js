@@ -430,3 +430,59 @@ export async function deleteModule(req, res, next) {
     }
 
 }
+
+// Delete a single lecture
+export async function deleteLacture(req, res, next) {
+    const { lactureId } = req.params;
+    if (!lactureId) {
+        return next(new AppError("Lecture ID is required", 400));
+    }
+
+    try {
+        const user = req.user;
+        if (!user) {
+            return next(new AppError("User not found, please login", 404));
+        }
+
+        const lecture = await Lecture.findById(lactureId).populate('instructor');
+        if (!lecture) {
+            return next(new AppError("Lecture not found", 404));
+        }
+
+        // Check if the user is authorized to delete this lecture
+        if (!lecture.instructor || lecture.instructor._id.toString() !== user._id.toString()) {
+            return next(new AppError("You are not authorized to delete this lecture", 403));
+        }
+
+        // 1. Delete the video from Cloudinary
+        await lecture.deletelactureVedio();
+
+        // 2. Delete the lecture document from the database
+        await Lecture.findByIdAndDelete(lactureId);
+
+        // 3. Remove lecture reference from the parent module
+        const parentModule = await Module.findByIdAndUpdate(
+            lecture.moduleId,
+            { $pull: { lectures: lecture._id } },
+            { new: true }
+        );
+
+        // 4. Update course's numberOfLectures and totalOfHours
+        if (parentModule && parentModule.course) {
+            await Course.findByIdAndUpdate(parentModule.course, {
+                $inc: {
+                    numberOfLectures: -1,
+                    totalOfHours: -(lecture.duration || 0)
+                }
+            });
+        }
+
+        return res.status(200).json({
+            status: "success",
+            message: "Lecture deleted successfully",
+        });
+
+    } catch (error) {
+        return next(new AppError(`Internal server error while deleting lecture: ${error.message}`, 500));
+    }
+}

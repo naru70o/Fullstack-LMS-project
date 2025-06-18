@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import Lecture from './lacture.model.js';
 import { deleteMultipleVideos } from '../utils/cloudinary.js';
+import Course from './course.model.js';
 
 const moduleSchema = new mongoose.Schema(
     {
@@ -45,13 +46,32 @@ moduleSchema.pre('findOneAndDelete', async function (next) {
             //3. collect all public Ids for vedio deletion
             const puplicId = lactures.map(l => l.publicId)
             console.log("here is the lactures public Ids", puplicId)
-
             //4. delete all the vedios in cloudinary
             await deleteMultipleVideos(lactures)
+        }
+        //3.1 sum all the lacture duration
+        const totalOfLactures = -lactures.length
+
+        //3.2 total of lactures
+        const totalLecturesDuration = lactures.reduce((sum, lecture) => sum + (lecture.duration || 0), 0);
+
+        //3.3 remove the module form the course
+        if (module.course) {
+            await Course.findByIdAndUpdate(module.course, { $pull: { modules: module._id } })
         }
 
         //5. delete lactures from the database
         await Lecture.deleteMany({ _id: { $in: module.lectures } })
+
+        // 6. Update the parent course's lecture count and total hours
+        if (module.course) {
+            await Course.findByIdAndUpdate(module.course, {
+                $inc: {
+                    numberOfLectures: totalOfLactures,
+                    totalOfHours: -totalLecturesDuration
+                }
+            });
+        }
         console.log("this operation was done")
 
         next();

@@ -5,7 +5,7 @@
 import Course from "../models/course.model.js"
 import Module from "../models/module.model.js"
 import Lecture from "../models/lacture.model.js"
-import { uploadImage, vedeoUploader } from "../utils/cloudinary.js"
+import { deleteImage, uploadImage, vedeoUploader } from "../utils/cloudinary.js"
 import AppError from "../utils/error.js"
 
 // Get all courses
@@ -354,7 +354,9 @@ export async function deleteCourse(req, res, next) {
         }
 
         //5 delete the course
-        await Course.findByIdAndDelete(course._id)
+        const deletedCourse = await Course.findByIdAndDelete(course._id)
+        //4 delete the course thumblain
+        await deleteImage(deletedCourse.thumbnail.public_id)
 
         return res.status(200).json({
             status: "success",

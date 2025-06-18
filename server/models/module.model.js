@@ -44,10 +44,10 @@ moduleSchema.pre('findOneAndDelete', async function (next) {
         const lactures = await Lecture.find({ _id: { $in: module.lectures } })
         if (lactures.length > 0) {
             //3. collect all public Ids for vedio deletion
-            const puplicId = lactures.map(l => l.publicId)
-            console.log("here is the lactures public Ids", puplicId)
+            const publicId = lactures.map(l => l.publicId)
+            console.log("here is the lactures public Ids", publicId)
             //4. delete all the vedios in cloudinary
-            await deleteMultipleVideos(lactures)
+            await deleteMultipleVideos(publicId)
         }
         //3.1 sum all the lacture duration
         const totalOfLactures = -lactures.length

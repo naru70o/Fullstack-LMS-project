@@ -49,6 +49,9 @@ export const uploadImage = async (file) => {
 export const deleteImage = async (publicId) => {
     try {
         const result = await cloudinary.uploader.destroy(publicId, { resource_type: "image" })
+        console.log("-------------------")
+        console.log(result)
+        console.log("-------------------")
         return result;
     } catch (error) {
         console.log("error deleting image from cloudinary")
@@ -84,6 +87,9 @@ export async function vedeoUploader(vedeo) {
 export const deleteVideo = async (publicId) => {
     try {
         const result = await cloudinary.uploader.destroy(publicId, { resource_type: "video" });
+        console.log("-------------------")
+        console.log(result)
+        console.log("-------------------")
         if (result.result !== 'ok' && result.result !== 'not found') {
             console.warn(`Cloudinary video deletion may not have been successful for public_id: ${publicId}`, result);
         }
@@ -96,8 +102,11 @@ export const deleteVideo = async (publicId) => {
 
 export const deleteMultipleVideos = async (publicIds) => {
     try {
-        const results = await Promise.all(publicIds.map(publicId => deleteVideo(publicId)));
-        return results;
+        const result = await cloudinary.api.delete_resources(publicIds, { resource_type: "video" })
+        console.log("-------------------")
+        console.log(result)
+        console.log("-------------------")
+        return result;
     } catch (error) {
         console.error("Error deleting multiple videos:", error);
         throw error;

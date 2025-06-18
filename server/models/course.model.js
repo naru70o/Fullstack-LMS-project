@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import Module from './module.model.js';
 import AppError from '../utils/error.js';
 import Lecture from './lacture.model.js';
-import { deleteMultipleVideos } from '../utils/cloudinary.js';
+import { deleteImage, deleteMultipleVideos } from '../utils/cloudinary.js';
 
 const courseSchema = new mongoose.Schema({
   title: {
@@ -84,6 +84,14 @@ courseSchema.pre('findOneAndDelete', async function (next) {
       return next();
     }
 
+    // 0. deleting course thumblain
+    console.log(course.thumbnail.publicId)
+    if (!course.thumbnail.public_id) {
+      return next();
+    }
+    await deleteImage(course.thumbnail.public_id)
+
+
     // 1. Find all module documents associated with the course to get their lecture IDs
     const modulesWithLectures = await Module.find({ _id: { $in: course.modules } }).select('lectures').lean();
 
@@ -99,7 +107,7 @@ courseSchema.pre('findOneAndDelete', async function (next) {
           // 4. Collect all publicIds for video deletion, filtering out any undefined/null ids
           const publicIdsForVideoDeletion = lecturesToDelete
             .map(lecture => lecture.publicId)
-            .filter(id => id);
+
 
           if (publicIdsForVideoDeletion.length > 0) {
             // 5. Delete videos from Cloudinary

@@ -50,6 +50,42 @@ export async function getAllModules(req, res, next) {
     }
 }
 
+// Get all Lactures
+export async function getAlllactures(req, res, next) {
+    try {
+        const lectures = await Lecture.find();
+        return res.status(200).json({
+            message: "lectures fetched successfully",
+            status: "success",
+            data: {
+                lectures
+            },
+        })
+    } catch (error) {
+        return next(
+            new AppError(
+                "internal server error",
+                500
+            )
+        )
+    }
+}
+
+// delete all lactures
+export async function deleteallactures(req, res, next) {
+    try {
+        await Lecture.deleteMany();
+        return res.status(200).json({
+            message: "lectures deleted successfully",
+            status: "success",
+        })
+    } catch (error) {
+        return next(
+            new AppError("internal server error", 500)
+        )
+    }
+}
+
 export async function createNewCourse(req, res, next) {
     //1) getting the fields from the body
     const { title, description, level, category } = req.body
@@ -390,7 +426,7 @@ export async function deleteModule(req, res, next) {
             message: "module deleted successfully"
         })
     } catch (error) {
-        return next("internal server error while deleting module", 500)
+        return next(`internal server error while deleting module ${error.message}`, 500)
     }
 
 }

@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import { deleteMultipleVideos, deleteVideo } from "../utils/cloudinary.js";
+import AppError from "../utils/error.js";
 
 const lectureSchema = new mongoose.Schema(
   {
@@ -12,13 +14,21 @@ const lectureSchema = new mongoose.Schema(
       required: [true, "Please provide a lecture description"],
       trim: true,
     },
-    videoUrl: {
-      type: String,
-      required: [true, "Please provide a lecture video URL"],
+    url: {
+      videoUrl: {
+        type: String,
+        required: [true, "Please provide a lecture url"],
+        trim: true,
+      },
+      secureUrl: {
+        type: String,
+        required: [true, "Please provide a lecture url"],
+        trim: true
+      }
     },
-    courseId: {
+    moduleId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Course",
+      ref: "Module",
       required: true,
     },
     instructor: {
@@ -26,14 +36,14 @@ const lectureSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    duration:{
+    duration: {
       type: Number,
       required: true,
       default: 0,
     },
     publicId: {
       type: String,
-      required: [true,"Please provide a public id"],
+      required: [true, "Please provide a public id"],
     },
     isPreview: {
       type: Boolean,
@@ -44,19 +54,36 @@ const lectureSchema = new mongoose.Schema(
       required: [true, "Please provide a lecture order"],
     },
   },
-  { timestamps: true,
-  toJSON: { virtuals: true }, 
-  toObject: { virtuals: true },
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
 
 lectureSchema.pre("save", async function (next) {
-    if(this.duration){
-        this.duration=Math.round(this.duration * 100) / 100  
+  if (this.duration) {
+    this.duration = Math.round(this.duration * 100) / 100
+  }
+
+  next()
+})
+
+lectureSchema.methods.deletelactureVedio = async function () {
+  try {
+    // Collect all publicIds for video deletion
+    const publicId = this.publicId;
+    if (!publicId) {
+      return { status: "failed", message: "no public id found" }
     }
 
-    next()
-})
+    // delete the lacture vedeo
+    await deleteVideo(publicId)
+    return { status: "success", message: "lecture vedio deleted successfully" };
+  } catch (error) {
+    throw new AppError(`Failed to delete lacture vedio: ${error.message}`, 500);
+  }
+}
 
 const Lecture = mongoose.model("Lecture", lectureSchema);
 

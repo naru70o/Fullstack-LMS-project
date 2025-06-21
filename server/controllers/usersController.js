@@ -51,6 +51,49 @@ export const updateProfile = async (req, res, next) => {
     }
 }
 
+// update a user's role to student
+export async function changeUserRole(req, res, next) {
+    // getting fields
+    const { role } = req.body
+
+    try {
+
+        // getting the current user
+        const user = req.user
+        if (!user) {
+            return next(
+                new AppError(
+                    "User not found",
+                    404
+                )
+            )
+        }
+        // Add the new role to the existing roles array, preventing duplicates
+        const updatedUser = await User.findByIdAndUpdate(
+            user._id,
+            { $addToSet: { roles: role } }, // Use $addToSet to add the new role
+            { new: true, runValidators: true } // runValidators to ensure the role is valid per your enum
+        );
+
+        if (!updatedUser) {
+            return next(new AppError("Failed to update user role", 500));
+        }
+
+        return res.status(200).json({
+            status: 'succes',
+            data: updatedUser,
+            message: 'user role updated successfully'
+        })
+    } catch (error) {
+        return next(
+            new AppError(
+                "Something went wrong",
+                500
+            )
+        )
+    }
+}
+
 // update user password
 export const changepassword = async (req, res, next) => {
     // getting the password inputs
@@ -121,7 +164,7 @@ export const updateProfileImage = async (req, res, next) => {
         }
         //2 uploading the image to cloudinary
         const user = req.user;
-        const public_id = await uploadImage(profile.buffer)
+        const { public_id } = await uploadImage(profile.buffer)
         console.log("this is the public_ID", public_id)
         const updatedUser = await User.findByIdAndUpdate(user._id, { profile: public_id }, { new: true });
         if (!updatedUser) {

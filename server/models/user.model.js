@@ -39,11 +39,11 @@ const userSchema = mongoose.Schema({
         type: String,
         default: "default.jpg"
     },
-    role: {
+    roles: [{ // Changed from 'role' to 'roles'
         type: String,
-        enum: { values: ["student", "instructor", "admin"], message: "role is not supported" },
-        default: "student"
-    },
+        enum: { values: ["student", "instructor", "admin"], message: "Role is not supported" },
+        default: ["student"] // student by default,
+    }],
     bio: {
         type: String,
         maxLength: [200, "Bio cannot exceed 200 characters"]

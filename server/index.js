@@ -15,7 +15,7 @@ import userRouter from "./routes/userRoutes.js";
 import courseRouter from "./routes/courseRoute.js";
 dotenv.config()
 
-dbConnection()
+dbConnection() // this will connect the database 
 
 const app = express();
 

@@ -590,3 +590,78 @@ export async function updateModule(req, res, next) {
         return next(new AppError(`Internal server error while updating module: ${error.message}`, 500));
     }
 }
+
+// update a lecture
+export async function updateLecture(req, res, next) {
+    //1 getting the params
+    const { lectureId } = req.params;
+    if (!lectureId) {
+        return next(new AppError("Lecture ID is required", 400));
+    }
+
+    try {
+        //2 find the lecture
+        const lecture = await Lecture.findById(lectureId);
+        if (!lecture) {
+            return next(new AppError("Lecture not found", 404));
+        }
+
+        //3 find the module and course to verify instructor
+        const module = await Module.findById(lecture.moduleId);
+        if (!module) {
+            return next(new AppError("Associated module not found", 404));
+        }
+        const course = await Course.findById(module.course);
+        if (!course) {
+            return next(new AppError("Associated course not found", 404));
+        }
+
+        //4 check if the user is the instructor of the course
+        if (course.instructor.toString() !== req.user._id.toString()) {
+            return next(new AppError("You are not authorized to update this lecture", 403));
+        }
+
+        //5 get the fields to update from the body
+        const { title, description, isPreview } = req.body;
+        const updates = {};
+        if (title) updates.title = title;
+        if (description) updates.description = description;
+        if (isPreview !== undefined) updates.isPreview = isPreview;
+
+        //6 handle video update if a new one is provided
+        if (req.file) {
+            const oldDuration = lecture.duration || 0;
+
+            // Delete old video from Cloudinary
+            if (lecture.publicId) {
+                await lecture.deletelactureVedio();
+            }
+
+            // Upload new video
+            const videoUploadResult = await vedeoUploader(req.file.buffer);
+            if (!videoUploadResult || !videoUploadResult.public_id || !videoUploadResult.secure_url) {
+                return next(new AppError("Failed to upload new video", 500));
+            }
+
+            // Update lecture fields
+            updates.url = { videoUrl: videoUploadResult.secure_url, secureUrl: videoUploadResult.secure_url };
+            updates.publicId = videoUploadResult.public_id;
+            updates.duration = videoUploadResult.duration || 0;
+
+            // Update course total duration
+            const durationDifference = updates.duration - oldDuration;
+            await Course.findByIdAndUpdate(course._id, { $inc: { totalOfHours: durationDifference } });
+        }
+
+        //7 update the lecture
+        const updatedLecture = await Lecture.findByIdAndUpdate(lectureId, { $set: updates }, { new: true, runValidators: true });
+
+        return res.status(200).json({
+            status: "success",
+            data: { lecture: updatedLecture },
+            message: "Lecture updated successfully"
+        });
+    } catch (error) {
+        return next(new AppError(`Internal server error while updating lecture: ${error.message}`, 500));
+    }
+}

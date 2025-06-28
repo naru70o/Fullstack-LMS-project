@@ -544,3 +544,49 @@ export async function updateCourse(req, res, next) {
         return next(new AppError(`Internal server error while updating course: ${error.message}`, 500));
     }
 }
+
+// update a module
+export async function updateModule(req, res, next) {
+    //1 getting the params
+    const { moduleId } = req.params;
+    if (!moduleId) {
+        return next(new AppError("Module ID is required", 400));
+    }
+
+    try {
+        //2 find the module
+        const module = await Module.findById(moduleId);
+        if (!module) {
+            return next(new AppError("Module not found", 404));
+        }
+
+        //3 find the course to verify instructor
+        const course = await Course.findById(module.course);
+        if (!course) {
+            return next(new AppError("Associated course not found", 404));
+        }
+
+        //4 check if the user is the instructor of the course
+        if (course.instructor.toString() !== req.user._id.toString()) {
+            return next(new AppError("You are not authorized to update this module", 403));
+        }
+
+        //5 get the fields to update from the body
+        const { title, description, optional } = req.body;
+        const updates = {};
+        if (title) updates.title = title;
+        if (description) updates.description = description;
+        if (optional !== undefined) updates.optional = optional;
+
+        //6 update the module
+        const updatedModule = await Module.findByIdAndUpdate(moduleId, { $set: updates }, { new: true, runValidators: true });
+
+        return res.status(200).json({
+            status: "success",
+            data: { module: updatedModule },
+            message: "Module updated successfully"
+        });
+    } catch (error) {
+        return next(new AppError(`Internal server error while updating module: ${error.message}`, 500));
+    }
+}

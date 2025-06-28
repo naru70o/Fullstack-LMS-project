@@ -488,3 +488,59 @@ export async function deleteLacture(req, res, next) {
         return next(new AppError(`Internal server error while deleting lecture: ${error.message}`, 500));
     }
 }
+
+// update a course
+export async function updateCourse(req, res, next) {
+    //1 getting the params
+
+    const { courseId } = req.params;
+    if (!courseId) {
+        return next(new AppError("Course ID is required", 400));
+    }
+
+    try {
+        //2 find the course
+        const course = await Course.findById(courseId);
+        if (!course) {
+            return next(new AppError("Course not found", 404));
+        }
+
+        //3 check if the user is the instructor of the course
+        if (course.instructor.toString() !== req.user._id.toString()) {
+            return next(new AppError("You are not authorized to update this course", 403));
+        }
+
+        //4 get the fields to update from the body
+        const { title, description, level, category } = req.body;
+        const updates = {};
+        if (title) updates.title = title;
+        if (description) updates.description = description;
+        if (level) updates.level = level;
+        if (category) updates.category = category;
+
+        //5 handle thumbnail update if a new one is provided
+        if (req.file) {
+            // Delete old thumbnail
+            if (course.thumbnail && course.thumbnail.public_id) {
+                await deleteImage(course.thumbnail.public_id);
+            }
+            // Upload new thumbnail
+            const { public_id, secure_url } = await uploadImage(req.file.buffer);
+            if (!public_id || !secure_url) {
+                return next(new AppError("Failed to upload new thumbnail", 500));
+            }
+            updates.thumbnail = { public_id, secure_url };
+        }
+
+        //6 update the course
+        const updatedCourse = await Course.findByIdAndUpdate(courseId, { $set: updates }, { new: true, runValidators: true });
+
+        return res.status(200).json({
+            status: "success",
+            data: { course: updatedCourse },
+            message: "Course updated successfully"
+        });
+    } catch (error) {
+        return next(new AppError(`Internal server error while updating course: ${error.message}`, 500));
+    }
+}

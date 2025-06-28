@@ -22,7 +22,7 @@ const courseSchema = new mongoose.Schema({
   level: [{
     type: String,
     enum: {
-      values: ['Beginner', 'Intermediate', 'Advanced'],
+      values: ['Beginner', 'Intermediate', 'Advanced', 'All'],
       message: 'Level must be either Beginner, Intermediate or Advanced',
     },
     required: [true, 'Level is required'],

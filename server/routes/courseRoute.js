@@ -1,10 +1,11 @@
 import express from "express";
 import { protectRoute } from "../middlewares/protectRoute.js";
-import { createNewCourse, createNewModule, getAllCourses, getAllModules, createNewLecture, deleteCourse, deleteModule, getAlllactures, deleteallactures, deleteLacture } from "../controllers/courseController.js";
+import { createNewCourse, createNewModule, getAllCourses, getAllModules, createNewLecture, deleteCourse, deleteModule, getAlllactures, deleteallactures, deleteLacture, updateCourse } from "../controllers/courseController.js";
 import upload from "../utils/multer.js"
 const courseRouter = express.Router();
 
 courseRouter.route("/newcourse").post(protectRoute, upload.single("thumbnail"), createNewCourse)
+courseRouter.route("/updatecourse/:courseId").patch(protectRoute, upload.single("thumbnail"), updateCourse)
 courseRouter.route("/newmodule/:courseId").post(protectRoute, createNewModule)
 courseRouter.route("/deletecourse/:courseId").delete(protectRoute, deleteCourse)
 courseRouter.route("/deleteModule/:moduleId").delete(protectRoute, deleteModule)

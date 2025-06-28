@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import { deleteMultipleVideos, deleteVideo } from "../utils/cloudinary.js";
+import mongoose, { Schema } from "mongoose";
+import { deleteVideo } from "../utils/cloudinary.js";
 import AppError from "../utils/error.js";
 
 const lectureSchema = new mongoose.Schema(
@@ -53,6 +53,10 @@ const lectureSchema = new mongoose.Schema(
       type: Number,
       required: [true, "Please provide a lecture order"],
     },
+    questions: [{
+      type: Schema.Types.ObjectId,
+      ref: "Questions"
+    }]
   },
   {
     timestamps: true,

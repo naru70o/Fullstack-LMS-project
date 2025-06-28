@@ -1,6 +1,6 @@
 import express from "express";
 import { protectRoute } from "../middlewares/protectRoute.js";
-import { createNewCourse, createNewModule, getAllCourses, getAllModules, createNewLecture, deleteCourse, deleteModule, getAlllactures, deleteallactures, deleteLacture, updateCourse, updateModule, updateLecture } from "../controllers/courseController.js";
+import { createNewCourse, createNewModule, getAllCourses, getAllModules, createNewLecture, deleteCourse, deleteModule, getAlllactures, deleteallactures, deleteLacture, updateCourse, updateModule, updateLecture, askQuestion } from "../controllers/courseController.js";
 import upload from "../utils/multer.js"
 const courseRouter = express.Router();
 
@@ -17,5 +17,8 @@ courseRouter.route("/").get(getAllCourses)
 courseRouter.route("/modules").get(getAllModules)
 courseRouter.route("/lactures").get(getAlllactures)
 courseRouter.route("/deletelactures").delete(deleteallactures)
+
+// Questions and Answers
+courseRouter.route("/lecture/:lectureId/question").post(protectRoute, upload.single("questionImage"), askQuestion);
 
 export default courseRouter;

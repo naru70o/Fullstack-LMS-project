@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import Module from './module.model.js';
 import AppError from '../utils/error.js';
 import Lecture from './lacture.model.js';
-import { deleteImage, deleteMultipleVideos } from '../utils/cloudinary.js';
+import { deleteMultipleVideos } from '../utils/cloudinary.js';
 
 const courseSchema = new mongoose.Schema({
   title: {

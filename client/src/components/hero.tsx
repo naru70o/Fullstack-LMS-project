@@ -1,9 +1,10 @@
 import React from 'react'
 import { Navigation } from './navigation';
 import Image from 'next/image';
+import { HeroSearchBar } from './heroSearchBar';
 export const Hero = () => {
   return (
-    <section className='h-[85vh] w-screen flex flex-col items-center relative overflow-clip bg-[#1B1B1B]/70'>
+    <section className='h-[85vh] w-screen flex flex-col items-center relative overflow-c bg-[#1B1B1B]/70'>
       {/* navigation */}
       <Navigation/>
         <Image src={"/assets/HeroIMage.png"} alt="Hero Image" fill className="absolute bottom-0 left-0 w-full h-full object-cover -z-10" />
@@ -15,6 +16,7 @@ export const Hero = () => {
             <p className='text-white text-center font-poppins text-2xl not-italic font-normal leading-[30px] max-w-2xl mx-auto'>Join our community of learners and start your journey today.</p>
           </div>
         </div>
+        <HeroSearchBar/>
     </section>
   );
 }

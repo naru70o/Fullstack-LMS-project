@@ -10,9 +10,9 @@ Thumbs.db
 *.iml
 
 # Frontend specific ignores
-frontend/node_modules/
-frontend/.env
-frontend/.env.*.local # Ignore local development environment files
+client/node_modules/
+client/.env
+client/.env.*.local # Ignore local development environment files
 
 # Backend specific ignores
 server/node_modules/
@@ -25,8 +25,8 @@ node_modules/
 .env.*.local
 
 # Ignore common build output directories (adjust as needed)
-frontend/build/
-backend/build/
+ckient/build/
+server/build/
 dist/
 out/
 

@@ -5,6 +5,7 @@
 import Course from "../models/course.model.js"
 import Module from "../models/module.model.js"
 import Lecture from "../models/lacture.model.js"
+import Questions from "../models/course.questionandanswer.js";
 import { deleteImage, uploadImage, vedeoUploader } from "../utils/cloudinary.js"
 import AppError from "../utils/error.js"
 
@@ -486,5 +487,262 @@ export async function deleteLacture(req, res, next) {
 
     } catch (error) {
         return next(new AppError(`Internal server error while deleting lecture: ${error.message}`, 500));
+    }
+}
+
+// update a course
+export async function updateCourse(req, res, next) {
+    //1 getting the params
+
+    const { courseId } = req.params;
+    if (!courseId) {
+        return next(new AppError("Course ID is required", 400));
+    }
+
+    try {
+        //2 find the course
+        const course = await Course.findById(courseId);
+        if (!course) {
+            return next(new AppError("Course not found", 404));
+        }
+
+        //3 check if the user is the instructor of the course
+        if (course.instructor.toString() !== req.user._id.toString()) {
+            return next(new AppError("You are not authorized to update this course", 403));
+        }
+
+        //4 get the fields to update from the body
+        const { title, description, level, category } = req.body;
+        const updates = {};
+        if (title) updates.title = title;
+        if (description) updates.description = description;
+        if (level) updates.level = level;
+        if (category) updates.category = category;
+
+        //5 handle thumbnail update if a new one is provided
+        if (req.file) {
+            // Delete old thumbnail
+            if (course.thumbnail && course.thumbnail.public_id) {
+                await deleteImage(course.thumbnail.public_id);
+            }
+            // Upload new thumbnail
+            const { public_id, secure_url } = await uploadImage(req.file.buffer);
+            if (!public_id || !secure_url) {
+                return next(new AppError("Failed to upload new thumbnail", 500));
+            }
+            updates.thumbnail = { public_id, secure_url };
+        }
+
+        //6 update the course
+        const updatedCourse = await Course.findByIdAndUpdate(courseId, { $set: updates }, { new: true, runValidators: true });
+
+        return res.status(200).json({
+            status: "success",
+            data: { course: updatedCourse },
+            message: "Course updated successfully"
+        });
+    } catch (error) {
+        return next(new AppError(`Internal server error while updating course: ${error.message}`, 500));
+    }
+}
+
+// update a module
+export async function updateModule(req, res, next) {
+    //1 getting the params
+    const { moduleId } = req.params;
+    if (!moduleId) {
+        return next(new AppError("Module ID is required", 400));
+    }
+
+    try {
+        //2 find the module
+        const module = await Module.findById(moduleId);
+        if (!module) {
+            return next(new AppError("Module not found", 404));
+        }
+
+        //3 find the course to verify instructor
+        const course = await Course.findById(module.course);
+        if (!course) {
+            return next(new AppError("Associated course not found", 404));
+        }
+
+        //4 check if the user is the instructor of the course
+        if (course.instructor.toString() !== req.user._id.toString()) {
+            return next(new AppError("You are not authorized to update this module", 403));
+        }
+
+        //5 get the fields to update from the body
+        const { title, description, optional } = req.body;
+        const updates = {};
+        if (title) updates.title = title;
+        if (description) updates.description = description;
+        if (optional !== undefined) updates.optional = optional;
+
+        //6 update the module
+        const updatedModule = await Module.findByIdAndUpdate(moduleId, { $set: updates }, { new: true, runValidators: true });
+
+        return res.status(200).json({
+            status: "success",
+            data: { module: updatedModule },
+            message: "Module updated successfully"
+        });
+    } catch (error) {
+        return next(new AppError(`Internal server error while updating module: ${error.message}`, 500));
+    }
+}
+
+// update a lecture
+export async function updateLecture(req, res, next) {
+    //1 getting the params
+    const { lectureId } = req.params;
+    if (!lectureId) {
+        return next(new AppError("Lecture ID is required", 400));
+    }
+
+    try {
+        //2 find the lecture
+        const lecture = await Lecture.findById(lectureId);
+        if (!lecture) {
+            return next(new AppError("Lecture not found", 404));
+        }
+
+        //3 find the module and course to verify instructor
+        const module = await Module.findById(lecture.moduleId);
+        if (!module) {
+            return next(new AppError("Associated module not found", 404));
+        }
+        const course = await Course.findById(module.course);
+        if (!course) {
+            return next(new AppError("Associated course not found", 404));
+        }
+
+        //4 check if the user is the instructor of the course
+        if (course.instructor.toString() !== req.user._id.toString()) {
+            return next(new AppError("You are not authorized to update this lecture", 403));
+        }
+
+        //5 get the fields to update from the body
+        const { title, description, isPreview } = req.body;
+        const updates = {};
+        if (title) updates.title = title;
+        if (description) updates.description = description;
+        if (isPreview !== undefined) updates.isPreview = isPreview;
+
+        //6 handle video update if a new one is provided
+        if (req.file) {
+            const oldDuration = lecture.duration || 0;
+
+            // Delete old video from Cloudinary
+            if (lecture.publicId) {
+                await lecture.deletelactureVedio();
+            }
+
+            // Upload new video
+            const videoUploadResult = await vedeoUploader(req.file.buffer);
+            if (!videoUploadResult || !videoUploadResult.public_id || !videoUploadResult.secure_url) {
+                return next(new AppError("Failed to upload new video", 500));
+            }
+
+            // Update lecture fields
+            updates.url = { videoUrl: videoUploadResult.secure_url, secureUrl: videoUploadResult.secure_url };
+            updates.publicId = videoUploadResult.public_id;
+            updates.duration = videoUploadResult.duration || 0;
+
+            // Update course total duration
+            const durationDifference = updates.duration - oldDuration;
+            await Course.findByIdAndUpdate(course._id, { $inc: { totalOfHours: durationDifference } });
+        }
+
+        //7 update the lecture
+        const updatedLecture = await Lecture.findByIdAndUpdate(lectureId, { $set: updates }, { new: true, runValidators: true });
+
+        return res.status(200).json({
+            status: "success",
+            data: { lecture: updatedLecture },
+            message: "Lecture updated successfully"
+        });
+    } catch (error) {
+        return next(new AppError(`Internal server error while updating lecture: ${error.message}`, 500));
+    }
+}
+
+// Post a new question or reply to a lecture
+export async function askQuestion(req, res, next) {
+    // 1. Get data from request
+    const { lectureId } = req.params;
+    const { title, description, parentId } = req.body;
+    const authorId = req.user._id;
+
+    // 2. Basic validation
+    if (!lectureId || !title) {
+        return next(new AppError("Lecture ID and question title are required.", 400));
+    }
+
+    try {
+        // 3. Check if the lecture exists
+        const lecture = await Lecture.findById(lectureId);
+        if (!lecture) {
+            return next(new AppError("Lecture not found.", 404));
+        }
+
+        // 4. Handle optional image upload
+        let imagePayload = {};
+        if (req.file) {
+            const uploadResult = await uploadImage(req.file.buffer);
+            if (!uploadResult || !uploadResult.public_id || !uploadResult.secure_url) {
+                return next(new AppError("Failed to upload image.", 500));
+            }
+            imagePayload = {
+                publicId: uploadResult.public_id,
+                secureUrl: uploadResult.secure_url,
+            };
+        }
+
+        // 5. Create the new question instance. Mongoose creates the _id on instantiation.
+        const newQuestion = new Questions({
+            lectureId,
+            parentId: parentId || null,
+            question: {
+                title,
+                description,
+                image: imagePayload.publicId ? imagePayload : undefined,
+            },
+            author: authorId,
+        });
+
+        // 6. Handle path generation
+        if (parentId) {
+            // This is a reply
+            const parentQuestion = await Questions.findById(parentId);
+            if (!parentQuestion) {
+                return next(new AppError("Parent question not found. Cannot post reply.", 404));
+            }
+            // Construct path from parent
+            newQuestion.path = `${parentQuestion.path}/${newQuestion._id}`;
+        } else {
+            // This is a new top-level question
+            newQuestion.path = newQuestion._id.toString();
+        }
+
+        // 7. Save the fully constructed question
+        await newQuestion.save();
+
+        // 8. Add the question reference to the lecture
+        await Lecture.findByIdAndUpdate(lectureId, {
+            $push: { questions: newQuestion._id }
+        });
+
+        // 9. Send response
+        res.status(201).json({
+            status: "success",
+            data: {
+                question: newQuestion
+            },
+            message: "Question posted successfully."
+        });
+
+    } catch (error) {
+        return next(new AppError(`Internal server error while posting question: ${error.message}`, 500));
     }
 }

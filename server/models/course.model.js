@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import Module from './module.model.js';
 import AppError from '../utils/error.js';
 import Lecture from './lacture.model.js';
-import { deleteImage, deleteMultipleVideos } from '../utils/cloudinary.js';
+import { deleteMultipleVideos } from '../utils/cloudinary.js';
 
 const courseSchema = new mongoose.Schema({
   title: {
@@ -22,7 +22,7 @@ const courseSchema = new mongoose.Schema({
   level: [{
     type: String,
     enum: {
-      values: ['Beginner', 'Intermediate', 'Advanced'],
+      values: ['Beginner', 'Intermediate', 'Advanced', 'All'],
       message: 'Level must be either Beginner, Intermediate or Advanced',
     },
     required: [true, 'Level is required'],

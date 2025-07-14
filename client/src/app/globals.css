@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@theme {
+  /* fonts */
+  --font-poppins: 'Poppins', sans-serif;
+  --font-outfit:'Outfit', sans-serif;
+
+  /* colors */
+  --primary-color:#F0A09F;
+
+  /* background-image */
+  --background-image: linearGradient(url("/assets/HeroIMage.png"), rgba(0, 0, 0, 0.5));
+  /* --background-image:(url("/assets/HeroIMage.png")); */
+}

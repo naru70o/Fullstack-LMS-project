@@ -20,11 +20,13 @@ const buttonVariants = cva(
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
-        primary:"text-xl py-7 px-8 rounded-lg text-center bg-[var(--primary-color)] text-white font-bold"
+        primary:"text-xl text-center bg-[var(--primary-color)] text-white font-bold",
+        facebook: "py-7 bg-[#4267b2] hover:bg-[#365899] text-white hover:text-white/70 transition-all rounded-xl",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
         sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
+        md: "rounded-xl px-4 py-3 has-[>svg]:px-3",
         lg: "h-[50px] rounded-md px-4 py-4 has-[>svg]:px-4",
         icon: "size-9",
       },

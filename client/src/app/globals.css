@@ -20,13 +20,19 @@
   --shadow-search-bar: 0px 6px 20px 0px rgba(0, 0, 0, 0.05);
 }
 
+@utility scrollbar-hidden {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.1450 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.1450 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.1450 0 0);
+  --popover-foreground: oklch(14.479% 0.00002 271.152);
   --primary: oklch(0.7290 0.1582 22.2023);
   --primary-foreground: oklch(1.0000 0 0);
   --secondary: oklch(0.9700 0 0);

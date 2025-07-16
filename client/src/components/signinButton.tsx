@@ -45,7 +45,7 @@ export const SigninButton = () => {
                     {/* Login Providers */}
                     <div className='flex flex-col items-center justify-center gap-4 font-bold font-poppins'>
                         <Button variant="facebook" size="md" className='w-full bg-[#4267b2] hover:bg-none text-white hover:text-white/70 transition-all rounded-xl flex items-center'><span className='mr-2'><Image src="/assets/Facebook-auth.svg" alt="Facebook" width={20} height={20} /></span>Sign in with Facebook</Button>
-                        <Button size="md" className='w-full bg-popover/90 text-popover-foreground/90 hover:bg-popover/80 rounded-xl flex items-center'><span className='mr-2'><Image src="/assets/Google.svg" alt="GitHub" width={20} height={20} /></span>Sign in with Google</Button>  
+                        <Button size="md" className='w-full bg-popover/90 text-popover-foreground/90 hover:bg-popover/80 rounded-xl flex items-center shadow-none'><span className='mr-2'><Image src="/assets/Google.svg" alt="GitHub" width={20} height={20} /></span>Sign in with Google</Button>  
                     </div>
                     {/* need an Account?Sign Up */}
                     <p className='text-popover-foreground text-center font-poppins text-[14px] font-normal leading-[18px]'>Need an account? <Link href="#" className='text-[var(--primary-color)] hover:underline font-bold'>Sign Up</Link></p>

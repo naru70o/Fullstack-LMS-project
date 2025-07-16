@@ -5,7 +5,7 @@ import Image from "next/image"
 export default function Footer() {
   return (
     <footer className="bg-[#1B1B1B] text-white py-12 px-6">
-      <div className="max-w-6xl mx-auto">
+      <div className="container mx-auto">
         {/* Main footer content */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Logo section */}
@@ -84,7 +84,7 @@ export default function Footer() {
 
         {/* Bottom section with copyright and social links */}
         <div className="border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400 text-sm mb-4 md:mb-0">Copyright © MyCourse.io 2024. All Rights Reserved</p>
+          <p className="text-gray-400 text-sm mb-4 md:mb-0">Copyright © codemy 2024. All Rights Reserved</p>
 
           <div className="flex space-x-4">
             <Link href="#" className="text-gray-400 hover:text-white transition-colors">

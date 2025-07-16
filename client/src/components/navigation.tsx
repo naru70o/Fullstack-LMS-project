@@ -30,7 +30,7 @@ export const NavigationFixed = () => {
     <section className='fixed top-0 left-0 right-0 z-50 bg-popover shadow-[var(--shadow-search-bar)] py-4'>
         <div className='container mx-auto flex items-center justify-between'>
             <div className='flex items-center gap-12'>
-              <Link href="#">
+              <Link href="/">
                 <LogoNav/>
               </Link>
                 <button className="flex items-center text-[var(--primary-color)] font-poppins text-[16px] not-italic font-normal leading-[21px] bg-transparent cursor-pointer hover:text-[var(--primary-color)]/70 transition-all"><span>Browse</span><ChevronRight/></button>

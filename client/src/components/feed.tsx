@@ -8,8 +8,11 @@ function Card (){
     return (
       <>
         {courses.map((course) => (
-          <div key={course._id} className='bg-card text-card-foreground rounded-lg min-w-[285px] max-w-[285px] overflow-hidden'>
-            <div className='h-[161px] w-full relative mt-6'>
+          <div key={course._id} className='bg-card text-card-foreground rounded-lg min-w-[285px] max-w-[285px] overflow-hidden relative'>
+            {/* badge / best seller */}
+            <div className='absolute top-2 left-2 bg-[#EADB36] text-black/70 text-xs font-bold py-1 px-2 rounded-lg z-10'>Best Seller</div>
+            {/* Thumbnail */}
+            <div className='h-[161px] w-full relative'>
               <Image src={course.thumbnail.secure_url} alt="Thumbnail" fill className='absolute w-full h-full object-cover rounded-lg' />
             </div>
             <h2 className='text-lg font-bold text-popover-foreground leading-7'>{(course.title).toUpperCase()}</h2> 

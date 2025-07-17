@@ -1,5 +1,6 @@
 import { CircleUser } from 'lucide-react'
 import Star from "@/components/../public/assets/Star.svg"
+import HalfStar from "@/components/../public/assets/HalfStar.svg"
 import Image from 'next/image'
 import React from 'react'
 import { courses } from '../util/damydata'
@@ -17,10 +18,28 @@ function Card (){
             </div>
             <h2 className='text-lg font-bold text-popover-foreground leading-7'>{(course.title).toUpperCase()}</h2> 
             <p className='flex items-center gap-1 text-sm text-popover-foreground/40'><span><CircleUser/></span> {course.instructor}</p>
-            <div className='flex items-center'>
-              {[...Array(5)].map((_, index) => (
-                <Star key={index} />
-              ))}
+            <div className='flex items-center gap-1'>
+              {[...Array(5)].map((_, index) => {
+                if (course.rating >= index + 1) {
+                  return (
+                    <div className='w-4 h-4 relative' key={index}>
+                      <Image src="/assets/Star.svg" alt='Star' className="absolute w-full h-full" fill/>
+                    </div>
+                  );
+                } else if (course.rating > index && course.rating < index + 1) {
+                  return (
+                    <div className='w-4 h-4 relative' key={index}>
+                      <Image src="/assets/HalfStar.svg" alt='Half Star' className="absolute w-fit h-fit" fill />
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div className='w-4 h-4 relative' key={index}>
+                      {/* Empty star or nothing */}
+                    </div>
+                  );
+                }
+              })}
               <span className='text-sm text-popover-foreground/60'>({course.numberOfLectures})</span>
             </div>
             {/* price */}

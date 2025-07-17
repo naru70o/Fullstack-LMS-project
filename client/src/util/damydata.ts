@@ -19,7 +19,8 @@ export const courses = [
     "price": {
         "current": 49.99,
         "original": 99.99
-    }
+    },
+    "rating": 1.7
 },
 {
     "_id": "64a3b8c9e1d2a5c9f0d3e1a2",
@@ -41,7 +42,8 @@ export const courses = [
     "price": {
         "current": 59.99,
         "original": 119.99
-    }
+    },
+    "rating": 2.8
 },
 {
     "_id": "64a3b8c9e1d2a5c9f0d3e1a3",
@@ -63,7 +65,8 @@ export const courses = [
     "price": {
         "current": 39.99,
         "original": 79.99
-    }
+    },
+    "rating": 4.5
 },
 {
     "_id": "64a3b8c9e1d2a5c9f0d3e1a4",
@@ -85,7 +88,8 @@ export const courses = [
     "price": {
         "current": 69.99,
         "original": 139.99
-    }
+    },
+    "rating": 4.6
 },
 {
     "_id": "64a3b8c9e1d2a5c9f0d3e1a5",
@@ -107,6 +111,7 @@ export const courses = [
     "price": {
         "current": 54.99,
         "original": 109.99
-    }
+    },
+    "rating": 4.7
 }
-    ]
+]

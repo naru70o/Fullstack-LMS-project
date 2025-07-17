@@ -8,7 +8,7 @@ function Card (){
     return (
       <>
         {courses.map((course) => (
-          <div key={course._id} className='flex flex-col gap-1 bg-card text-card-foreground rounded-lg min-w-[285px] max-w-[285px] overflow-hidden relative'>
+          <div key={course._id} className='flex flex-col gap-1 text-card-foreground rounded-lg min-w-[285px] max-w-[285px] overflow-hidden relative'>
             {/* badge / best seller */}
             <div className='absolute top-2 left-2 bg-[#EADB36] text-black/70 text-xs font-bold py-1 px-2 rounded-lg z-10'>Best Seller</div>
             {/* Thumbnail */}

@@ -1,15 +1,10 @@
 "use client"
 
-import { useState } from "react"
-import { ChevronDown, ChevronUp } from "lucide-react"
 import { Button } from "@/components/components/ui/button"
-import { Checkbox } from "@/components/components/ui/checkbox"
-import { Label } from "@/components/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/components/ui/select"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/components/ui/collapsible"
-import Star from "@/components/../public/assets/Star.svg"
 import Image from "next/image"
-
+import { useState } from "react"
+import { CategoryFilter, DurationFilter, LanguageFilter, LevelFilter, RatingFilter, SoftwareFilter } from "./ratingFilter"
 
 // Filter options data
 interface FilterOption {
@@ -76,7 +71,16 @@ export default function CourseFilters() {
   })
 
   // State to control which filter sections are expanded/collapsed
-  const [expandedSections, setExpandedSections] = useState({
+  interface ExpandedSections {
+    rating: boolean
+    duration: boolean
+    categories: boolean
+    software: boolean
+    level: boolean
+    language: boolean
+  }
+
+  const [expandedSections, setExpandedSections] = useState<ExpandedSections>({
     rating: true, 
     duration: true, 
     categories: true, 
@@ -117,6 +121,8 @@ export default function CourseFilters() {
     }))
   }
 
+  console.log("Selected Filters:", selectedFilters)
+
   // Function to render star rating display
   const renderStars = (rating:number) => {
     return Array.from({ length: 5 }, (_, i) => (
@@ -151,126 +157,53 @@ export default function CourseFilters() {
         {/* Filter Sections Container */}
         <div className="space-y-6">
           {/* Rating Filter Section */}
-          <Collapsible open={expandedSections.rating} onOpenChange={() => toggleSection("rating")}>
-            {/* Section Header - Clickable to expand/collapse */}
-            <CollapsibleTrigger className="flex items-center justify-between w-full text-left">
-              <h3 className="font-medium">Rating</h3>
-              {/* Show up/down arrow based on expanded state */}
-              {expandedSections.rating ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-            </CollapsibleTrigger>
-            {/* Section Content - Only visible when expanded */}
-            <CollapsibleContent className="mt-3 space-y-3">
-              {/* Map through rating options and create checkboxes */}
-              {filterData.rating.map((item) => (
-                <div key={item.value} className="flex items-center space-x-2">
-                  {/* Checkbox - controlled by selectedFilters state */}
-                  <Checkbox
-                    id={`rating-${item.value}`}
-                    checked={selectedFilters.rating.includes(item.value)}
-                    onCheckedChange={(checked: boolean) => handleFilterChange("rating", item.value, checked)}
-                  />
-                  {/* Label with star display and count */}
-                  <Label htmlFor={`rating-${item.value}`} className="flex items-center space-x-2 cursor-pointer">
-                    <div className="flex items-center space-x-1">{renderStars(Number.parseFloat(item.value))}</div>
-                    <span className="text-sm">
-                      {item.label} ({item.count})
-                    </span>
-                  </Label>
-                </div>
-              ))}
-            </CollapsibleContent>
-          </Collapsible>
+          <RatingFilter
+            expandedSections={expandedSections}
+            toggleSection={toggleSection}
+            filterData={filterData}
+            selectedFilters={selectedFilters}
+            handleFilterChange={handleFilterChange}
+            renderStars={renderStars}
+          />
 
           {/* Video Duration Filter Section */}
-          <Collapsible open={expandedSections.duration} onOpenChange={() => toggleSection("duration")}>
-            <CollapsibleTrigger className="flex items-center justify-between w-full text-left">
-              <h3 className="font-medium">Video Duration</h3>
-              {expandedSections.duration ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-            </CollapsibleTrigger>
-            <CollapsibleContent className="mt-3 space-y-3">
-              {/* Map through duration options */}
-              {filterData.duration.map((item) => (
-                <div key={item.value} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`duration-${item.value}`}
-                    checked={selectedFilters.duration.includes(item.value)}
-                    onCheckedChange={(checked: boolean) => handleFilterChange("duration", item.value, checked)}
-                  />
-                  <Label htmlFor={`duration-${item.value}`} className="cursor-pointer text-sm">
-                    {item.label} ({item.count})
-                  </Label>
-                </div>
-              ))}
-            </CollapsibleContent>
-          </Collapsible>
+          <DurationFilter
+            expandedSections={expandedSections}
+            toggleSection={toggleSection}
+            filterData={filterData}
+            selectedFilters={selectedFilters}
+            handleFilterChange={handleFilterChange}
+          />
 
           {/* Categories Filter Section */}
-          <Collapsible open={expandedSections.categories} onOpenChange={() => toggleSection("categories")}>
-            <CollapsibleTrigger className="flex items-center justify-between w-full text-left">
-              <h3 className="font-medium">Categories</h3>
-              {expandedSections.categories ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-            </CollapsibleTrigger>
-            <CollapsibleContent className="mt-3 space-y-3">
-              {/* Map through category options */}
-              {filterData.categories.map((item) => (
-                <div key={item.value} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`category-${item.value}`}
-                    checked={selectedFilters.categories.includes(item.value)}
-                    onCheckedChange={(checked: boolean) => handleFilterChange("categories", item.value, checked)}
-                  />
-                  <Label htmlFor={`category-${item.value}`} className="cursor-pointer text-sm">
-                    {item.label} ({item.count})
-                  </Label>
-                </div>
-              ))}
-            </CollapsibleContent>
-          </Collapsible>
+          <CategoryFilter
+            expandedSections={expandedSections}
+            toggleSection={toggleSection}
+            filterData={filterData}
+            selectedFilters={selectedFilters}
+            handleFilterChange={handleFilterChange}
+          />
 
           {/* Software Filter Section - Currently empty/placeholder */}
-          <Collapsible open={expandedSections.software} onOpenChange={() => toggleSection("software")}>
-            <CollapsibleTrigger className="flex items-center justify-between w-full text-left">
-              <h3 className="font-medium">Software</h3>
-              {expandedSections.software ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-            </CollapsibleTrigger>
-            <CollapsibleContent className="mt-3 space-y-3">
-              <p className="text-sm text-gray-500">No software filters available</p>
-            </CollapsibleContent>
-          </Collapsible>
+          <SoftwareFilter
+            expandedSections={expandedSections}
+            toggleSection={toggleSection}
+          />
 
           {/* Level Filter Section */}
-          <Collapsible open={expandedSections.level} onOpenChange={() => toggleSection("level")}>
-            <CollapsibleTrigger className="flex items-center justify-between w-full text-left">
-              <h3 className="font-medium">Level</h3>
-              {expandedSections.level ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-            </CollapsibleTrigger>
-            <CollapsibleContent className="mt-3 space-y-3">
-              {/* Map through level options */}
-              {filterData.level.map((item) => (
-                <div key={item.value} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`level-${item.value}`}
-                    checked={selectedFilters.level.includes(item.value)}
-                    onCheckedChange={(checked: boolean) => handleFilterChange("level", item.value, checked)}
-                  />
-                  <Label htmlFor={`level-${item.value}`} className="cursor-pointer text-sm">
-                    {item.label}
-                  </Label>
-                </div>
-              ))}
-            </CollapsibleContent>
-          </Collapsible>
+          <LevelFilter
+            expandedSections={expandedSections}
+            toggleSection={toggleSection}
+            filterData={filterData}
+            selectedFilters={selectedFilters}
+            handleFilterChange={handleFilterChange}
+          />
 
           {/* Language Filter Section - Currently empty/placeholder */}
-          <Collapsible open={expandedSections.language} onOpenChange={() => toggleSection("language")}>
-            <CollapsibleTrigger className="flex items-center justify-between w-full text-left">
-              <h3 className="font-medium">Language</h3>
-              {expandedSections.language ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-            </CollapsibleTrigger>
-            <CollapsibleContent className="mt-3 space-y-3">
-              <p className="text-sm text-popover-foreground/40">No language filters available</p>
-            </CollapsibleContent>
-          </Collapsible>
+          <LanguageFilter
+            expandedSections={expandedSections}
+            toggleSection={toggleSection}
+          />
         </div>
       </div>
 

@@ -1,7 +1,10 @@
 import React from 'react'
 import LogoNav from "@/components/../public/assets/logoNav.svg"
-import {ChevronRight} from "lucide-react"
+import {ChevronRight, Search} from "lucide-react"
 import Link from 'next/link'
+import { SigninButton } from './signinButton'
+import { Input } from './ui/input'
+import { SignupButton } from './singupButton'
 
 export const Navigation = () => {
   return (
@@ -14,8 +17,33 @@ export const Navigation = () => {
                 <button className="flex items-center text-[var(--primary-color)] font-poppins text-[16px] not-italic font-normal leading-[21px] bg-transparent cursor-pointer hover:text-[var(--primary-color)]/70 transition-all"><span>Browse</span><ChevronRight/></button>
             </div>
             <div className='flex items-center gap-5'>
-                <button className="text-xl py-3 px-8 rounded-[8px] text-center bg-[var(--primary-color)] text-white font-bold">Sign Up</button>
-                <button className="text-xl py-3 px-8 rounded-[8px] text-center transparent border-2 border-[var(--primary-color)] text-[var(--primary-color)] font-bold">Login</button>
+                <SigninButton/>
+                <SignupButton/>
+            </div>
+        </div>
+    </section>
+  )
+}
+
+export const NavigationFixed = () => {
+  return (
+    <section className='fixed top-0 left-0 right-0 z-50 bg-popover shadow-[var(--shadow-search-bar)] py-4'>
+        <div className='container mx-auto flex items-center justify-between'>
+            <div className='flex items-center gap-12'>
+              <Link href="/">
+                <LogoNav/>
+              </Link>
+                <button className="flex items-center text-[var(--primary-color)] font-poppins text-[16px] not-italic font-normal leading-[21px] bg-transparent cursor-pointer hover:text-[var(--primary-color)]/70 transition-all"><span>Browse</span><ChevronRight/></button>
+            </div>
+            {/* searchBar */}
+            <div className='flex items-center gap-5 relative'>
+                <Input type="text" placeholder='Search keywords' className='py-3 px-12 rounded-[8px] text-start bg-popover/90 text-popover-foreground/90 font-poppins text-[12px] font-normal leading-[21px] w-[500px] h-[42px] shadow-none border-1 border-[var(--primary-color)] placeholder:text-sm placeholder:text-popover-foreground/30 '/>
+                <Search className='text-[var(--primary-color)] absolute left-0 top-1/2 transform -translate-y-1/2 ml-2' />
+            </div>
+            {/* Auth-Buttons */}
+            <div className='flex items-center gap-5'>
+                <SigninButton/>
+                <SignupButton/>
             </div>
         </div>
     </section>

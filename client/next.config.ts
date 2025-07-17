@@ -16,6 +16,16 @@ const nextConfig: NextConfig = {
     });
     return config;
   },
+  images:{
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "dummyimage.com",
+        port: "",
+        pathname: "/**"
+      }
+    ]
+  },
     turbopack: {
       rules: {
         "*.svg": {

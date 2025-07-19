@@ -115,3 +115,46 @@ export const courses = [
     "rating": 4.7
 }
 ]
+
+interface FilterOption {
+  value: string
+  label: string
+  count?: string
+}
+
+interface FilterData {
+  rating: FilterOption[]
+  duration: FilterOption[]
+  categories: FilterOption[]
+  level: FilterOption[]
+}
+ 
+export const filterData: FilterData = {
+  rating: [
+    { value: "4.5", label: "4.5 & up", count: "5.8K" },
+    { value: "3.5", label: "3.5 & up", count: "1.2K" },
+    { value: "3.0", label: "3.0 & up", count: "867" },
+    { value: "1.5", label: "1.5 & up", count: "256" },
+  ],
+  duration: [
+    { value: "0-2", label: "0-2 hours", count: "9.4K" },
+    { value: "3-5", label: "3-5 Hours", count: "4.1K" },
+    { value: "6-12", label: "6-12 Hours", count: "3.8K" },
+    { value: "12+", label: "12+ Hours", count: "1K" },
+  ],
+  categories: [
+    { value: "design", label: "Design", count: "3.2K" },
+    { value: "programming", label: "Programming", count: "1.4K" },
+    { value: "business", label: "Business & Marketing", count: "809" },
+    { value: "finance", label: "Finance", count: "548" },
+    { value: "music", label: "Music & Film", count: "1.9K" },
+    { value: "photo", label: "Photo & Video", count: "2.3K" },
+    { value: "writing", label: "Writing", count: "753" },
+  ],
+  level: [
+    { value: "all", label: "All Levels" },
+    { value: "beginner", label: "Beginner" },
+    { value: "intermediate", label: "Intermediate" },
+    { value: "advanced", label: "Advanced" },
+  ],
+}

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navigation } from './navigation';
 import Image from 'next/image';
-import { HeroSearchBar } from './heroSearchBar';
+import { HeroSearchBar } from '../app/courses/_components/heroSearchBar';
 export const Hero = () => {
   return (
     <section className='h-[85vh] w-screen flex flex-col items-center relative overflow-c bg-[#1B1B1B]/70'>

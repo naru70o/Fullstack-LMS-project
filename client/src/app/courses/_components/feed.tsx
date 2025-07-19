@@ -1,14 +1,13 @@
 import { CircleUser } from 'lucide-react'
-import Star from "@/components/../public/assets/Star.svg"
-import HalfStar from "@/components/../public/assets/HalfStar.svg"
 import Image from 'next/image'
-import React from 'react'
-import { courses } from '../util/damydata'
+import { courses } from '../../../util/damydata'
+import Link from 'next/link'
 
 function Card (){
     return (
       <>
         {courses.map((course) => (
+          <Link href={`/courses/${course._id}`} className='no-underline' key={course._id}>
           <div key={course._id} className='bg-card text-card-foreground rounded-lg min-w-[285px] max-w-[285px] overflow-hidden relative'>
             {/* badge / best seller */}
             <div className='absolute top-2 left-2 bg-[#EADB36] text-black/70 text-xs font-bold py-1 px-2 rounded-lg z-10'>Best Seller</div>
@@ -50,6 +49,7 @@ function Card (){
               <p className='text-sm text-popover-foreground/60 line-through'>${course.price.original}</p>
             </div>
           </div>
+          </Link>
         ))}
       </>
     )

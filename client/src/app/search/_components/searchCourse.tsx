@@ -4,7 +4,7 @@ import { Button } from "@/components/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/components/ui/select"
 import Image from "next/image"
 import { useState } from "react"
-import { CategoryFilter, DurationFilter, LanguageFilter, LevelFilter, RatingFilter, SoftwareFilter } from "./ratingFilter"
+import { CategoryFilter, DurationFilter, LanguageFilter, LevelFilter, RatingFilter, SoftwareFilter } from "../../../components/ratingFilter"
 
 // Filter options data
 interface FilterOption {

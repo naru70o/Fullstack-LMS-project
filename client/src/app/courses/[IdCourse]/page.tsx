@@ -1,9 +1,7 @@
-import React from 'react'
-import {courses} from "@/components/util/damydata"
 import { Banner } from '@/components/components/banner';
 import { NavigationFixed } from '@/components/components/navigation';
-import { RatingFilter } from '@/components/components/ratingFilter';
-import { filterData } from '@/components/util/damydata';
+import { courses } from "@/components/util/damydata";
+import { Reviews } from '../_components/reviews';
 
 const Page = async ({params}: {params: Promise<{IdCourse: string}>}) => {
     // Await the params to get the course ID
@@ -37,6 +35,7 @@ const Page = async ({params}: {params: Promise<{IdCourse: string}>}) => {
                         Course
                     </h1> 
                 </div>
+                <Reviews/>
             </div>
         </div>
     </section>

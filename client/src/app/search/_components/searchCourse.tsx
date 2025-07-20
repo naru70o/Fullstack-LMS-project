@@ -1,8 +1,9 @@
 "use client"
 
 import { Button } from "@/components/components/ui/button"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/components/ui/collapsible'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/components/ui/select"
-import Image from "next/image"
+import { ChevronDown, ChevronUp } from 'lucide-react'
 import { useState } from "react"
 import { CategoryFilter, DurationFilter, LanguageFilter, LevelFilter, RatingFilter, SoftwareFilter } from "../../../components/ratingFilter"
 
@@ -53,12 +54,12 @@ const filterData: FilterData = {
 export default function CourseFilters() {
   // State to track which filters are currently selected
   interface SelectedFilters {
-    rating: string[]
-    duration: string[]
-    categories: string[]
-    level: string[]
-    software: string[]
-    language: string[]
+    rating: string[];
+    duration: string[];
+    categories: string[];
+    level: string[];
+    software: string[];
+    language: string[];
   }
 
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({
@@ -91,7 +92,7 @@ export default function CourseFilters() {
 
   // to handle filter selection/deselection
   const handleFilterChange = (category: keyof SelectedFilters, value: string, checked: boolean) => {
-    setSelectedFilters((prev: SelectedFilters) => ({
+    setSelectedFilters((prev) => ({
       ...prev,
       // If checked is true, add the value to the array
       // If checked is false, remove the value from the array
@@ -123,24 +124,6 @@ export default function CourseFilters() {
 
   console.log("Selected Filters:", selectedFilters)
 
-  // Function to render star rating display
-  const renderStars = (rating:number) => {
-    return Array.from({ length: 5 }, (_, i) => (
-      <div key={i} className="w-4 h-4 relative">
-        {/* If the current index is less than the integer part of the rating, show a full star */}
-        {i < Math.floor(rating) ? (
-          <Image src="/assets/Star.svg" alt='Star' className="absolute w-full h-full" fill />
-        ) 
-        // If the current index matches the fractional part of the rating, show a half star
-        : i === Math.floor(rating) && rating - Math.floor(rating) >= 0.1 ? (
-          <Image src="/assets/HalfStar.svg" alt='Half Star' className="absolute w-full h-full" fill />
-        )
-        // Otherwise, render nothing for empty stars
-        : null}
-      </div>
-    ))
-  }
-
   return (
     <div className="flex min-h-screen mt-[var(--margin-section-top)] container mx-auto font-poppins">
       {/* Sidebar Filters - Left side panel containing all filter options */}
@@ -157,15 +140,29 @@ export default function CourseFilters() {
         {/* Filter Sections Container */}
         <div className="space-y-6">
           {/* Rating Filter Section */}
-          <RatingFilter
-            expandedSections={expandedSections}
-            toggleSection={toggleSection}
-            filterData={filterData}
-            selectedFilters={selectedFilters}
-            handleFilterChange={handleFilterChange}
-            renderStars={renderStars}
-          />
-
+          <Collapsible
+            open={expandedSections.rating}
+            onOpenChange={() => toggleSection("rating")}
+          >
+            {/* Section Header - Clickable to expand/collapse */}
+            <CollapsibleTrigger className="flex items-center justify-between w-full text-left">
+              <h3 className="font-medium">Rating</h3>
+              {/* Show up/down arrow based on expanded state */}
+              {expandedSections.rating ? (
+                <ChevronUp className="w-4 h-4" />
+              ) : (
+                <ChevronDown className="w-4 h-4" />
+              )}
+            </CollapsibleTrigger>
+            {/* Section Content - Only visible when expanded */}
+            <CollapsibleContent className="mt-3 space-y-3">
+              <RatingFilter
+                filterData={filterData}
+                selectedFilters={selectedFilters}
+                handleFilterChange={handleFilterChange}
+              />
+            </CollapsibleContent>
+          </Collapsible>
           {/* Video Duration Filter Section */}
           <DurationFilter
             expandedSections={expandedSections}

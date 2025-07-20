@@ -4,6 +4,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { filterData } from '@/components/util/damydata'
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import React, { useState } from 'react'
+import { Review } from './review';
 
 interface SelectedFilters {
     rating: string[];
@@ -15,7 +16,7 @@ interface SelectedFilters {
 }
 
 export const Reviews = () => {
-    const [expanded,setExpanded]=useState(false);
+    const [expanded,setExpanded]=useState(true);
     const [selectedFilters,setSelectedFilters] = useState<SelectedFilters>({
         rating:[],
     })
@@ -58,8 +59,8 @@ export const Reviews = () => {
                 <RatingFilter filterData={filterData} selectedFilters={selectedFilters} handleFilterChange={handleFilterChange}/>
             </CollapsibleContent>
          </Collapsible>   
-        {/* filter review stars */}
         {/* reviews */}
+        <Review/>
     </div>
   )
 }

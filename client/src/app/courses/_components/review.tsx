@@ -4,7 +4,7 @@ import React from 'react'
 
 export const Review = () => {
   return (
-    <div className='flex flex-col gap-4 p-4 rounded-xl bg-popover/60 border border-popover-foreground/30 max-w-2xl'>
+    <div className='flex flex-col gap-4 p-4 rounded-xl bg-popover border border-popover-foreground/30 max-w-2xl'>
         <div className='flex items-start gap-3'>
             <div className='w-12 h-12 rounded-full relative flex-shrink-0'>
                 <Image alt='user profile' src="https://images.pexels.com/photos/2693814/pexels-photo-2693814.jpeg?cs=srgb&dl=pexels-pppsdavid-2693814.jpg&fm=jpg&w=1280&h=1280&_gl=1*hc3eb5*_ga*NjYyNTgyNDczLjE3NTI1NjUxOTI.*_ga_8JE65Q40S6*czE3NTMwMTczOTUkbzIkZzEkdDE3NTMwMTc0NDMkajEyJGwwJGgw" fill className="absolute w-full h-full object-cover rounded-full" />

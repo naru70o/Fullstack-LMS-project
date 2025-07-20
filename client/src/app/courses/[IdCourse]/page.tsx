@@ -1,7 +1,8 @@
 import { Banner } from '@/components/components/banner';
 import { NavigationFixed } from '@/components/components/navigation';
 import { courses } from "@/components/util/damydata";
-import { Reviews } from '../_components/reviews';
+import { TabMenu } from '@/components/components/tab-menu';
+import Block from '../_components/purchaseCard';
 
 const Page = async ({params}: {params: Promise<{IdCourse: string}>}) => {
     // Await the params to get the course ID
@@ -14,7 +15,7 @@ const Page = async ({params}: {params: Promise<{IdCourse: string}>}) => {
     <NavigationFixed/>
     <section className='container mx-auto py-[60px]'>
         {/* container */}
-        <div className='grid grid-cols-3 gap-4 justify-between items-center'>
+        <div className='grid grid-cols-3 gap-4 justify-between content-start items-center relative'>
             {/* course */}
             <div className='grid-cols-1 col-span-2 flex flex-col justify-start'>
                 {/* course Video */}
@@ -27,16 +28,11 @@ const Page = async ({params}: {params: Promise<{IdCourse: string}>}) => {
                 {/* course description */}
                 <p className='text-sm text-popover-foreground/60 mt-2'>{course?.description}</p>
                 {/* reviews and course modules */}
-                <div className="flex justify-start gap-4 mt-6 text-popover-foreground/80">
-                    <h1 className="underline underline-offset-4 decoration-3 decoration-[var(--primary-color)] hover:text-popover-foreground/50 transition-all cursor-pointer">
-                        reviews
-                    </h1>
-                    <h1 className="hover:text-popover-foreground/50 transition-all cursor-pointer">
-                        Course
-                    </h1> 
-                </div>
-                <Reviews/>
+                <TabMenu/>
+                {/* <Reviews/> */}
             </div>
+            {/* Block for puying the course */}
+            <Block/>
         </div>
     </section>
     </>

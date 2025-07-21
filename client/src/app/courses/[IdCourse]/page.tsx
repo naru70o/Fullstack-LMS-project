@@ -3,6 +3,7 @@ import { NavigationFixed } from '@/components/components/navigation';
 import { courses } from "@/components/util/damydata";
 import { TabMenu } from '@/components/components/tab-menu';
 import Block from '../_components/purchaseCard';
+import Example from '@/components/components/vedioPlayer';
 
 const Page = async ({params}: {params: Promise<{IdCourse: string}>}) => {
     // Await the params to get the course ID
@@ -19,10 +20,7 @@ const Page = async ({params}: {params: Promise<{IdCourse: string}>}) => {
             {/* course */}
             <div className='grid-cols-1 col-span-2 flex flex-col justify-start'>
                 {/* course Video */}
-                <div className='w-full h-[400px] bg-gray-200 rounded-lg mb-4'>
-                    {/* Placeholder for video player */}
-                    <p className='text-center text-gray-500 pt-16'>Video Player Placeholder</p>
-                </div>
+                <Example/>
                 {/* course title */}
                 <h1 className='text-lg font-bold text-popover-foreground leading-7'>{course?.title}</h1>
                 {/* course description */}

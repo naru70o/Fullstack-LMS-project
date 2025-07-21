@@ -3,18 +3,19 @@ import { Collapsible,CollapsibleTrigger,CollapsibleContent } from './ui/collapsi
 import { Checkbox } from './ui/checkbox'
 import { Label } from './ui/label'
 import { ChevronDown, ChevronUp } from 'lucide-react'
+import { RenderStars } from './renderStars'
 
 interface FilterOption {
-  value: string
-  label: string
-  count?: string
+  value: string;
+  label: string;
+  count?: string;
 }
 
 interface FilterData {
-  rating: FilterOption[]
-  duration: FilterOption[]
-  categories: FilterOption[]
-  level: FilterOption[]
+  rating?: FilterOption[];
+  duration?: FilterOption[];
+  categories?: FilterOption[];
+  level?: FilterOption[];
 }
 
 interface ExpandedSections {
@@ -27,27 +28,17 @@ interface ExpandedSections {
 }
 
 interface SelectedFilters {
-    rating: string[];
-    duration: string[];
-    categories: string[];
-    level: string[];
-}
-
-interface FilterData {
-    rating: FilterOption[];
-    duration: FilterOption[];
-    categories: FilterOption[];
-    level: FilterOption[];
+    rating?: string[];
+    duration?: string[];
+    categories?: string[];
+    level?: string[];
 }
 
 interface RatingFilterProps {
-    expandedSections: ExpandedSections;
-    toggleSection: (section: keyof ExpandedSections) => void;
     filterData: FilterData;
     selectedFilters: SelectedFilters;
-    handleFilterChange: (filterType: keyof SelectedFilters, value: string, checked: boolean) => void;
-    renderStars: (rating: number) => React.ReactNode;
-}
+    handleFilterChange: (category: keyof SelectedFilters, value: string, checked: boolean) => void;
+  }
 
 interface DurationFilterProps {
     expandedSections: ExpandedSections;
@@ -83,39 +74,33 @@ interface LanguageFilterProps {
     toggleSection: (section: keyof ExpandedSections) => void;
 }
 
-export const RatingFilter = ({ expandedSections, toggleSection, filterData, selectedFilters, handleFilterChange, renderStars }: RatingFilterProps) => {
+// this is reusible component
+export const RatingFilter = ({ filterData, selectedFilters, handleFilterChange }: RatingFilterProps) => {
   return (
-    <Collapsible open={expandedSections.rating} onOpenChange={() => toggleSection("rating")}>
-            {/* Section Header - Clickable to expand/collapse */}
-            <CollapsibleTrigger className="flex items-center justify-between w-full text-left">
-              <h3 className="font-medium">Rating</h3>
-              {/* Show up/down arrow based on expanded state */}
-              {expandedSections.rating ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-            </CollapsibleTrigger>
-            {/* Section Content - Only visible when expanded */}
-            <CollapsibleContent className="mt-3 space-y-3">
-              {/* Map through rating options and create checkboxes */}
-              {filterData.rating.map((item) => (
-                <div key={item.value} className="flex items-center space-x-2">
-                  {/* Checkbox - controlled by selectedFilters state */}
-                  <Checkbox
-                    id={`rating-${item.value}`}
-                    checked={selectedFilters.rating.includes(item.value)}
-                    onCheckedChange={(checked: boolean) => handleFilterChange("rating", item.value, checked)}
-                  />
-                  {/* Label with star display and count */}
-                  <Label htmlFor={`rating-${item.value}`} className="flex items-center space-x-2 cursor-pointer">
-                    <div className="flex items-center space-x-1">{renderStars(Number.parseFloat(item.value))}</div>
-                    <span className="text-sm">
-                      {item.label} ({item.count})
-                    </span>
-                  </Label>
-                </div>
-              ))}
-            </CollapsibleContent>
-          </Collapsible>
-  )
-}
+    <>
+      {/* Map through rating options and create checkboxes */}
+      {filterData.rating?.map((item) => (
+        <div key={item.value} className="flex items-center space-x-2">
+          {/* Checkbox - controlled by selectedFilters state */}
+          <Checkbox
+            id={`rating-${item.value}`}
+            checked={selectedFilters.rating?.includes(item.value)}
+            onCheckedChange={(checked: boolean) => handleFilterChange("rating", item.value, checked)}
+          />
+          {/* Label with star display and count */}
+          <Label htmlFor={`rating-${item.value}`} className="flex items-center space-x-2 cursor-pointer">
+            <div className="flex items-center space-x-1">
+              <RenderStars rating={Number.parseFloat(item.value)} />
+            </div>
+            <span className="text-sm text-popover-foreground/60">
+              {item.label} ({item.count})
+            </span>
+          </Label>
+        </div>
+      ))}
+    </>
+  );
+};
 
 export const DurationFilter = ({ expandedSections, toggleSection, filterData, selectedFilters, handleFilterChange }: DurationFilterProps) => {
   return (
@@ -126,11 +111,11 @@ export const DurationFilter = ({ expandedSections, toggleSection, filterData, se
                </CollapsibleTrigger>
                <CollapsibleContent className="mt-3 space-y-3">
                  {/* Map through duration options */}
-                 {filterData.duration.map((item) => (
+                 {filterData.duration?.map((item) => (
                    <div key={item.value} className="flex items-center space-x-2">
                      <Checkbox
                        id={`duration-${item.value}`}
-                       checked={selectedFilters.duration.includes(item.value)}
+                       checked={selectedFilters.duration?.includes(item.value)}
                        onCheckedChange={(checked: boolean) => handleFilterChange("duration", item.value, checked)}
                      />
                      <Label htmlFor={`duration-${item.value}`} className="cursor-pointer text-sm">
@@ -152,11 +137,11 @@ export const CategoryFilter = ({ expandedSections, toggleSection, filterData, se
             </CollapsibleTrigger>
             <CollapsibleContent className="mt-3 space-y-3">
               {/* Map through category options */}
-              {filterData.categories.map((item) => (
+              {filterData.categories?.map((item) => (
                 <div key={item.value} className="flex items-center space-x-2">
                   <Checkbox
                     id={`category-${item.value}`}
-                    checked={selectedFilters.categories.includes(item.value)}
+                    checked={selectedFilters.categories?.includes(item.value)}
                     onCheckedChange={(checked: boolean) => handleFilterChange("categories", item.value, checked)}
                   />
                   <Label htmlFor={`category-${item.value}`} className="cursor-pointer text-sm">
@@ -192,11 +177,11 @@ export const LevelFilter = ({ expandedSections, toggleSection, filterData, selec
             </CollapsibleTrigger>
             <CollapsibleContent className="mt-3 space-y-3">
               {/* Map through level options */}
-              {filterData.level.map((item) => (
+              {filterData.level?.map((item) => (
                 <div key={item.value} className="flex items-center space-x-2">
                   <Checkbox
                     id={`level-${item.value}`}
-                    checked={selectedFilters.level.includes(item.value)}
+                    checked={selectedFilters.level?.includes(item.value)}
                     onCheckedChange={(checked: boolean) => handleFilterChange("level", item.value, checked)}
                   />
                   <Label htmlFor={`level-${item.value}`} className="cursor-pointer text-sm">

@@ -16,11 +16,24 @@ const nextConfig: NextConfig = {
     });
     return config;
   },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/courses",
+        permanent: true,
+      }]},
   images:{
     remotePatterns: [
       {
         protocol: "https",
         hostname: "dummyimage.com",
+        port: "",
+        pathname: "/**"
+      },
+      {
+        protocol: "https",
+        hostname: "images.pexels.com",
         port: "",
         pathname: "/**"
       }

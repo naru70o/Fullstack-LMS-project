@@ -1,4 +1,4 @@
-import { Heart, BookOpen, Play, Volume2 } from "lucide-react"
+import { Heart, BookOpen, Play, Volume2, NotebookPen } from "lucide-react"
 import { Button } from "@/components/components/ui/button"
 
 export default function Block() {
@@ -8,7 +8,7 @@ export default function Block() {
       <div className="mb-6">
         <h2 className="text-xl font-bold text-popover-foreground/90 mb-2 tracking-wide">VUE JS SCRATCH COURSE</h2>
         <div className="flex items-center gap-2">
-          <span className="text-2xl font-bold text-popover-foreground/90">US$22.40</span>
+          <span className="text-2xl font-bold text-popover-foreground/90">$22.40</span>
           <span className="text-lg text-popover-foreground/40 line-through">$30.13</span>
         </div>
       </div>
@@ -35,7 +35,7 @@ export default function Block() {
       {/* Course Details */}
       <div className="space-y-4">
         <div className="flex items-center gap-3 text-popover-foreground/60">
-          <BookOpen className="w-5 h-5 text-popover-foreground/50" />
+          <NotebookPen className="w-5 h-5 text-popover-foreground/50" />
           <span className="text-sm font-medium">22 Section</span>
         </div>
 

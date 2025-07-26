@@ -41,7 +41,7 @@ Make sure you have the following installed on your system:
 1.  **Clone the repository:**
     ```sh
     git clone <your-repository-url>
-    cd lms-study
+    cd Fullstack-LMS-project
     ```
 
 2.  **Install Server Dependencies:**

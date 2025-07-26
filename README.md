@@ -1,6 +1,8 @@
 # Learning Management System (LMS)
 
 This is a full-stack Learning Management System (LMS) built with a modern web stack, featuring a Next.js frontend and a Node.js backend.
+<img width="1440" height="832" alt="cudemy-show-case" src="https://github.com/user-attachments/assets/60464742-c9b7-4c17-8ece-abce1f9c37bf" />
+
 
 ## 🚀 About The Project
 

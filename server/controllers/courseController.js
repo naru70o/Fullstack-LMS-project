@@ -153,7 +153,7 @@ export async function createNewCourse(req, res, next) {
     } catch (error) {
         return next(
             new AppError(
-                "internal server error",
+                `internal server error while creating course : ${error.message}`,
                 500
             )
         )
@@ -208,7 +208,7 @@ export async function createNewModule(req, res, next) {
     } catch (error) {
         return next(
             new AppError(
-                "internal server error",
+                `internal server error while creating module : ${error.message}`,
                 500
             )
         )
@@ -297,9 +297,10 @@ export async function createNewLecture(req, res, next) {
             message: "Lecture created and added to module successfully"
         });
     } catch (error) {
-        // return next(new AppError("Internal server error while creating lecture", 500));
-        console.error("Error creating new lecture:", error.message);
-        return next(error)
+        return next(new AppError(
+                `internal server error while creating lecture : ${error.message}`,
+                500
+            ));
     }
 }
 
@@ -371,7 +372,7 @@ export async function deleteCourse(req, res, next) {
         console.error("Error in deleteCourse controller:", error);
         return next(
             new AppError(
-                "internal server error when deleting course",
+                `internal server error while deleting course : ${error.message}`,
                 500
             )
         )
@@ -429,7 +430,10 @@ export async function deleteModule(req, res, next) {
             message: "module deleted successfully"
         })
     } catch (error) {
-        return next(`internal server error while deleting module ${error.message}`, 500)
+        return next(new AppError(
+                `internal server error while deleting module : ${error.message}`,
+                500
+            ))
     }
 
 }
@@ -486,7 +490,10 @@ export async function deleteLacture(req, res, next) {
         });
 
     } catch (error) {
-        return next(new AppError(`Internal server error while deleting lecture: ${error.message}`, 500));
+        return next(new AppError(
+                `internal server error while deleting lecture : ${error.message}`,
+                500
+            ));
     }
 }
 
@@ -542,7 +549,10 @@ export async function updateCourse(req, res, next) {
             message: "Course updated successfully"
         });
     } catch (error) {
-        return next(new AppError(`Internal server error while updating course: ${error.message}`, 500));
+        return next(new AppError(
+                `internal server error while updating course : ${error.message}`,
+                500
+            ));
     }
 }
 

@@ -30,6 +30,47 @@ export async function getAllCourses(req, res, next) {
     }
 }
 
+//TODO fetching modules and correcting the logic
+export async function getModulesByCourseId(req, res, next) {
+    const { courseId } = req.params;
+    if (!courseId) {
+        return next(new AppError("Course ID is required", 400));
+    }
+
+    try {
+        const modules = await Module.find({ course: courseId });
+        return res.status(200).json({
+            status: "success",
+            data: {
+                modules
+            },
+            message: "modules fetched successfully"
+        })
+    } catch (error) {
+        return next(new AppError(`Internal server error while fetching modules: ${error.message}`, 500));
+    }
+}
+
+//TODO get courseId
+export async function getCourse(req,res,next) {
+// getting the course Id  
+const {courseId}= req.params
+  try {
+   const course =  await Course.findById(courseId);
+   if (!course) {
+    return next(
+    new AppError("no course found with this id",404)
+    )
+  } 
+  res.status(200).json({
+   message:"here is your course",
+   data : course,
+  })
+  } catch (error) {
+    return next(`internal server error while getting a course ${error.message}`,500)
+  }
+}
+
 // Get all modules
 export async function getAllModules(req, res, next) {
     try {
@@ -54,12 +95,12 @@ export async function getAllModules(req, res, next) {
 // Get all Lactures
 export async function getAlllactures(req, res, next) {
     try {
-        const lectures = await Lecture.find();
+        const response = await Lecture.find();
         return res.status(200).json({
             message: "lectures fetched successfully",
             status: "success",
             data: {
-                lectures
+                response
             },
         })
     } catch (error) {

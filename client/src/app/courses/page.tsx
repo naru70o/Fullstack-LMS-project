@@ -1,17 +1,24 @@
-import { Banner } from '@/components/components/banner';
 import { Feed } from '@/components/app/courses/_components/feed';
 import { Filtering } from '@/components/app/courses/_components/filtering';
+import { Banner } from '@/components/components/banner';
 import Footer from '@/components/components/footer';
 import { Hero } from '@/components/components/hero';
-import React from 'react'
 
-const Page = () => {
+const Page = async () => {
+  const data = await fetch('http://localhost:3000/api/v1/course', {
+    next:{
+      revalidate: 60,
+    }
+  });
+  console.log(data) 
+  const response = await data.json();
+  const courses = response.data.courses
     return (
       <>
       <Banner/>
       <Hero/>
       <Filtering/>
-      <Feed/>
+      <Feed data={courses}/>
       <Footer/>
       </>
     );

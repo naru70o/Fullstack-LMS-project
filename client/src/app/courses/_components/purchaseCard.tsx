@@ -1,12 +1,15 @@
 import { Heart, BookOpen, Play, Volume2, NotebookPen } from "lucide-react"
 import { Button } from "@/components/components/ui/button"
+import { Course } from "./feed"
+import durationFormatterString from "@/components/util/durationFormatter";
 
-export default function Block() {
+export default function Block({course}: { course: Course }) {
+      const duration=durationFormatterString(course.totalOfHours);
   return (
     <div className="w-full fixed grid-cols-1 col-start-3 col-end-4 self-start justify-self-center max-w-md mx-auto bg-popover rounded-lg p-6 shadow-search-ba font-poppins">
       {/* Course Title and Price */}
       <div className="mb-6">
-        <h2 className="text-xl font-bold text-popover-foreground/90 mb-2 tracking-wide">VUE JS SCRATCH COURSE</h2>
+        <h2 className="text-xl font-bold text-popover-foreground/90 mb-2 tracking-wide">{course.title.toUpperCase()}</h2>
         <div className="flex items-center gap-2">
           <span className="text-2xl font-bold text-popover-foreground/90">$22.40</span>
           <span className="text-lg text-popover-foreground/40 line-through">$30.13</span>
@@ -36,17 +39,17 @@ export default function Block() {
       <div className="space-y-4">
         <div className="flex items-center gap-3 text-popover-foreground/60">
           <NotebookPen className="w-5 h-5 text-popover-foreground/50" />
-          <span className="text-sm font-medium">22 Section</span>
+          <span className="text-sm font-medium">{course.modules.length} Section</span>
         </div>
 
         <div className="flex items-center gap-3 text-popover-foreground/60">
           <BookOpen className="w-5 h-5 text-popover-foreground/50" />
-          <span className="text-sm font-medium">152 Lectures</span>
+          <span className="text-sm font-medium">{course.numberOfLectures} Lectures</span>
         </div>
 
         <div className="flex items-center gap-3 text-popover-foreground/60">
           <Play className="w-5 h-5 text-popover-foreground/50" />
-          <span className="text-sm font-medium">21h 33m total lengths</span>
+          <span className="text-sm font-medium">{duration} total lengths</span>
         </div>
 
         <div className="flex items-center gap-3 text-popover-foreground/60">

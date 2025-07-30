@@ -1,15 +1,24 @@
 import { Banner } from '@/components/components/banner';
 import { NavigationFixed } from '@/components/components/navigation';
-import { courses } from "@/components/util/damydata";
+// import { courses } from "@/components/util/damydata";
 import { TabMenu } from '@/components/components/tab-menu';
-import Block from '../_components/purchaseCard';
 import Example from '@/components/components/vedioPlayer';
-
+import { Course } from '../_components/feed';
+import Block from '../_components/purchaseCard';
 const Page = async ({params}: {params: Promise<{IdCourse: string}>}) => {
     // Await the params to get the course ID
-    const courseId = await params;
-    const course = courses.find(course => course._id === courseId.IdCourse);
-    console.log(course);
+    const {IdCourse} = await params;
+    console.log(IdCourse)
+    const response = await fetch(`http://localhost:3000/api/v1/course/${IdCourse}`,{
+    next:{
+      revalidate: 60,
+    }
+  });
+    
+    const {data} = await response.json();
+    console.log("from dynamic route",data)
+    const course: Course = data
+    
     return (
     <>
     <Banner/>
@@ -30,7 +39,7 @@ const Page = async ({params}: {params: Promise<{IdCourse: string}>}) => {
                 {/* <Reviews/> */}
             </div>
             {/* Block for puying the course */}
-            <Block/>
+            <Block course={course}/>
         </div>
     </section>
     </>

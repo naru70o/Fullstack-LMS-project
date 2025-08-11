@@ -40,6 +40,17 @@ export type Lecture = {
   __v: number;
 };
 
+type Modules = {
+  _id: string;
+  title: string;
+  optional: boolean;
+  description: string;
+  course: string;
+  lectures: Lecture[];
+  order: number;
+  __v: number;
+}
+
 // Placeholder for question type (empty in your data)
 type Question = {
   // Define based on your actual question structure
@@ -56,7 +67,7 @@ export type Course = {
   description: string;
   isPublished: boolean;
   level: string[];
-  modules: Lecture[];
+  modules: Modules[];
   title: string;
   instructor: User;
   rating: number;

@@ -50,7 +50,6 @@ export default function CourseCurriculum({course}:{course:Course}) {
     router.replace(`${pathname}?${routeURL.toString()}`)
   }
 
-
   return (
     <div className="w-full mt-4">
       {course.modules.map((chapter) => {

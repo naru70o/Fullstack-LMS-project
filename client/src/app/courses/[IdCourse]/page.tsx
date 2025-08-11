@@ -4,6 +4,7 @@ import { TabMenu } from '@/components/components/tab-menu';
 import Example from '@/components/components/vedioPlayer';
 import { Course } from '../_components/feed';
 import Block from '../_components/purchaseCard';
+import InstructorProfile from '../_components/instructorProfile';
 
 const Page = async ({params, searchParams}: {params: Promise<{IdCourse: string}>, searchParams: Promise<{ vedio: string }>}) => {
     const { IdCourse } = await params;
@@ -36,6 +37,8 @@ const Page = async ({params, searchParams}: {params: Promise<{IdCourse: string}>
                 <p className='text-sm text-popover-foreground/60 mt-2'>{course?.description}</p>
                 {/* reviews and course modules */}
                 <TabMenu data={course}/>
+                {/* Instructor info */}
+                <InstructorProfile/>
                 {/* <Reviews/> */}
             </div>
             {/* Block for puying the course */}

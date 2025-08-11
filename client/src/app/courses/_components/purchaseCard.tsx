@@ -19,19 +19,23 @@ export default function Block({course}: { course: Course }) {
       {/* Action Buttons */}
       <div className="space-y-3 mb-8">
         <Button
-          className="w-full bg-primary hover:bg-primary/90 text-white font-bold text-xl py-3 rounded-lg transition-colors"
+          className="w-full bg-primary hover:bg-primary/90 text-white font-bold text-xl py-3 rounded-lg transition-colors cursor-pointer"
           size="lg"
         >
           Enroll Now
         </Button>
 
         <Button
+          asChild
           variant="outline"
-          className="w-full border-primary text-primary hover:bg-primary/5 font-bold text-xl py-3 rounded-lg transition-colors bg-transparent"
+          className="w-full border-primary text-primary font-bold text-xl py-3 rounded-lg transition-colors bg-transparent cursor-pointer"
           size="lg"
         >
-          <Heart className="w-4 h-4 mr-2" />
-          Wishlist
+          <div className="flex items-center justify-center">
+            {/* ! is Tailwind's important modifier to override ShadCN's defaults */}
+          <Heart size={28} className="mr-2 flex !w-7 !h-7" />
+          <p>Wishlist</p>
+          </div>
         </Button>
       </div>
 

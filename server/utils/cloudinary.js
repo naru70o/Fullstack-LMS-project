@@ -62,7 +62,8 @@ export const deleteImage = async (publicId) => {
 // vedio uploader
 export async function vedeoUploader(vedeo) {
     const options = {
-        resource_type: "video"
+        resource_type: "video",
+        timeout:12000000,
     }
     try {
         let result;

@@ -1,15 +1,32 @@
 import { Banner } from '@/components/components/banner';
 import { NavigationFixed } from '@/components/components/navigation';
-import { courses } from "@/components/util/damydata";
 import { TabMenu } from '@/components/components/tab-menu';
-import Block from '../_components/purchaseCard';
 import Example from '@/components/components/vedioPlayer';
+import { Course, Lecture } from '../_components/feed';
+import Block from '../_components/purchaseCard';
+import InstructorProfile from '../_components/instructorProfile';
 
-const Page = async ({params}: {params: Promise<{IdCourse: string}>}) => {
-    // Await the params to get the course ID
-    const courseId = await params;
-    const course = courses.find(course => course._id === courseId.IdCourse);
-    console.log(course);
+const Page = async ({params, searchParams}: {params: Promise<{IdCourse: string}>, searchParams: Promise<{ vedio: string }>}) => {
+    const { IdCourse } = await params;
+    const { vedio } = await searchParams;
+    console.log(IdCourse, vedio)
+    const response = await fetch(`http://localhost:3000/api/v1/course/${IdCourse}`,{
+    next:{
+      revalidate: 60,
+    }
+  });
+    
+    const {data,message} = await response.json();
+    const course: Course = data
+    console.log("from dynamic route",message,data)
+
+    const previewLecture = course.modules
+  .flatMap(m => m.lectures)   // merge all lectures into one array
+  .find(l => l.isPreview === true);
+  console.log(previewLecture)
+
+  const videoUrl = previewLecture ? (previewLecture as Lecture)?.url?.videoUrl : undefined;
+
     return (
     <>
     <Banner/>
@@ -20,17 +37,19 @@ const Page = async ({params}: {params: Promise<{IdCourse: string}>}) => {
             {/* course */}
             <div className='grid-cols-1 col-span-2 flex flex-col justify-start'>
                 {/* course Video */}
-                <Example/>
+                <Example video={vedio || videoUrl}/>
                 {/* course title */}
                 <h1 className='text-lg font-bold text-popover-foreground leading-7'>{course?.title}</h1>
                 {/* course description */}
                 <p className='text-sm text-popover-foreground/60 mt-2'>{course?.description}</p>
                 {/* reviews and course modules */}
-                <TabMenu/>
+                <TabMenu data={course}/>
+                {/* Instructor info */}
+                <InstructorProfile/>
                 {/* <Reviews/> */}
             </div>
             {/* Block for puying the course */}
-            <Block/>
+            <Block course={course}/>
         </div>
     </section>
     </>

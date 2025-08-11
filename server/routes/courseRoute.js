@@ -1,6 +1,6 @@
 import express from "express";
 import { protectRoute } from "../middlewares/protectRoute.js";
-import { createNewCourse, createNewModule, getAllCourses, getAllModules, createNewLecture, deleteCourse, deleteModule, getAlllactures, deleteallactures, deleteLacture, updateCourse, updateModule, updateLecture, askQuestion } from "../controllers/courseController.js";
+import { createNewCourse, createNewModule, getAllCourses, getAllModules, createNewLecture, deleteCourse, deleteModule, getAlllactures, deleteallactures, deleteLacture, updateCourse, updateModule, updateLecture, askQuestion , getCourse } from "../controllers/courseController.js";
 import upload from "../utils/multer.js"
 const courseRouter = express.Router();
 
@@ -13,7 +13,8 @@ courseRouter.route("/deletecourse/:courseId").delete(protectRoute, deleteCourse)
 courseRouter.route("/deleteModule/:moduleId").delete(protectRoute, deleteModule)
 courseRouter.route("/deletelacture/:lactureId").delete(protectRoute, deleteLacture)
 courseRouter.route("/newlecture/:moduleId").post(protectRoute, upload.single("lecture"), createNewLecture)
-courseRouter.route("/").get(getAllCourses)
+courseRouter.route("/").get(getAllCourses) 
+courseRouter.route("/:courseId").get(getCourse)
 courseRouter.route("/modules").get(getAllModules)
 courseRouter.route("/lactures").get(getAlllactures)
 courseRouter.route("/deletelactures").delete(deleteallactures)

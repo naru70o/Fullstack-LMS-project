@@ -37,7 +37,7 @@ app.use(hpp())
 app.use(express.json({ limit: "10kb" }))
 app.use(express.urlencoded({ extended: true, limit: "10kb" }))
 app.use(cors({
-    cors: "http//localhost:5173",
+    cors: "http//localhost:3001",
     methods: ["GET", "POST", "PUT", "PATCH"],
     credentials: true,
     allowedHeaders: [

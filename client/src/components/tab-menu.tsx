@@ -2,8 +2,9 @@
 import React, { useState } from 'react'
 import { Reviews } from '../app/courses/_components/reviews';
 import CourseCurriculum from '../app/courses/_components/modules';
+import { Course } from '../app/courses/_components/feed';
 
-export const TabMenu = () => {
+export const TabMenu = ({data}: {data: Course}) => {
     const [tabMenu,setTabMenu]= useState("reviews");
 
     const HandleTabMenus = (tab:string)=>{
@@ -24,7 +25,7 @@ export const TabMenu = () => {
       tabMenu === "reviews" && <Reviews/>
     }
     {
-      tabMenu === "course" && <CourseCurriculum/>
+      tabMenu === "course" && <CourseCurriculum course={data} />
     }
     </>
   )

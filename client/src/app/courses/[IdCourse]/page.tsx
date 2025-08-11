@@ -1,10 +1,10 @@
 import { Banner } from '@/components/components/banner';
 import { NavigationFixed } from '@/components/components/navigation';
-// import { courses } from "@/components/util/damydata";
 import { TabMenu } from '@/components/components/tab-menu';
 import Example from '@/components/components/vedioPlayer';
 import { Course } from '../_components/feed';
 import Block from '../_components/purchaseCard';
+
 const Page = async ({params}: {params: Promise<{IdCourse: string}>}) => {
     // Await the params to get the course ID
     const {IdCourse} = await params;
@@ -18,7 +18,7 @@ const Page = async ({params}: {params: Promise<{IdCourse: string}>}) => {
     const {data,message} = await response.json();
     console.log("from dynamic route",message,data)
     const course: Course = data
-    
+     
     return (
     <>
     <Banner/>
@@ -35,7 +35,7 @@ const Page = async ({params}: {params: Promise<{IdCourse: string}>}) => {
                 {/* course description */}
                 <p className='text-sm text-popover-foreground/60 mt-2'>{course?.description}</p>
                 {/* reviews and course modules */}
-                <TabMenu/>
+                <TabMenu data={course}/>
                 {/* <Reviews/> */}
             </div>
             {/* Block for puying the course */}

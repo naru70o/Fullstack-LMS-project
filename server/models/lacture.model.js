@@ -49,6 +49,11 @@ const lectureSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    status:{
+      type:String,
+      default:"not-started",
+      enum:"current" | "completed" | "not-started",
+    },
     order: {
       type: Number,
       required: [true, "Please provide a lecture order"],

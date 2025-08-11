@@ -19,13 +19,44 @@ type User = {
   _id: string;
 };
 
+ type Lecture = {
+  _id: string;
+  id: string; // Again, duplicate of _id
+  url: {
+    videoUrl: string;
+    secureUrl: string;
+  };
+  title: string;
+  description: string;
+  moduleId: string; // Reference to parent module
+  instructor: string; // User ID of instructor
+  duration: number; // in seconds
+  publicId: string; // Cloudinary public ID
+  isPreview: boolean;
+  order: number;
+  questions: Question[]; // Empty array in examples, typed for future use
+  createdAt: string | Date;
+  updatedAt: string | Date;
+  __v: number;
+};
+
+// Placeholder for question type (empty in your data)
+type Question = {
+  // Define based on your actual question structure
+  _id?: string;
+  questionText?: string;
+  options?: string[];
+  correctAnswer?: string;
+  // ... other question fields
+};
+
 export type Course = {
   _id: string;
   category: string[];
   description: string;
   isPublished: boolean;
   level: string[];
-  modules: string[];
+  modules: Lecture[];
   title: string;
   instructor: User;
   rating: number;

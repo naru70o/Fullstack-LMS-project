@@ -15,8 +15,8 @@ const Page = async ({params}: {params: Promise<{IdCourse: string}>}) => {
     }
   });
     
-    const {data} = await response.json();
-    console.log("from dynamic route",data)
+    const {data,message} = await response.json();
+    console.log("from dynamic route",message,data)
     const course: Course = data
     
     return (

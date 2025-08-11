@@ -10,9 +10,9 @@ const Page = async () => {
       revalidate: 60,
     }
   });
-  console.log(data) 
   const response = await data.json();
   const courses = response.data.courses
+  console.log(courses);
     return (
       <>
       <Banner/>

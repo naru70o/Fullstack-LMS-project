@@ -12,7 +12,7 @@ import AppError from "../utils/error.js"
 // Get all courses
 export async function getAllCourses(req, res, next) {
     try {
-        const courses = await Course.find();
+        const courses = await Course.find().populate("instructor");
         return res.status(200).json({
             status: "success",
             data: {
@@ -23,31 +23,10 @@ export async function getAllCourses(req, res, next) {
     } catch (error) {
         return next(
             new AppError(
-                "internal server error",
+                `internal server error while fetching courses ${error.message}`,
                 500
             )
         )
-    }
-}
-
-//TODO fetching modules and correcting the logic
-export async function getModulesByCourseId(req, res, next) {
-    const { courseId } = req.params;
-    if (!courseId) {
-        return next(new AppError("Course ID is required", 400));
-    }
-
-    try {
-        const modules = await Module.find({ course: courseId });
-        return res.status(200).json({
-            status: "success",
-            data: {
-                modules
-            },
-            message: "modules fetched successfully"
-        })
-    } catch (error) {
-        return next(new AppError(`Internal server error while fetching modules: ${error.message}`, 500));
     }
 }
 
@@ -55,13 +34,22 @@ export async function getModulesByCourseId(req, res, next) {
 export async function getCourse(req,res,next) {
 // getting the course Id  
 const {courseId}= req.params
+if(!courseId){
+    return next(new AppError("Course ID is required", 400));
+}
+
   try {
-   const course =  await Course.findById(courseId);
+   const course =  await Course.findById(courseId).populate({path:"modules",
+    populate:{
+        path:"lectures"
+    }
+   }).populate("instructor");
    if (!course) {
     return next(
     new AppError("no course found with this id",404)
     )
   } 
+  console.log(course)
   res.status(200).json({
    message:"here is your course",
    data : course,

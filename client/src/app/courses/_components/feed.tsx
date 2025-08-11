@@ -2,6 +2,23 @@ import { CircleUser } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
+type User = {
+  changedPasswordAt: Date;
+  createdAt: Date;
+  email: string;
+  enrolledCourses: any[]; // Consider using a more specific type if you know the course structure
+  id: string;
+  lastActive: Date;
+  name: string;
+  passwordChangedAt: Date;
+  profile: string;
+  role: string;
+  roles: string[];
+  updatedAt: Date;
+  __v: number;
+  _id: string;
+};
+
 export type Course = {
   _id: string;
   category: string[];
@@ -10,7 +27,7 @@ export type Course = {
   level: string[];
   modules: string[];
   title: string;
-  instructor: string;
+  instructor: User;
   rating: number;
   numberOfLectures: number;
   totalOfHours: number;
@@ -37,7 +54,7 @@ function Card ({ courses }: { courses: Course[] }) {
               <Image src={course.thumbnail.secure_url} alt="Thumbnail" fill className='absolute w-full h-full object-cover rounded-lg' />
             </div>
             <h2 className='text-lg font-bold text-popover-foreground leading-7'>{(course.title).toUpperCase()}</h2> 
-            <p className='flex items-center gap-1 text-sm text-popover-foreground/40'><span><CircleUser/></span> {course.instructor}</p>
+            <p className='flex items-center gap-1 text-sm text-popover-foreground/40'><span><CircleUser/></span>{course.instructor.name} </p>
             <div className='flex items-center gap-1'>
               {[...Array(5)].map((_, index) => {
                 if (course.rating >= index + 1) {

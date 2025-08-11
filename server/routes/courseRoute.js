@@ -1,8 +1,7 @@
 import express from "express";
 import { protectRoute } from "../middlewares/protectRoute.js";
-import { createNewCourse, createNewModule, getAllCourses, getAllModules, createNewLecture, deleteCourse, deleteModule, getAlllactures, deleteallactures, deleteLacture, updateCourse, updateModule, updateLecture, askQuestion , getCourse, getModulesByCourseId } from "../controllers/courseController.js";
+import { createNewCourse, createNewModule, getAllCourses, getAllModules, createNewLecture, deleteCourse, deleteModule, getAlllactures, deleteallactures, deleteLacture, updateCourse, updateModule, updateLecture, askQuestion , getCourse } from "../controllers/courseController.js";
 import upload from "../utils/multer.js"
-import { get } from "mongoose";
 const courseRouter = express.Router();
 
 courseRouter.route("/newcourse").post(protectRoute, upload.single("thumbnail"), createNewCourse)
@@ -17,7 +16,6 @@ courseRouter.route("/newlecture/:moduleId").post(protectRoute, upload.single("le
 courseRouter.route("/").get(getAllCourses) 
 courseRouter.route("/:courseId").get(getCourse)
 courseRouter.route("/modules").get(getAllModules)
-courseRouter.route("/modules/:courseId").get(getModulesByCourseId)
 courseRouter.route("/lactures").get(getAlllactures)
 courseRouter.route("/deletelactures").delete(deleteallactures)
 

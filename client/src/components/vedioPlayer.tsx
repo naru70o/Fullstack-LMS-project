@@ -11,14 +11,14 @@ import {
   VideoPlayerTimeRange,
   VideoPlayerVolumeRange,
 } from '@/components/components/ui/kibo-ui/video-player/index';
-const Example = () => (
+const Example = ({video}:{video:string}) => (
   <VideoPlayer className="overflow-hidden rounded-lg border mb-4">
     <VideoPlayerContent
       crossOrigin=""
       muted
       preload="auto"
       slot="media"
-      src="https://stream.mux.com/DS00Spx1CV902MCtPj5WknGlR102V5HFkDe/high.mp4"
+      src={video}
     />
     <VideoPlayerControlBar>
       <VideoPlayerPlayButton />

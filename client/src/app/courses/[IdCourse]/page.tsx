@@ -5,10 +5,10 @@ import Example from '@/components/components/vedioPlayer';
 import { Course } from '../_components/feed';
 import Block from '../_components/purchaseCard';
 
-const Page = async ({params}: {params: Promise<{IdCourse: string}>}) => {
-    // Await the params to get the course ID
-    const {IdCourse} = await params;
-    console.log(IdCourse)
+const Page = async ({params, searchParams}: {params: Promise<{IdCourse: string}>, searchParams: Promise<{ vedio: string }>}) => {
+    const { IdCourse } = await params;
+    const { vedio } = await searchParams;
+    console.log(IdCourse, vedio)
     const response = await fetch(`http://localhost:3000/api/v1/course/${IdCourse}`,{
     next:{
       revalidate: 60,
@@ -29,7 +29,7 @@ const Page = async ({params}: {params: Promise<{IdCourse: string}>}) => {
             {/* course */}
             <div className='grid-cols-1 col-span-2 flex flex-col justify-start'>
                 {/* course Video */}
-                <Example/>
+                <Example video={vedio}/>
                 {/* course title */}
                 <h1 className='text-lg font-bold text-popover-foreground leading-7'>{course?.title}</h1>
                 {/* course description */}

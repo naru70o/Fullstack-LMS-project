@@ -25,7 +25,7 @@ export const TabMenu = ({data}: {data: Course}) => {
       tabMenu === "reviews" && <Reviews/>
     }
     {
-      tabMenu === "course" && <CourseCurriculum course={data}/>
+      tabMenu === "course" && <CourseCurriculum course={data} />
     }
     </>
   )

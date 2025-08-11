@@ -19,7 +19,7 @@ type User = {
   _id: string;
 };
 
- type Lecture = {
+export type Lecture = {
   _id: string;
   id: string; // Again, duplicate of _id
   url: {

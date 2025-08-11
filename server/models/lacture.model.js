@@ -52,7 +52,7 @@ const lectureSchema = new mongoose.Schema(
     status:{
       type:String,
       default:"not-started",
-      enum:"current" | "completed" | "not-started",
+      enum:["current", "completed", "not-started"],
     },
     order: {
       type: Number,

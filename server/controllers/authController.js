@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import User from "../models/user.model.js";
-import generateToken from "../utils/jsonWebTokens.js";
+import generateToken from "../utils/jsonWebTokens.ts";
 import sendEmail from "../utils/email.js";
 import appError from "../utils/error.ts";
 

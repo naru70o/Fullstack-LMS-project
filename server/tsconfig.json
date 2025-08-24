@@ -7,6 +7,10 @@
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./*"]
+    },
 
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,

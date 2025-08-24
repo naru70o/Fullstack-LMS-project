@@ -1,5 +1,7 @@
-import Questions from "../../models/course.questionandanswer.js";
-
+import Lecture from "../../models/lacture.model.js";
+import AppError from "../../utils/error.ts";
+import {uploadImage} from "../../utils/cloudinary.ts";
+import Questions from "../../models/course.questionandanswer.js"
 
 // Post a new question or reply to a lecture
 export async function askQuestion(req, res, next) {

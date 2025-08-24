@@ -1,18 +1,21 @@
 import dotenv from "dotenv";
 import express from "express"
+import type {Request,Response,NexFunction} from "express";
 import morgan from "morgan"
 import { rateLimit } from 'express-rate-limit'
 import helmet from "helmet"
 import hpp from "hpp"
-import mongoSanitize from "express-mongo-sanitize";
+// import mongoSanitize from "express-mongo-sanitize";
 import cookieParser from "cookie-parser";
 import cors from "cors"
 import dbConnection from "./db/db.js"
+
 
 // file imports
 import authRouter from "./routes/authRoute.js"
 import userRouter from "./routes/userRoutes.js";
 import courseRouter from "./routes/courseRoute.js";
+import AppError from "./utils/error.ts";
 dotenv.config()
 
 dbConnection() // this will connect the database 
@@ -37,7 +40,7 @@ app.use(hpp())
 app.use(express.json({ limit: "10kb" }))
 app.use(express.urlencoded({ extended: true, limit: "10kb" }))
 app.use(cors({
-    cors: "http//localhost:3001",
+    origin: "http://localhost:3001",
     methods: ["GET", "POST", "PUT", "PATCH"],
     credentials: true,
     allowedHeaders: [
@@ -47,14 +50,16 @@ app.use(cors({
 app.use(cookieParser())
 
 // GLOBAL ERROR HANDLER
-app.use((err, req, res, next) => {
-    console.error(err.stack)
-    res.status(err.status || 500).json({
-        status: "error",
-        message: err.message || "internal server error",
-        ...app(process.env.NODE_ENV === "development" && { stack: err.stack })
-    })
-})
+// app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
+//     if(err instanceof AppError) {
+//     console.error(err.stack)
+//     res.status(err.status || 500).json({
+//         status: "error",
+//         message: err.message || "internal server error",
+//         ...app(process.env.NODE_ENV === "development" && { stack: err.stack })
+//     })
+// }
+// })
 
 // logger
 app.use(morgan("dev", (req, res) => {
@@ -66,8 +71,8 @@ app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1/course", courseRouter)
 
-app.listen(process.env.PORT, () => {
-    console.log(`app is running at ${process.env.PORT}`)
+app.listen(process.env["PORT"], () => {
+    console.log(`app is running at ${process.env["PORT"]}`)
 })
 
 // 

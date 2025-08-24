@@ -58,7 +58,7 @@ class CreateDatabaseConnection {
 
                 // Specifies how long (in milliseconds) a connection socket can remain idle
                 // before the driver closes it. Helps prevent issues with firewalls closing inactive connections. (45 seconds here)
-                // socketTimeoutMS:45000,
+                socketTimeoutMS:45000,
 
                 // Forces the driver to use the IPv4 network protocol when connecting.
                 // Set to 4 for IPv4, 6 for IPv6. If unspecified, it might try IPv6 first.

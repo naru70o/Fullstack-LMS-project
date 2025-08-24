@@ -1,8 +1,8 @@
 import express from "express";
-import { protectRoute } from "../middlewares/protectRoute.js";
+import { protectRoute } from "../middlewares/protectRoute.ts";
 import {getAllCourses,deleteCourse,updateCourse,createNewCourse,getCourse} from "../controllers/courseController/courseController.ts"
 import {createNewModule,deleteModule,updateModule,getAllModules} from "../controllers/courseController/moduleController.ts"
-import {createNewLecture,deleteLacture,updateLecture,getAlllactures,deleteallactures} from "../controllers/courseController/lectureController.ts"
+import {createNewLecture,deleteLacture,updateLecture,getAllLectures,deleteallactures} from "../controllers/courseController/lectureController.ts"
 import {askQuestion} from "../controllers/courseController/questionController.ts"
 import upload from "../utils/multer.js"
 const courseRouter = express.Router();
@@ -19,8 +19,8 @@ courseRouter.route("/newlecture/:moduleId").post(protectRoute, upload.single("le
 courseRouter.route("/").get(getAllCourses) 
 courseRouter.route("/:courseId").get(getCourse)
 courseRouter.route("/modules").get(getAllModules)
-courseRouter.route("/lactures").get(getAlllactures)
-courseRouter.route("/deletelactures").delete(deleteallactures)
+courseRouter.route("/lectures").get(getAllLectures)
+courseRouter.route("/deletelectures").delete(deleteallactures)
 
 // Questions and Answers
 courseRouter.route("/lecture/:lectureId/question").post(protectRoute, upload.single("questionImage"), askQuestion);

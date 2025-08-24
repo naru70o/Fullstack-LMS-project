@@ -1,9 +1,14 @@
+import type { Request,Response,NextFunction } from "express";
+
 import Lecture from "../../models/lacture.model.js"
+import Module from "../../models/module.model.js"
+import Course from "../../models/course.model.js"
 import AppError from "../../utils/error.ts";
+import {videoUploader} from "@/utils/cloudinary.ts";
 
 
-// Get all Lactures
-export async function getAlllactures(req, res, next) {
+// Get all Lectures
+export async function getAllLectures(req: Request, res: Response, next: NextFunction) {
     try {
         const response = await Lecture.find();
         return res.status(200).json({
@@ -24,7 +29,7 @@ export async function getAlllactures(req, res, next) {
 }
 
 //TODO creating a new lecture for a course
-export async function createNewLecture(req, res, next) {
+export async function createNewLecture(req: Request, res: Response, next: NextFunction) {
     //1) Getting the moduleId from params
     const { moduleId } = req.params;
     if (!moduleId) {
@@ -57,7 +62,7 @@ export async function createNewLecture(req, res, next) {
         }
 
         //5) Uploading the video to Cloudinary
-        const videoUploadResult = await vedeoUploader(lectureVideoFile.buffer);
+        const videoUploadResult = await videoUploader(lectureVideoFile.buffer);
         if (!videoUploadResult || !videoUploadResult.public_id || !videoUploadResult.secure_url) {
             return next(new AppError("Failed to upload video to Cloudinary", 500));
         }
@@ -114,7 +119,7 @@ export async function createNewLecture(req, res, next) {
 
 
 // update a lecture
-export async function updateLecture(req, res, next) {
+export async function updateLecture(req: Request, res: Response, next: NextFunction) {
     //1 getting the params
     const { lectureId } = req.params;
     if (!lectureId) {
@@ -160,7 +165,7 @@ export async function updateLecture(req, res, next) {
             }
 
             // Upload new video
-            const videoUploadResult = await vedeoUploader(req.file.buffer);
+            const videoUploadResult = await videoUploader(req.file.buffer);
             if (!videoUploadResult || !videoUploadResult.public_id || !videoUploadResult.secure_url) {
                 return next(new AppError("Failed to upload new video", 500));
             }
@@ -189,7 +194,7 @@ export async function updateLecture(req, res, next) {
 }
 
 // delete all lactures
-export async function deleteallactures(req, res, next) {
+export async function deleteallactures(req: Request, res: Response, next: NextFunction) {
     try {
         await Lecture.deleteMany();
         return res.status(200).json({
@@ -204,7 +209,7 @@ export async function deleteallactures(req, res, next) {
 }
 
 // Delete a single lecture
-export async function deleteLacture(req, res, next) {
+export async function deleteLacture(req: Request, res: Response, next: NextFunction) {
     const { lactureId } = req.params;
     if (!lactureId) {
         return next(new AppError("Lecture ID is required", 400));

@@ -10,5 +10,10 @@ export default defineConfig([
     rules: {
       "prefer-const": "error",
     },
+    env:{
+      browser: false,
+      node: true,
+      es2021: true
+    }
   },
 ]);

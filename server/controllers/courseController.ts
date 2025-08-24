@@ -8,9 +8,10 @@ import Lecture from "../models/lacture.model.js"
 import Questions from "../models/course.questionandanswer.js";
 import { deleteImage, uploadImage, vedeoUploader } from "../utils/cloudinary.js"
 import AppError from "../utils/error.js"
+import type {Request,Response,NextFunction} from "express"
 
 // Get all courses
-export async function getAllCourses(req, res, next) {
+export async function getAllCourses(req:Request, res:Response, next:NextFunction) {
     try {
         const courses = await Course.find().populate("instructor");
         return res.status(200).json({

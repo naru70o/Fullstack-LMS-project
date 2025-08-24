@@ -21,7 +21,7 @@ server/.env.*.local # Ignore local development environment files
 
 # root level node_modules
 node_modules/
-Todos.txt
+Todos.md
 .env
 .env.*.local
 

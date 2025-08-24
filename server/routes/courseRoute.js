@@ -1,6 +1,9 @@
 import express from "express";
 import { protectRoute } from "../middlewares/protectRoute.js";
-import { createNewCourse, createNewModule, getAllCourses, getAllModules, createNewLecture, deleteCourse, deleteModule, getAlllactures, deleteallactures, deleteLacture, updateCourse, updateModule, updateLecture, askQuestion , getCourse } from "../controllers/courseController.js";
+import {getAllCourses,deleteCourse,updateCourse,createNewCourse,getCourse} from "../controllers/courseController/courseController.ts"
+import {createNewModule,deleteModule,updateModule,getAllModules} from "../controllers/courseController/moduleController.ts"
+import {createNewLecture,deleteLacture,updateLecture,getAlllactures,deleteallactures} from "../controllers/courseController/lectureController.ts"
+import {askQuestion} from "../controllers/courseController/questionController.ts"
 import upload from "../utils/multer.js"
 const courseRouter = express.Router();
 

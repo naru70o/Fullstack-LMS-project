@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import Module from './module.model.js';
-import AppError from '../utils/error.js';
+import AppError from '../utils/error.ts';
 import Lecture from './lacture.model.js';
 import { deleteMultipleVideos } from '../utils/cloudinary.js';
 

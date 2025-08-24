@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import { uploadImage } from "../utils/cloudinary.js"
-import AppError from "../utils/error.js";
+import AppError from "../utils/error.ts";
 
 export const getAllUsers = async (req, res) => {
     try {

@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { deleteVideo } from "../utils/cloudinary.js";
-import AppError from "../utils/error.js";
+import AppError from "../utils/error.ts";
 
 const lectureSchema = new mongoose.Schema(
   {

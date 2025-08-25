@@ -1,15 +1,15 @@
 import jwt from "jsonwebtoken"
 import User from "../models/user.model.js"
-import AppError from "../utils/error.js";
+import AppError from "../utils/error.ts";
+import type { Request, Response, NextFunction } from "express";
 
-export async function protectRoute(req, res, next) {
+export async function protectRoute(req: Request, _res: Response, next: NextFunction) {
     try {
         // Check if there is a token
         let token;
         if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
             token = req.headers.authorization.split(' ')[1];
         }
-
         console.log("this is the token", token)
         if (!token) {
             return next(
@@ -18,7 +18,11 @@ export async function protectRoute(req, res, next) {
         }
 
         // verify the token
-        const decoded = await jwt.verify(token, process.env.SECRET);
+        const secret = process.env["SECRET"];
+        if (!secret) {
+            return next(new AppError("secret not found", 500));
+        }
+        const decoded = await jwt.verify(token, secret);
         if (!decoded) {
             return next(new AppError("invalid token", 401))
         }
@@ -35,10 +39,12 @@ export async function protectRoute(req, res, next) {
         }
 
         // grant access to the user
+        console.log("user is authenticated", currentUser)
         req.user = currentUser;
         next()
-    }
-    catch (error) {
-        return next(new AppError(error.message, 401))
+    } catch (error) {
+        if (error instanceof AppError) {
+            return next(new AppError(error.message, 401))
+        }
     }
 }

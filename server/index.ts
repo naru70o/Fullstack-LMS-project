@@ -12,7 +12,7 @@ import dbConnection from "./db/db.js"
 
 
 // file imports
-import authRouter from "./routes/authRoute.js"
+import authRouter from "./routes/authRoute.ts"
 import userRouter from "./routes/userRoutes.js";
 import courseRouter from "./routes/courseRoute.js";
 // import AppError from "./utils/error.ts";

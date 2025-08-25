@@ -1,51 +1,53 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema } from 'mongoose'
 
 const questionsSchema = mongoose.Schema({
-    lectureId: {
-        type: Schema.Types.ObjectId,
-        ref: "Lecture",
-        required: true,
+  lectureId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Lecture',
+    required: true,
+  },
+  parentId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Questions',
+    default: null,
+  },
+  path: {
+    type: String,
+    required: true,
+  },
+  question: {
+    title: {
+      type: String,
+      required: true,
     },
-    parentId: {
-        type: Schema.Types.ObjectId,
-        ref: "Questions",
-        default: null,
+    description: {
+      type: String,
     },
-    path: {
+    image: {
+      publicId: {
         type: String,
-        required: true,
+      },
+      secureUrl: {
+        type: String,
+      },
     },
-    question: {
-        title: {
-            type: String,
-            required: true,
-        },
-        description: {
-            type: String,
-        },
-        image: {
-            publicId: {
-                type: String
-            },
-            secureUrl: {
-                type: String
-            }
-        }
+  },
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+  votes: {
+    type: Number,
+    default: 0,
+  },
+  voters: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
     },
-    author: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-    },
-    votes: {
-        type: Number,
-        default: 0,
-    },
-    voters: [{
-        type: Schema.Types.ObjectId,
-        ref: "User",
-    }],
+  ],
 })
 
-const Questions = mongoose.model("Questions", questionsSchema);
-export default Questions;
+const Questions = mongoose.model('Questions', questionsSchema)
+export default Questions

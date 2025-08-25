@@ -3,14 +3,13 @@ import User from "../models/user.model.js"
 import AppError from "../utils/error.ts";
 import type { Request, Response, NextFunction } from "express";
 
-export async function protectRoute(req: Request, res: Response, next: NextFunction) {
+export async function protectRoute(req: Request, _res: Response, next: NextFunction) {
     try {
         // Check if there is a token
         let token;
         if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
             token = req.headers.authorization.split(' ')[1];
         }
-
         console.log("this is the token", token)
         if (!token) {
             return next(

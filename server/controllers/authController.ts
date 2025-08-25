@@ -1,11 +1,11 @@
 import crypto from "crypto";
 import User from "../models/user.model.js";
-import generateToken from "../utils/jsonWebTokens.ts";
+import generateToken from "../utils/jsonWebTokens.js";
 import sendEmail from "../utils/email.js";
-import appError from "../utils/error.ts";
+import appError from "../utils/error.js";
+import type { NextFunction, Request,Response } from "express";
 
-
-export const signup = async (req, res) => {
+export const signup = async (req:Request, res:Response) => {
     const { name, email, password, passwordConfirm } = req.body;
     try {
         // check user is signedup
@@ -28,17 +28,29 @@ export const signup = async (req, res) => {
             passwordConfirm
         })
 
-        generateToken(res, user, "user created successfully")
+      const token =  generateToken(res, user, "user created successfully")
+      if(!token){
+          return res.status(401).json({
+              success: false,
+              message: "user creation failed"
+          })
+      }
+
+      return res.status(201).json({
+          success: true,
+          message: "user created successfully",
+          token
+      })
     } catch (error) {
         console.log(error)
-        res.status(500).json({
+      return  res.status(500).json({
             success: false,
             message: "internal server error"
         })
     }
 }
 
-export const signin = async (req, res) => {
+export const signin = async (req:Request, res:Response) => {
     const { email, password } = req.body;
 
     try {
@@ -57,19 +69,35 @@ export const signin = async (req, res) => {
 
 
         // token generated
-        generateToken(res, user, "login successful")
+        const token = generateToken(res, user, "login successful")
 
+        if(!token){
+            return res.status(401).json({
+                success: false,
+                message: "login failed"
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "login successful",
+            token
+        });
     } catch (error) {
-        console.error(error)
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
     }
-}
+};
 
 // logout
-export const logout = (req, res) => {
+export const logout = (_req:Request, res:Response) => {
     try {
         res.cookie("token", "", {
-            maxAage: 0,
-
+            maxAge: 0,
+            httpOnly: true
         })
         return res.status(200).json({
             success: true,
@@ -77,17 +105,21 @@ export const logout = (req, res) => {
         })
     } catch (error) {
         console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: "internal server error"
+        })
     }
 }
 
 // forget password
-export const forgetPassword = async (req, res, next) => {
+export const forgetPassword = async (req:Request, res:Response, next:NextFunction) => {
     //1 get the user based on a posted email
     const { email } = req.body
     try {
         const user = await User.findOne({ email })
         if (!user) {
-            return next(appError("user not found", 404))
+            return next(new appError("user not found", 404))
         }
 
         //2 Generate random token
@@ -114,19 +146,19 @@ export const forgetPassword = async (req, res, next) => {
             user.resetPasswordTaken = undefined
             user.resetPasswordExpireDate = undefined
             await user.save({ validateBeforeSave: false })
-            next(appError("email could not be sent", 500))
+            next(new appError("email could not be sent", 500))
         }
 
     } catch (err) {
         console.log(err)
         return next(
-            appError(err.message, 500)
+            new appError(err.message, 500)
         )
     }
 }
 
 // reset password
-export const resetPassword = async (req, res, next) => {
+export const resetPassword = async (req:Request, res:Response, next:NextFunction) => {
     try {
         //1 get the user based on a token
         const { token } = req.params
@@ -161,11 +193,19 @@ export const resetPassword = async (req, res, next) => {
         user.resetPasswordExpireDate = undefined
         await user.save()
 
-
         //3 update the changedPasswordAt field (mongoose pre middleware was used)
 
         //4 Generate new Token
-        generateToken(res, user, "password reset successful")
+        const tokenGenerated = generateToken(res, user, "password reset successful")
+        if (!tokenGenerated) {
+            return next(new appError("password reset failed", 401))
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "password reset successful",
+            token: tokenGenerated
+        })
     } catch (err) {
         console.log(err)
         return next(

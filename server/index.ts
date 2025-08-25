@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import express from "express"
-import type {Request,Response,NexFunction} from "express";
+// import type {Request,Response,NexFunction} from "express";
 import morgan from "morgan"
 import { rateLimit } from 'express-rate-limit'
 import helmet from "helmet"
@@ -15,7 +15,7 @@ import dbConnection from "./db/db.js"
 import authRouter from "./routes/authRoute.js"
 import userRouter from "./routes/userRoutes.js";
 import courseRouter from "./routes/courseRoute.js";
-import AppError from "./utils/error.ts";
+// import AppError from "./utils/error.ts";
 dotenv.config()
 
 dbConnection() // this will connect the database 

@@ -31,8 +31,7 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.2",
     "nodemailer": "^7.0.3",
-    "nodemon": "^3.1.9",
-    "typescript-eslint": "^8.40.0"
+    "nodemon": "^3.1.9"
   },
   "devDependencies": {
     "@eslint/js": "^9.28.0",
@@ -44,11 +43,13 @@
     "@types/morgan": "^1.9.10",
     "@types/node": "^24.3.0",
     "eslint": "^9.28.0",
-    "eslint-config-prettier": "^10.1.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
     "globals": "^16.2.0",
     "prettier": "^3.5.3",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.5",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.40.0"
   }
 }

@@ -13,7 +13,7 @@ import dbConnection from "./db/db.js"
 
 // file imports
 import authRouter from "./routes/authRoute.ts"
-import userRouter from "./routes/userRoutes.js";
+import userRouter from "./routes/userRoutes.ts";
 import courseRouter from "./routes/courseRoute.ts";
 // import AppError from "./utils/error.ts";
 dotenv.config()

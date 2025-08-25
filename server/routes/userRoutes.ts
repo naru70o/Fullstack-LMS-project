@@ -1,8 +1,8 @@
-import upload from "../utils/multer.js";
+import upload from "../utils/multer.ts";
 
-import { forgetPassword, resetPassword } from "../controllers/authController.js";
+import { forgetPassword, resetPassword } from "../controllers/authController.ts";
 import express from "express";
-import { getAllUsers, updateProfile, changepassword, updateProfileImage, changeUserRole } from "../controllers/usersController.js";
+import { getAllUsers, updateProfile, changepassword, updateProfileImage, changeUserRole } from "../controllers/usersController.ts";
 import { protectRoute } from "../middlewares/protectRoute.ts"
 
 const userRouter = express.Router()

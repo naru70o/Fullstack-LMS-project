@@ -1,11 +1,12 @@
 import express from "express";
+import type { Router } from "express";
 import { protectRoute } from "../middlewares/protectRoute.ts";
 import {getAllCourses,deleteCourse,updateCourse,createNewCourse,getCourse} from "../controllers/courseController/courseController.ts"
 import {createNewModule,deleteModule,updateModule,getAllModules} from "../controllers/courseController/moduleController.ts"
 import {createNewLecture,deleteLacture,updateLecture,getAllLectures,deleteallactures} from "../controllers/courseController/lectureController.ts"
 import {askQuestion} from "../controllers/courseController/questionController.ts"
-import upload from "../utils/multer.js"
-const courseRouter = express.Router();
+import upload from "../utils/multer.ts"
+const courseRouter:Router = express.Router();
 
 courseRouter.route("/newcourse").post(protectRoute, upload.single("thumbnail"), createNewCourse)
 courseRouter.route("/updatecourse/:courseId").patch(protectRoute, upload.single("thumbnail"), updateCourse)

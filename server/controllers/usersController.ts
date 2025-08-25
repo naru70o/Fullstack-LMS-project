@@ -1,8 +1,9 @@
 import User from "../models/user.model.js";
-import { uploadImage } from "../utils/cloudinary.js"
+import { uploadImage } from "../utils/cloudinary.ts"
 import AppError from "../utils/error.ts";
+import type { Request,Response,NextFunction } from "express";
 
-export const getAllUsers = async (req, res) => {
+export const getAllUsers = async (_req: Request, res: Response, next: NextFunction) => {
     try {
         const users = await User.find();
         console.log(users);
@@ -15,11 +16,12 @@ export const getAllUsers = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
+        return next(new AppError("Internal server error", 500));
     }
 }
 
 // update user's name 
-export const updateProfile = async (req, res, next) => {
+export const updateProfile = async (req: Request, res: Response, next: NextFunction) => {
     console.log(req.user)
     const { name, email, bio } = req.body;
     try {
@@ -52,7 +54,7 @@ export const updateProfile = async (req, res, next) => {
 }
 
 // update a user's role to student
-export async function changeUserRole(req, res, next) {
+export async function changeUserRole(req: Request, res: Response, next: NextFunction) {
     // getting fields
     const { role } = req.body
 
@@ -95,7 +97,7 @@ export async function changeUserRole(req, res, next) {
 }
 
 // update user password
-export const changepassword = async (req, res, next) => {
+export const changepassword = async (req: Request, res: Response, next: NextFunction) => {
     // getting the password inputs
     const { oldpassword, password, passwordConfirm } = req.body;
     try {
@@ -140,7 +142,7 @@ export const changepassword = async (req, res, next) => {
 }
 
 // update user's profile picture
-export const updateProfileImage = async (req, res, next) => {
+export const updateProfileImage = async (req: Request, res: Response, next: NextFunction) => {
     //1 getting the image from the req.file becouse of multer middleware running
     const profile = req.file
     if (!profile) {
@@ -164,7 +166,8 @@ export const updateProfileImage = async (req, res, next) => {
         }
         //2 uploading the image to cloudinary
         const user = req.user;
-        const { public_id } = await uploadImage(profile.buffer)
+        const uploadImageResult  = await uploadImage(profile.buffer)
+        const { public_id } = uploadImageResult || {}
         console.log("this is the public_ID", public_id)
         const updatedUser = await User.findByIdAndUpdate(user._id, { profile: public_id }, { new: true });
         if (!updatedUser) {

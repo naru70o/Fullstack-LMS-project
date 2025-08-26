@@ -8,7 +8,7 @@ import hpp from 'hpp'
 // import mongoSanitize from "express-mongo-sanitize";
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import dbConnection from './db/db.js'
+import dbConnection from './prisma/db.js'
 
 // file imports
 import authRouter from './routes/authRoute.ts'

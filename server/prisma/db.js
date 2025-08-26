@@ -32,8 +32,8 @@ class CreateDatabaseConnection {
 
   async connect() {
     try {
-      if (!process.env.MONGO_URI) {
-        throw new Error('MONGO_URI is not defined')
+      if (!process.env.DATABASE_URL) {
+        throw new Error('DATABASE_URL is not defined')
       }
 
       const connectionOptions = {
@@ -71,7 +71,7 @@ class CreateDatabaseConnection {
         mongoose.set('debug', true) // Logs Mongoose database operations to the console for debugging.
       }
 
-      mongoose.connect(process.env.MONGO_URI, connectionOptions)
+      mongoose.connect(process.env.DATABASE_URL, connectionOptions)
       this.retryCount = 0
     } catch (error) {
       this.handleConnectionError()

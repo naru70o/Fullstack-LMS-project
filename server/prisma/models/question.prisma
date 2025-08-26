@@ -1,0 +1,12 @@
+model Question {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  text       String
+  lecture     Lecture   @relation(fields: [lectureId], references: [id])
+  lectureId   String   @db.ObjectId
+  courseId    String   @db.ObjectId
+  course      Course   @relation(fields: [courseId], references: [id])
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+

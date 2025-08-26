@@ -1,0 +1,32 @@
+model Course {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  title          String    @db.String
+  description    String    @db.String
+  level          Level[]
+  category       String[]
+  thumbnail      Thumbnail
+  modules        Module[]  @relation(fields: [], references: [])
+  instructor     User      @relation(fields: [instructorId], references: [id])
+  instructorId   String    @db.ObjectId
+  questions      Question[]
+  isPublished    Boolean   @default(false)
+  numberOfLectures Int     @default(0)
+  totalOfHours   Int       @default(0)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Thumbnail {
+    id String @id @default(auto()) @map("_id") @db.ObjectId
+    secureUrl String
+    publicId String
+    course   Course @relation(fields: [courseId], references: [id])
+    courseId String @db.ObjectId
+}
+
+enum Level {
+    Beginner
+    Intermediate
+    Advanced
+    All
+}

@@ -2,11 +2,11 @@ model Course {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
   title       String @db.String
   description String @db.String
+  secureUrl String
+  publicId String
 
   level        String[]
   category     String[]
-  thumbnail    Thumbnail        @relation(fields: [thumbnailId], references: [id])
-  thumbnailId  String           @unique @db.ObjectId
   modules      Module[]
   instructor   User             @relation(fields: [instructorId], references: [id])
   instructorId String           @db.ObjectId
@@ -20,13 +20,4 @@ model Course {
   updatedAt        DateTime @updatedAt
 
   @@map("courses")
-}
-
-model Thumbnail {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  secureUrl String
-  publicId  String
-  course    Course?
-
-  @@map("thumbnails")
 }

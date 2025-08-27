@@ -1,0 +1,25 @@
+model Question {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  text        String
+  description String?
+  image       Image[]
+
+  parentId  String? @db.ObjectId
+  lecture   Lecture @relation(fields: [lectureId], references: [id])
+  lectureId String  @db.ObjectId
+  courseId  String  @db.ObjectId
+  course    Course  @relation(fields: [courseId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Image {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  secureUrl  String
+  publicId   String
+  questionId String   @db.ObjectId
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@map("images")
+}

@@ -2,6 +2,15 @@ import type { Request, Response, NextFunction } from 'express'
 import AppError from '../../utils/error.ts'
 import Course from '../../models/course.model.js'
 import { uploadImage, deleteImage } from '../../utils/cloudinary.ts'
+import prisma from '@/lib/prisma.ts'
+
+async function main() {
+  // ... you will write your Prisma Client queries here
+  // const allUsers = await prisma.user.findMany()
+  // console.log(allUsers)
+  console.log('ji')
+}
+main()
 
 // get all courses
 export async function getAllCourses(

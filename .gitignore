@@ -35,6 +35,8 @@ out/
 logs/
 *.log
 
+server/generated
+
 # Add any other project-specific temporary or generated files/folders here
 # Example:
 # temp/

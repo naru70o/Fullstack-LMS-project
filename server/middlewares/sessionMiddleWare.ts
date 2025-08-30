@@ -19,7 +19,11 @@ interface User {
   image?: string | null | undefined
 }
 
-export async function session(req: Request, res: Response, next: NextFunction) {
+export async function session(
+  req: Request,
+  _res: Response,
+  next: NextFunction,
+) {
   try {
     const headers = new Headers()
     for (const [key, value] of Object.entries(req.headers)) {

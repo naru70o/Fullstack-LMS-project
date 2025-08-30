@@ -17,6 +17,7 @@ interface User {
   createdAt: Date
   updatedAt: Date
   image?: string | null | undefined
+  roles: string[]
 }
 
 export async function session(

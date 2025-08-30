@@ -1,16 +1,7 @@
 import type { Request, Response, NextFunction } from 'express'
 import AppError from '../../utils/error.ts'
-import Course from '../../models/course.model.js'
 import { uploadImage, deleteImage } from '../../utils/cloudinary.ts'
 import prisma from '@/lib/prisma.ts'
-
-async function main() {
-  // ... you will write your Prisma Client queries here
-  // const allUsers = await prisma.user.findMany()
-  // console.log(allUsers)
-  console.log('ji')
-}
-main()
 
 // get all courses
 export async function getAllCourses(
@@ -19,7 +10,11 @@ export async function getAllCourses(
   next: NextFunction,
 ) {
   try {
-    const courses = await Course.find().populate('instructor')
+    const courses = await prisma.course.findMany({
+      include: {
+        instructor: true,
+      },
+    })
     return res.status(200).json({
       status: 'success',
       data: {
@@ -52,14 +47,16 @@ export async function getCourse(
   }
 
   try {
-    const course = await Course.findById(courseId)
-      .populate({
-        path: 'modules',
-        populate: {
-          path: 'lectures',
+    const course = await prisma.course.findUnique({
+      where: { id: courseId },
+      include: {
+        modules: {
+          include: {
+            lectures: true,
+          },
         },
-      })
-      .populate('instructor')
+      },
+    })
     if (!course) {
       return next(new AppError('no course found with this id', 404))
     }
@@ -80,9 +77,16 @@ export async function getCourse(
   }
 }
 
+interface CreateCourse {
+  title: string
+  description: string
+  level: string[]
+  category: string[]
+}
+
 // create a new course
 export async function createNewCourse(
-  req: Request,
+  req: Request<{}, {}, CreateCourse>,
   res: Response,
   next: NextFunction,
 ) {
@@ -101,7 +105,7 @@ export async function createNewCourse(
   try {
     //3) getting the user
     const user = req.user
-    if (!user.roles.includes('instructor')) {
+    if (!user?.roles.includes('student')) {
       return next(new AppError('you are not an instructor', 403))
     }
 
@@ -120,21 +124,21 @@ export async function createNewCourse(
       return next(new AppError('Failed to upload image to Cloudinary', 500))
     }
 
+    console.log(level, category)
     //5) saving the data in the db
-    const course = new Course({
-      title,
-      description,
-      level,
-      category,
-      thumbnail: {
-        public_id,
-        secure_url,
+    const course = await prisma.course.create({
+      data: {
+        title,
+        description,
+        level: Array.isArray(level) ? level : [level],
+        category: Array.isArray(category) ? category : [category],
+        publicId: public_id,
+        secureUrl: secure_url,
+        instructorId: user.id,
       },
-      instructor: user._id,
     })
     console.log(course)
 
-    await course.save()
     return res.status(200).json({
       status: 'sucess',
       data: {
@@ -171,9 +175,12 @@ export async function deleteCourse(
       return next(new AppError('user not found', 404))
     }
     //3 get the course
-    const course = await Course.findOne({ _id: courseId }).populate(
-      'instructor',
-    )
+    const course = await prisma.course.findUnique({
+      where: { id: courseId },
+      include: {
+        instructor: true,
+      },
+    })
     console.log('here is the course', typeof course)
     if (!course) {
       return next(new AppError('course not found', 404))
@@ -188,9 +195,12 @@ export async function deleteCourse(
     }
 
     //5 delete the course
-    const deletedCourse = await Course.findByIdAndDelete(course._id)
+    // const deletedCourse = await Course.findByIdAndDelete(course._id)
+    const deletedCourse = await prisma.course.delete({
+      where: { id: course.id },
+    })
     //4 delete the course thumblain
-    await deleteImage(deletedCourse.thumbnail.public_id)
+    await deleteImage(deletedCourse.publicId)
 
     return res.status(200).json({
       status: 'success',
@@ -227,13 +237,17 @@ export async function updateCourse(
 
   try {
     //2 find the course
-    const course = await Course.findById(courseId)
+    // const course = await Course.findById(courseId)
+    const course = await prisma.course.findUnique({
+      where: { id: courseId },
+      include: { instructor: true },
+    })
     if (!course) {
       return next(new AppError('Course not found', 404))
     }
 
     //3 check if the user is the instructor of the course
-    if (course.instructor.toString() !== req.user._id.toString()) {
+    if (course.instructor.id.toString() !== req?.user?.id.toString()) {
       return next(
         new AppError('You are not authorized to update this course', 403),
       )
@@ -244,21 +258,22 @@ export async function updateCourse(
     const updates: {
       title?: string
       description?: string
-      level?: string
-      category?: string
+      level?: string[]
+      category?: string[]
       thumbnail?: { public_id: string; secure_url: string }
     } = {}
 
     if (title) updates.title = title
     if (description) updates.description = description
-    if (level) updates.level = level
-    if (category) updates.category = category
+    if (level) updates.level = Array.isArray(level) ? level : [level]
+    if (category)
+      updates.category = Array.isArray(category) ? category : [category]
 
     //5 handle thumbnail update if a new one is provided
     if (req.file) {
       // Delete old thumbnail
-      if (course.thumbnail && course.thumbnail.public_id) {
-        await deleteImage(course.thumbnail.public_id)
+      if (course.publicId) {
+        await deleteImage(course.publicId)
       }
       // Upload new thumbnail
       const CloudinaryUploadResult = await uploadImage(req.file.buffer)
@@ -275,11 +290,12 @@ export async function updateCourse(
     }
 
     //6 update the course
-    const updatedCourse = await Course.findByIdAndUpdate(
-      courseId,
-      { $set: updates },
-      { new: true, runValidators: true },
-    )
+    const updatedCourse = await prisma.course.update({
+      where: {
+        id: course.id,
+      },
+      data: updates,
+    })
 
     return res.status(200).json({
       status: 'success',

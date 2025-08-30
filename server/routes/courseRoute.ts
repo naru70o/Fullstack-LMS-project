@@ -28,7 +28,7 @@ const courseRouter: Router = express.Router()
 
 courseRouter
   .route('/newcourse')
-  .post(protectRoute, upload.single('thumbnail'), createNewCourse)
+  .post(session, upload.single('thumbnail'), createNewCourse)
 courseRouter
   .route('/updatecourse/:courseId')
   .patch(protectRoute, upload.single('thumbnail'), updateCourse)
@@ -37,7 +37,7 @@ courseRouter
   .route('/updatelecture/:lectureId')
   .patch(protectRoute, upload.single('lecture'), updateLecture)
 courseRouter.route('/newmodule/:courseId').post(protectRoute, createNewModule)
-courseRouter.route('/deletecourse/:courseId').delete(protectRoute, deleteCourse)
+courseRouter.route('/deletecourse/:courseId').delete(session, deleteCourse)
 courseRouter.route('/deleteModule/:moduleId').delete(protectRoute, deleteModule)
 courseRouter
   .route('/deletelacture/:lactureId')

@@ -2,8 +2,8 @@ model Course {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
   title       String @db.String
   description String @db.String
-  secureUrl String
-  publicId String
+  secureUrl   String
+  publicId    String
 
   level        String[]
   category     String[]

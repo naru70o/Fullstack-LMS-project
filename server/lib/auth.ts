@@ -15,4 +15,12 @@ export const auth = betterAuth({
       generateId: () => new ObjectId().toString(), // Default is `crypto.randomUUID()`
     },
   },
+  user: {
+    additionalFields: {
+      roles: {
+        type: 'string',
+        input: false,
+      },
+    },
+  },
 })

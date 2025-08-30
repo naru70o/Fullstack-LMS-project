@@ -23,6 +23,7 @@ import {
 } from '../controllers/courseController/lectureController.ts'
 import { askQuestion } from '../controllers/courseController/questionController.ts'
 import upload from '../utils/multer.ts'
+import { session } from '@/middlewares/sessionMiddleWare.ts'
 const courseRouter: Router = express.Router()
 
 courseRouter
@@ -44,7 +45,7 @@ courseRouter
 courseRouter
   .route('/newlecture/:moduleId')
   .post(protectRoute, upload.single('lecture'), createNewLecture)
-courseRouter.route('/').get(getAllCourses)
+courseRouter.route('/').get(session, getAllCourses)
 courseRouter.route('/:courseId').get(getCourse)
 courseRouter.route('/modules').get(getAllModules)
 courseRouter.route('/lectures').get(getAllLectures)

@@ -9,17 +9,21 @@ import hpp from 'hpp'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import dbConnection from './prisma/db.js'
+import { toNodeHandler } from 'better-auth/node'
 
 // file imports
 import authRouter from './routes/authRoute.ts'
 import userRouter from './routes/userRoutes.ts'
 import courseRouter from './routes/courseRoute.ts'
+import { auth } from './lib/auth.ts'
 // import AppError from "./utils/error.ts";
 dotenv.config()
 
 dbConnection() // this will connect the database
 
 const app = express()
+
+app.all('/api/auth/*splat', toNodeHandler(auth)) // For ExpressJS v5
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -68,7 +72,7 @@ app.use(
 )
 
 // ROUTES
-app.use('/api/v1/auth', authRouter)
+app.use('/', authRouter)
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/course', courseRouter)
 

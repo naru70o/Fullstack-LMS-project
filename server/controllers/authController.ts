@@ -14,7 +14,7 @@ import type { NextFunction, Request, Response } from 'express'
 export const signup = async (req: Request, res: Response) => {
   const { name, email, password, passwordConfirm } = req.body
   console.warn(
-    "Warning: 'oldModule.js' is deprecated and will be removed in a future release. Please use 'newModule.js' instead.",
+    "Warning: 'authController.ts' is deprecated and will be removed in a future release. Please use 'newModule.js' instead.",
   )
 
   try {
@@ -63,7 +63,7 @@ export const signup = async (req: Request, res: Response) => {
 export const signin = async (req: Request, res: Response) => {
   const { email, password } = req.body
   console.warn(
-    "Warning: 'oldModule.js' is deprecated and will be removed in a future release. Please use 'newModule.js' instead.",
+    "Warning: 'authController.ts' is deprecated and will be removed in a future release. Please use 'newModule.js' instead.",
   )
 
   try {
@@ -107,7 +107,7 @@ export const signin = async (req: Request, res: Response) => {
 // logout
 export const logout = (_req: Request, res: Response) => {
   console.warn(
-    "Warning: 'oldModule.js' is deprecated and will be removed in a future release. Please use 'newModule.js' instead.",
+    "Warning: 'authController.ts' is deprecated and will be removed in a future release. Please use 'newModule.js' instead.",
   )
 
   try {
@@ -137,7 +137,7 @@ export const forgetPassword = async (
   //1 get the user based on a posted email
   const { email } = req.body
   console.warn(
-    "Warning: 'oldModule.js' is deprecated and will be removed in a future release. Please use 'newModule.js' instead.",
+    "Warning: 'authController.ts' is deprecated and will be removed in a future release. Please use 'newModule.js' instead.",
   )
 
   try {
@@ -188,7 +188,7 @@ export const resetPassword = async (
     //1 get the user based on a token
     const { token } = req.params
     console.warn(
-      "Warning: 'oldModule.js' is deprecated and will be removed in a future release. Please use 'newModule.js' instead.",
+      "Warning: 'authController.ts' is deprecated and will be removed in a future release. Please use 'newModule.js' instead.",
     )
 
     if (!token) {

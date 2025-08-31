@@ -19,7 +19,7 @@ import {
   deleteLacture,
   updateLecture,
   getAllLectures,
-  deleteallactures,
+  deleteAllLectures,
 } from '../controllers/courseController/lectureController.ts'
 import { askQuestion } from '../controllers/courseController/questionController.ts'
 import upload from '../utils/multer.ts'
@@ -49,7 +49,7 @@ courseRouter.route('/').get(session, getAllCourses)
 courseRouter.route('/:courseId').get(getCourse)
 courseRouter.route('/modules').get(getAllModules)
 courseRouter.route('/lectures').get(getAllLectures)
-courseRouter.route('/deletelectures').delete(deleteallactures)
+courseRouter.route('/deletelectures').delete(deleteAllLectures)
 
 // Questions and Answers
 courseRouter

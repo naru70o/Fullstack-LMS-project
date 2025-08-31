@@ -2,12 +2,13 @@ model Lecture {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String
+  duration    Int    @default(0) // duration in minutes
+  secureUrl   String
 
   module       Module  @relation(fields: [moduleId], references: [id])
   moduleId     String  @db.ObjectId
   instructor   User    @relation(fields: [instructorId], references: [id])
   instructorId String  @db.ObjectId
-  duration     Int     @default(0) // duration in minutes
   publicId     String
   isPreview    Boolean @default(false)
 

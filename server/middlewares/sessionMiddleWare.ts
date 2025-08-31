@@ -1,5 +1,6 @@
 import { auth } from '@/lib/auth.ts'
 import AppError from '@/utils/error.ts'
+import type { User } from '@/utils/types.ts'
 import type { NextFunction, Response, Request } from 'express'
 // import { Request } from 'express';
 
@@ -7,17 +8,6 @@ declare module 'express' {
   interface Request {
     user?: User
   }
-}
-
-interface User {
-  id: string
-  email: string
-  emailVerified: boolean
-  name: string
-  createdAt: Date
-  updatedAt: Date
-  image?: string | null | undefined
-  roles: string[]
 }
 
 export async function session(

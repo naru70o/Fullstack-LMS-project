@@ -2,6 +2,13 @@ import type { Request, Response, NextFunction } from 'express'
 import AppError from '../../utils/error.ts'
 import { uploadImage, deleteImage } from '../../utils/cloudinary.ts'
 import prisma from '@/lib/prisma.ts'
+import type { User } from '@/utils/types.ts'
+
+declare module 'express' {
+  interface Request {
+    user?: User
+  }
+}
 
 // get all courses
 export async function getAllCourses(
@@ -105,7 +112,7 @@ export async function createNewCourse(
   try {
     //3) getting the user
     const user = req.user
-    if (!user?.roles.includes('student')) {
+    if (!user?.roles.includes('instructor')) {
       return next(new AppError('you are not an instructor', 403))
     }
 

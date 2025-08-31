@@ -3,6 +3,7 @@ import AppError from '../../utils/error.ts'
 import { uploadImage, deleteImage } from '../../utils/cloudinary.ts'
 import prisma from '@/lib/prisma.ts'
 import type { User } from '@/utils/types.ts'
+import { deleteMultipleLectureVideos } from '@/utils/helpers.ts'
 
 declare module 'express' {
   interface Request {
@@ -30,14 +31,12 @@ export async function getAllCourses(
       message: 'courses fetched successfully',
     })
   } catch (error) {
-    if (error instanceof AppError) {
-      return next(
-        new AppError(
-          `internal server error while fetching courses ${error.message}`,
-          500,
-        ),
-      )
-    }
+    return next(
+      new AppError(
+        `internal server error while fetching courses ${error.message}`,
+        500,
+      ),
+    )
   }
 }
 
@@ -202,12 +201,20 @@ export async function deleteCourse(
     }
 
     //5 delete the course
-    // const deletedCourse = await Course.findByIdAndDelete(course._id)
     const deletedCourse = await prisma.course.delete({
       where: { id: course.id },
+      include: { modules: { include: { lectures: true } } },
     })
+
     //4 delete the course thumblain
     await deleteImage(deletedCourse.publicId)
+
+    // 5 delete all the lesson which is related to the course
+    const deletedLectures = deletedCourse.modules.flatMap((module) =>
+      module.lectures.map((lecture) => lecture.publicId),
+    )
+
+    await deleteMultipleLectureVideos({ publicIds: deletedLectures })
 
     return res.status(200).json({
       status: 'success',

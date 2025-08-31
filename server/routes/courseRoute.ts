@@ -43,10 +43,10 @@ courseRouter
   .route('/newlecture/:moduleId')
   .post(session, upload.single('lecture'), createNewLecture)
 courseRouter.route('/').get(session, getAllCourses)
-courseRouter.route('/:courseId').get(getCourse)
-courseRouter.route('/modules').get(getAllModules)
-courseRouter.route('/lectures').get(getAllLectures)
-courseRouter.route('/deletelectures').delete(deleteAllLectures)
+courseRouter.route('/:courseId').get(session, getCourse)
+courseRouter.route('/modules').get(session, getAllModules)
+courseRouter.route('/lectures').get(session, getAllLectures)
+courseRouter.route('/deletelectures').delete(session, deleteAllLectures)
 
 // Questions and Answers
 // courseRouter

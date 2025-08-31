@@ -17,11 +17,18 @@ export async function getAllModules(
   next: NextFunction,
 ) {
   try {
+    console.log('Fetching all modules')
     const modules = await prisma.module.findMany({
       include: {
         lectures: true,
       },
     })
+    if (!modules) {
+      return res.status(404).json({
+        message: 'No modules found',
+        status: 'fail',
+      })
+    }
     return res.status(200).json({
       message: 'modules fetched successfully',
       status: 'success',
@@ -30,7 +37,10 @@ export async function getAllModules(
       },
     })
   } catch (error) {
-    return next(new AppError('internal server error', 500))
+    return res.status(500).json({
+      message: 'Internal server error',
+      status: 'error',
+    })
   }
 }
 
@@ -213,14 +223,14 @@ export async function deleteModule(
 
     // decrement the course duration
     await prisma.course.update({
-      where: { id: course.id },
+      where: { id: course.course.id },
       data: { duration: { decrement: lecturesDuration } },
     })
 
     //5.2 decrement the total number of lectures
     const totalLectures = module?.lectures.length || 0
     await prisma.course.update({
-      where: { id: course.id },
+      where: { id: course.course.id },
       data: { numberOfLectures: { decrement: totalLectures } },
     })
 

@@ -21,7 +21,7 @@ import {
   getAllLectures,
   deleteAllLectures,
 } from '../controllers/courseController/lectureController.ts'
-import { askQuestion } from '../controllers/courseController/questionController.ts'
+// import { askQuestion } from '../controllers/courseController/questionController.ts'
 import upload from '../utils/multer.ts'
 const courseRouter: Router = express.Router()
 
@@ -49,8 +49,8 @@ courseRouter.route('/lectures').get(getAllLectures)
 courseRouter.route('/deletelectures').delete(deleteAllLectures)
 
 // Questions and Answers
-courseRouter
-  .route('/lecture/:lectureId/question')
-  .post(session, upload.single('questionImage'), askQuestion)
+// courseRouter
+//   .route('/lecture/:lectureId/question')
+//   .post(session, upload.single('questionImage'), askQuestion)
 
 export default courseRouter

@@ -1,3 +1,9 @@
+/**
+ * @deprecated
+ * This file is deprecated. Use `betterAuthController.ts` instead.
+ * Will be removed in version 2.0.
+ */
+
 import crypto from 'crypto'
 import User from '../models/user.model.js'
 import generateToken from '../utils/jsonWebTokens.js'
@@ -7,6 +13,10 @@ import type { NextFunction, Request, Response } from 'express'
 
 export const signup = async (req: Request, res: Response) => {
   const { name, email, password, passwordConfirm } = req.body
+  console.warn(
+    "Warning: 'oldModule.js' is deprecated and will be removed in a future release. Please use 'newModule.js' instead.",
+  )
+
   try {
     // check user is signedup
     const userExists = await User.findOne({ email })
@@ -52,6 +62,9 @@ export const signup = async (req: Request, res: Response) => {
 
 export const signin = async (req: Request, res: Response) => {
   const { email, password } = req.body
+  console.warn(
+    "Warning: 'oldModule.js' is deprecated and will be removed in a future release. Please use 'newModule.js' instead.",
+  )
 
   try {
     // user Exist
@@ -93,6 +106,10 @@ export const signin = async (req: Request, res: Response) => {
 
 // logout
 export const logout = (_req: Request, res: Response) => {
+  console.warn(
+    "Warning: 'oldModule.js' is deprecated and will be removed in a future release. Please use 'newModule.js' instead.",
+  )
+
   try {
     res.cookie('token', '', {
       maxAge: 0,
@@ -119,6 +136,10 @@ export const forgetPassword = async (
 ) => {
   //1 get the user based on a posted email
   const { email } = req.body
+  console.warn(
+    "Warning: 'oldModule.js' is deprecated and will be removed in a future release. Please use 'newModule.js' instead.",
+  )
+
   try {
     const user = await User.findOne({ email })
     if (!user) {
@@ -166,6 +187,10 @@ export const resetPassword = async (
   try {
     //1 get the user based on a token
     const { token } = req.params
+    console.warn(
+      "Warning: 'oldModule.js' is deprecated and will be removed in a future release. Please use 'newModule.js' instead.",
+    )
+
     if (!token) {
       return next(new appError('token is invalid or has expired', 400))
     }

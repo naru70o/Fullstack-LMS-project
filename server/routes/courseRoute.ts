@@ -1,6 +1,6 @@
 import express from 'express'
 import type { Router } from 'express'
-import { protectRoute } from '../middlewares/protectRoute.ts'
+import { session } from '../middlewares/sessionMiddleWare.ts'
 import {
   getAllCourses,
   deleteCourse,
@@ -19,40 +19,38 @@ import {
   deleteLacture,
   updateLecture,
   getAllLectures,
-  deleteallactures,
+  deleteAllLectures,
 } from '../controllers/courseController/lectureController.ts'
-import { askQuestion } from '../controllers/courseController/questionController.ts'
+// import { askQuestion } from '../controllers/courseController/questionController.ts'
 import upload from '../utils/multer.ts'
 const courseRouter: Router = express.Router()
 
 courseRouter
   .route('/newcourse')
-  .post(protectRoute, upload.single('thumbnail'), createNewCourse)
+  .post(session, upload.single('thumbnail'), createNewCourse)
 courseRouter
   .route('/updatecourse/:courseId')
-  .patch(protectRoute, upload.single('thumbnail'), updateCourse)
-courseRouter.route('/updatemodule/:moduleId').patch(protectRoute, updateModule)
+  .patch(session, upload.single('thumbnail'), updateCourse)
+courseRouter.route('/updatemodule/:moduleId').patch(session, updateModule)
 courseRouter
   .route('/updatelecture/:lectureId')
-  .patch(protectRoute, upload.single('lecture'), updateLecture)
-courseRouter.route('/newmodule/:courseId').post(protectRoute, createNewModule)
-courseRouter.route('/deletecourse/:courseId').delete(protectRoute, deleteCourse)
-courseRouter.route('/deleteModule/:moduleId').delete(protectRoute, deleteModule)
-courseRouter
-  .route('/deletelacture/:lactureId')
-  .delete(protectRoute, deleteLacture)
+  .patch(session, upload.single('lecture'), updateLecture)
+courseRouter.route('/newmodule/:courseId').post(session, createNewModule)
+courseRouter.route('/deletecourse/:courseId').delete(session, deleteCourse)
+courseRouter.route('/deleteModule/:moduleId').delete(session, deleteModule)
+courseRouter.route('/deletelacture/:lactureId').delete(session, deleteLacture)
 courseRouter
   .route('/newlecture/:moduleId')
-  .post(protectRoute, upload.single('lecture'), createNewLecture)
-courseRouter.route('/').get(getAllCourses)
-courseRouter.route('/:courseId').get(getCourse)
-courseRouter.route('/modules').get(getAllModules)
-courseRouter.route('/lectures').get(getAllLectures)
-courseRouter.route('/deletelectures').delete(deleteallactures)
+  .post(session, upload.single('lecture'), createNewLecture)
+courseRouter.route('/').get(session, getAllCourses)
+courseRouter.route('/:courseId').get(session, getCourse)
+courseRouter.route('/modules').get(session, getAllModules)
+courseRouter.route('/lectures').get(session, getAllLectures)
+courseRouter.route('/deletelectures').delete(session, deleteAllLectures)
 
 // Questions and Answers
-courseRouter
-  .route('/lecture/:lectureId/question')
-  .post(protectRoute, upload.single('questionImage'), askQuestion)
+// courseRouter
+//   .route('/lecture/:lectureId/question')
+//   .post(session, upload.single('questionImage'), askQuestion)
 
 export default courseRouter

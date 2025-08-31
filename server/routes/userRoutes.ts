@@ -10,18 +10,18 @@ import {
   updateProfileImage,
   changeUserRole,
 } from '../controllers/usersController.ts'
-import { protectRoute } from '../middlewares/protectRoute.ts'
+import { session } from '../middlewares/sessionMiddleWare.ts'
 
 const userRouter: Router = express.Router()
 
 userRouter.patch('/forgetpassword', forgetPassword)
 userRouter.route('/resetpassword/:token').patch(resetPassword)
-userRouter.route('/updateprofile').patch(protectRoute, updateProfile)
-userRouter.route('/changepassword').patch(protectRoute, changepassword)
+userRouter.route('/updateprofile').patch(session, updateProfile)
+userRouter.route('/changepassword').patch(session, changepassword)
 userRouter
   .route('/updateprofilepicture')
-  .patch(protectRoute, upload.single('profile'), updateProfileImage)
-userRouter.route('/updaterole').post(protectRoute, changeUserRole)
-userRouter.route('/').get(protectRoute, getAllUsers)
+  .patch(session, upload.single('profile'), updateProfileImage)
+userRouter.route('/updaterole').post(session, changeUserRole)
+userRouter.route('/').get(session, getAllUsers)
 
 export default userRouter

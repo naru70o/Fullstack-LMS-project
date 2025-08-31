@@ -1,0 +1,21 @@
+model Lecture {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  duration    Int    @default(0) // duration in minutes
+  secureUrl   String
+
+  module       Module  @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  moduleId     String  @db.ObjectId
+  instructor   User    @relation(fields: [instructorId], references: [id])
+  instructorId String  @db.ObjectId
+  publicId     String
+  isPreview    Boolean @default(false)
+
+  order     Int
+  questions Question[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@map("lectures")
+}

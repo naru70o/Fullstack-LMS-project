@@ -4,6 +4,7 @@ model Course {
   description String @db.String
   secureUrl   String
   publicId    String
+  duration    Int @default(0) // in minutes
 
   level        String[]
   category     String[]

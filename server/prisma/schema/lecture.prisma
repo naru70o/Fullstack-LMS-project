@@ -5,7 +5,7 @@ model Lecture {
   duration    Int    @default(0) // duration in minutes
   secureUrl   String
 
-  module       Module  @relation(fields: [moduleId], references: [id])
+  module       Module  @relation(fields: [moduleId], references: [id], onDelete: Cascade)
   moduleId     String  @db.ObjectId
   instructor   User    @relation(fields: [instructorId], references: [id])
   instructorId String  @db.ObjectId

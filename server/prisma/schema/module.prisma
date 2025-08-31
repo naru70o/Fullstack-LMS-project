@@ -3,8 +3,9 @@ model Module {
   title       String
   description String
   optional    Boolean @default(false)
+  order       Int
 
-  course   Course @relation(fields: [courseId], references: [id])
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
   courseId String @db.ObjectId
 
   lectures  Lecture[]

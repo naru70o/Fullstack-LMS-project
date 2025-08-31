@@ -1,9 +1,27 @@
-import Module from '../../models/module.model.js'
+import prisma from '@/lib/prisma.ts'
+import AppError from '@/utils/error.ts'
+import { deleteMultipleLectureVideos } from '@/utils/helpers.ts'
+import type { User } from '@/utils/types.ts'
+import type { NextFunction, Request, Response } from 'express'
+
+declare module 'express' {
+  interface Request {
+    user?: User
+  }
+}
 
 // Get all modules
-export async function getAllModules(req, res, next) {
+export async function getAllModules(
+  _req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   try {
-    const modules = await Module.find()
+    const modules = await prisma.module.findMany({
+      include: {
+        lectures: true,
+      },
+    })
     return res.status(200).json({
       message: 'modules fetched successfully',
       status: 'success',
@@ -17,28 +35,35 @@ export async function getAllModules(req, res, next) {
 }
 
 // update a module
-export async function updateModule(req, res, next) {
+export async function updateModule(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   //1 getting the params
   const { moduleId } = req.params
+  const { user } = req
   if (!moduleId) {
     return next(new AppError('Module ID is required', 400))
   }
 
   try {
     //2 find the module
-    const module = await Module.findById(moduleId)
+    const module = await prisma.module.findUnique({
+      where: { id: moduleId },
+      include: { course: true },
+    })
     if (!module) {
       return next(new AppError('Module not found', 404))
     }
 
     //3 find the course to verify instructor
-    const course = await Course.findById(module.course)
-    if (!course) {
+    if (!module.course) {
       return next(new AppError('Associated course not found', 404))
     }
 
     //4 check if the user is the instructor of the course
-    if (course.instructor.toString() !== req.user._id.toString()) {
+    if (module.course.instructorId.toString() !== user?.id.toString()) {
       return next(
         new AppError('You are not authorized to update this module', 403),
       )
@@ -46,17 +71,20 @@ export async function updateModule(req, res, next) {
 
     //5 get the fields to update from the body
     const { title, description, optional } = req.body
-    const updates = {}
+    const updates: {
+      title?: string
+      description?: string
+      optional?: boolean
+    } = {}
     if (title) updates.title = title
     if (description) updates.description = description
     if (optional !== undefined) updates.optional = optional
 
     //6 update the module
-    const updatedModule = await Module.findByIdAndUpdate(
-      moduleId,
-      { $set: updates },
-      { new: true, runValidators: true },
-    )
+    const updatedModule = await prisma.module.update({
+      where: { id: moduleId },
+      data: updates,
+    })
 
     return res.status(200).json({
       status: 'success',
@@ -74,7 +102,11 @@ export async function updateModule(req, res, next) {
 }
 
 // TODO, create new module for a course
-export async function createNewModule(req, res, next) {
+export async function createNewModule(
+  req: Request<{ courseId: string }>,
+  res: Response,
+  next: NextFunction,
+) {
   // get the modules course id
   const { courseId } = req.params
   if (!courseId) return next(new AppError('course id is required', 400))
@@ -84,7 +116,10 @@ export async function createNewModule(req, res, next) {
     return next(new AppError('title and description are required', 400))
   try {
     // Finding the course to get the current number of modules
-    const course = await Course.findById(courseId).populate('modules')
+    const course = await prisma.course.findUnique({
+      where: { id: courseId },
+      include: { modules: true },
+    })
     if (!course) {
       return next(new AppError('Course not found', 404))
     }
@@ -93,14 +128,19 @@ export async function createNewModule(req, res, next) {
     const newOrder = course.modules.length + 1
 
     // save the module
-    const module = await Module.create({
-      title,
-      description,
-      course: courseId,
-      order: newOrder,
+    const module = await prisma.module.create({
+      data: {
+        title,
+        description,
+        course: { connect: { id: courseId } },
+        order: newOrder,
+      },
     })
     // Adding the new module to the course's modules array
-    await Course.findByIdAndUpdate(courseId, { $push: { modules: module._id } })
+    await prisma.course.update({
+      where: { id: courseId },
+      data: { modules: { connect: { id: module.id } } },
+    })
 
     return res.status(200).json({
       status: 'success',
@@ -120,7 +160,11 @@ export async function createNewModule(req, res, next) {
 }
 
 // delete module
-export async function deleteModule(req, res, next) {
+export async function deleteModule(
+  req: Request<{ moduleId: string }>,
+  res: Response,
+  next: NextFunction,
+) {
   //1 getting the params
   const { moduleId } = req.params
   if (!moduleId) {
@@ -134,25 +178,56 @@ export async function deleteModule(req, res, next) {
       return next(new AppError('user not found', 404))
     }
 
-    //3 get the course and then the instructor
-    const course = await Course.findOne({ modules: moduleId }).populate(
-      'instructor',
-    )
+    //3 get the course and the instructor
+    const course = await prisma.module.findUnique({
+      where: { id: moduleId },
+      include: { course: { include: { instructor: true } } },
+    })
+
     if (!course) {
       return next(new AppError('course not found', 404))
     }
 
     //4 checking the if the user has the permition to delete
-    if (!user.id.toString() === course.instructor.id.toString()) {
+    if (user.id.toString() !== course.course.instructor.id.toString()) {
       return next(
         new AppError('you are not authorized to delete this module', 403),
       )
     }
 
-    const module = await Module.find({ _id: moduleId })
+    const module = await prisma.module.findUnique({
+      where: { id: moduleId },
+      include: {
+        lectures: true,
+      },
+    })
+    const publicIds = module?.lectures.map((lecture) => lecture.publicId) || []
+    const lecturesDuration =
+      module?.lectures.reduce(
+        (total, lecture) => total + lecture.duration,
+        0,
+      ) || 0
 
-    //5 delete the module
-    await Module.findByIdAndDelete(moduleId)
+    //5.1 delete the lecture videos
+    await deleteMultipleLectureVideos({ publicIds })
+
+    // decrement the course duration
+    await prisma.course.update({
+      where: { id: course.id },
+      data: { duration: { decrement: lecturesDuration } },
+    })
+
+    //5.2 decrement the total number of lectures
+    const totalLectures = module?.lectures.length || 0
+    await prisma.course.update({
+      where: { id: course.id },
+      data: { numberOfLectures: { decrement: totalLectures } },
+    })
+
+    //5.3 delete the module
+    await prisma.module.delete({
+      where: { id: moduleId },
+    })
 
     return res.status(200).json({
       status: 'success',

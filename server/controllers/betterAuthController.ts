@@ -2,18 +2,23 @@ import { auth } from '@/lib/auth.ts'
 import type { Request, Response } from 'express'
 
 export async function signupEmailAndPassword(
-  req: Request<{}, {}, { name: string; email: string; password: string }>,
+  req: Request<
+    {},
+    {},
+    { name: string; email: string; password: string; image: string }
+  >,
   res: Response,
 ) {
   try {
-    const { name, email, password } = req.body
+    const { name, email, password, image } = req.body
     console.log(name, email, password)
+
     const data = await auth.api.signUpEmail({
       body: {
         name,
         email,
         password,
-        image: 'https://example.com/image.png',
+        image: image ? image : 'default.png',
       },
     })
 

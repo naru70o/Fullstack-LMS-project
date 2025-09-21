@@ -42,7 +42,7 @@ courseRouter.route('/deletelacture/:lactureId').delete(session, deleteLacture)
 courseRouter
   .route('/newlecture/:moduleId')
   .post(session, upload.single('lecture'), createNewLecture)
-courseRouter.route('/').get(session, getAllCourses)
+courseRouter.route('/').get(getAllCourses)
 courseRouter.route('/:courseId').get(session, getCourse)
 courseRouter.route('/modules').get(session, getAllModules)
 courseRouter.route('/lectures').get(session, getAllLectures)

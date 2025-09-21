@@ -14,7 +14,7 @@ declare module 'express' {
 export async function getAllModules(
   _req: Request,
   res: Response,
-  next: NextFunction,
+  _next: NextFunction,
 ) {
   try {
     console.log('Fetching all modules')

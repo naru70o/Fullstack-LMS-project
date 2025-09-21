@@ -47,7 +47,13 @@ app.use(
     origin: 'http://localhost:3001',
     methods: ['GET', 'POST', 'PUT', 'PATCH'],
     credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Custom-Header'],
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'X-Custom-Header',
+      'Cookie',
+      'Set-Cookie',
+    ],
   }),
 )
 app.use(cookieParser())

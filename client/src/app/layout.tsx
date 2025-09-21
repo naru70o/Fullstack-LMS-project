@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { Poppins,Outfit } from "next/font/google";
+import { Poppins, Outfit } from "next/font/google";
 import "./globals.css";
-
+import { Toaster } from "react-hot-toast";
 
 const PoppinsFont = Poppins({
   variable: "--font-poppins",
@@ -26,11 +26,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang='en'>
       <body
         className={`${PoppinsFont.variable} ${OutfitFont.variable} antialiased overflow-x-hidden`}
       >
         {children}
+        <Toaster />
       </body>
     </html>
   );

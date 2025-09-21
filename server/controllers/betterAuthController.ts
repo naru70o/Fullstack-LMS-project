@@ -1,5 +1,6 @@
 import { auth } from '@/lib/auth.ts'
 import type { Request, Response } from 'express'
+import { APIError } from 'better-auth/api'
 
 export async function signupEmailAndPassword(
   req: Request<
@@ -24,10 +25,16 @@ export async function signupEmailAndPassword(
 
     return res.status(201).json({ success: true, data })
   } catch (error) {
-    console.log(error)
-    return res
-      .status(500)
-      .json({ success: false, error: 'Internal Server Error' })
+    if (error instanceof APIError) {
+      console.log(error.body?.code, error.body?.message)
+      return res
+        .status(401)
+        .json({ code: error?.body?.code, message: error.body?.message })
+    } else {
+      return res
+        .status(500)
+        .json({ success: false, error: 'Internal Server Error' })
+    }
   }
 }
 
@@ -45,9 +52,14 @@ export async function signinEmail(req: Request, res: Response) {
       data: data,
     })
   } catch (error) {
-    console.log(error)
-    return res
-      .status(500)
-      .json({ success: false, error: 'Internal Server Error' })
+    if (error instanceof APIError) {
+      return res
+        .status(401)
+        .json({ code: error?.body?.code, message: error.body?.message })
+    } else {
+      return res
+        .status(500)
+        .json({ success: false, error: 'Internal Server Error' })
+    }
   }
 }

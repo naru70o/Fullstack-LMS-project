@@ -22,7 +22,7 @@ async function main(
     //   return { status: "error", message: "passwords do not match" };
     // }
 
-    await fetch(`http://localhost:3000/sign-up/email`, {
+    const response = await fetch(`http://localhost:3000/sign-up/email`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -30,9 +30,23 @@ async function main(
       body: JSON.stringify(user),
     });
 
-    return { status: "success", message: "user created successfully" };
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log(data);
+      return { status: "success", message: "user created successfully" };
+    } else {
+      console.error("Signup failed:", data);
+      return {
+        status: "error",
+        message: data.message || "An unknown error occurred.",
+      };
+    }
   } catch (error) {
-    return { status: "error", message: "something went wrong" };
+    return {
+      status: "error",
+      message: "Something went wrong. Please try again.",
+    };
   }
 }
 export default main;

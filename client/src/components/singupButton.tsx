@@ -1,5 +1,5 @@
 "use client";
-import React, { useActionState } from "react";
+import React, { useActionState, useEffect } from "react";
 import {
   Dialog,
   //   DialogClose,
@@ -15,10 +15,20 @@ import { Input } from "./ui/input";
 import Image from "next/image";
 import Link from "next/link";
 import signupAction from "@/components/actions/singupAction";
+import toast from "react-hot-toast";
 
 export const SignupButton = () => {
   const [message, formAction, pending] = useActionState(signupAction, null);
   console.log(message);
+
+  useEffect(() => {
+    if (message?.status === "success") {
+      toast.success(message.message);
+    } else if (message?.status === "error") {
+      toast.error(message.message);
+    }
+  }, [message]);
+
   return (
     <Dialog>
       {/* <form action={formAction}> */}
@@ -105,7 +115,7 @@ export const SignupButton = () => {
                 className='w-full bg-[var(--primary-color)] text-white font-bold hover:bg-[var(--primary-color)]/90'
                 disabled={pending}
               >
-                Sign In
+                Sign Up
               </Button>
             </form>
             <p className='text-popover-foreground text-center font-poppins text-[14px] font-normal leading-[18px]'>

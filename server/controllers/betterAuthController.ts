@@ -44,11 +44,24 @@ export async function signinEmail(req: Request, res: Response) {
   const { email, password } = req.body
   try {
     const data = await auth.api.signInEmail({
+      asResponse: true,
       body: {
         email,
         password,
       },
     })
+
+    console.log(data)
+    if (!data) {
+      return res.status(401).json({
+        status: 'error',
+        message: 'invalid credentials',
+      })
+    }
+    const cookie = data.headers.get('set-cookie')
+    console.log(cookie)
+    if (!cookie) return
+    res.setHeader('Set-Cookie', cookie)
 
     return res.status(200).json({
       status: 'success',

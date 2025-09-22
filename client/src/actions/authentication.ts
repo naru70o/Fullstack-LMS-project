@@ -64,6 +64,7 @@ export async function signinAction(
       email: formData.get("email") as string,
       password: formData.get("password") as string,
     };
+
     const response = await fetch(apiRoutes.auth.signInEmail, {
       method: "POST",
       body: JSON.stringify(user),

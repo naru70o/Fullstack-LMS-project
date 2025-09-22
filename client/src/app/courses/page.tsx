@@ -4,7 +4,6 @@ import { Banner } from "@/components/components/banner";
 import Footer from "@/components/components/footer";
 import { Hero } from "@/components/components/hero";
 import { apiRoutes } from "@/components/lib/apiRoutes";
-// import toast from "react-hot-toast";
 
 const Page = async function () {
   const data = await fetch(apiRoutes.courses.getAllCourses, {

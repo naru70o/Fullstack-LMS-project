@@ -14,6 +14,10 @@ export const auth = betterAuth({
     database: {
       generateId: () => new ObjectId().toString(), // Default is `crypto.randomUUID()`
     },
+    defaultCookieAttributes: {
+      sameSite: 'none',
+      secure: true,
+    },
   },
   user: {
     additionalFields: {
@@ -23,4 +27,5 @@ export const auth = betterAuth({
       },
     },
   },
+  trustedOrigins: ['http://localhost:3001'],
 })

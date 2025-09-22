@@ -8,7 +8,7 @@ import hpp from 'hpp'
 // import mongoSanitize from "express-mongo-sanitize";
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import dbConnection from './prisma/db.js'
+// import dbConnection from './prisma/db.js'
 import { toNodeHandler } from 'better-auth/node'
 
 // file imports
@@ -19,9 +19,24 @@ import { auth } from './lib/auth.ts'
 // import AppError from "./utils/error.ts";
 dotenv.config()
 
-dbConnection() // this will connect the database
+// dbConnection() // this will connect the database
 
 const app = express()
+
+app.use(cookieParser())
+app.use(
+  cors({
+    origin: 'http://localhost:3001',
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    credentials: true,
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'X-Custom-Header',
+      'Cookie',
+    ],
+  }),
+)
 
 app.all('/api/auth/*splat', toNodeHandler(auth)) // For ExpressJS v5
 
@@ -42,21 +57,6 @@ app.use(hpp())
 // Body parser
 app.use(express.json({ limit: '10kb' }))
 app.use(express.urlencoded({ extended: true, limit: '10kb' }))
-app.use(
-  cors({
-    origin: 'http://localhost:3001',
-    methods: ['GET', 'POST', 'PUT', 'PATCH'],
-    credentials: true,
-    allowedHeaders: [
-      'Content-Type',
-      'Authorization',
-      'X-Custom-Header',
-      'Cookie',
-      'Set-Cookie',
-    ],
-  }),
-)
-app.use(cookieParser())
 
 // GLOBAL ERROR HANDLER
 // app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
@@ -78,7 +78,7 @@ app.use(
 )
 
 // ROUTES
-app.use('/', authRouter)
+app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/course', courseRouter)
 

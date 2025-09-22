@@ -23,7 +23,9 @@ export async function signupEmailAndPassword(
       },
     })
 
-    return res.status(201).json({ success: true, data })
+    return res
+      .status(201)
+      .json({ status: 'success', message: 'signed in the user', data })
   } catch (error) {
     if (error instanceof APIError) {
       console.log(error.body?.code, error.body?.message)
@@ -41,25 +43,31 @@ export async function signupEmailAndPassword(
 export async function signinEmail(req: Request, res: Response) {
   const { email, password } = req.body
   try {
-    const data = auth.api.signInEmail({
+    const data = await auth.api.signInEmail({
       body: {
         email,
         password,
       },
     })
-    return res.status(201).json({
+
+    return res.status(200).json({
+      status: 'success',
       message: 'signed in the user',
       data: data,
     })
   } catch (error) {
     if (error instanceof APIError) {
-      return res
-        .status(401)
-        .json({ code: error?.body?.code, message: error.body?.message })
+      console.error('API Error during sign-in:', error.body)
+      return res.status(401).json({
+        status: 'error',
+        message: error.body?.message,
+        code: error.body?.code,
+      })
     } else {
+      console.error('Internal server error during sign-in:', error)
       return res
         .status(500)
-        .json({ success: false, error: 'Internal Server Error' })
+        .json({ status: 'error', message: 'Internal Server Error' })
     }
   }
 }

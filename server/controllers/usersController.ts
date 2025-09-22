@@ -5,24 +5,31 @@ import type { Request, Response, NextFunction } from 'express'
 import { auth } from '@/lib/auth.ts'
 import { fromNodeHeaders } from 'better-auth/node'
 
-export const getAllUsers = async (
-  _req: Request,
+export async function getUserSession(
+  req: Request,
   res: Response,
-  next: NextFunction,
-) => {
+  _next: NextFunction,
+) {
   try {
-    const users = await prisma.user.findMany()
-    console.log(users)
+    const user = req.user
+    if (!user) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'user not found',
+      })
+    }
+
     return res.status(200).json({
       status: 'success',
       data: {
-        users,
+        user,
       },
-      message: 'Users fetched successfully',
     })
   } catch (error) {
-    console.log(error)
-    return next(new AppError('Internal server error', 500))
+    return res.status(500).json({
+      status: 'error',
+      message: 'internal server error',
+    })
   }
 }
 

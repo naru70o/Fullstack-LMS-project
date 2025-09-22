@@ -14,7 +14,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import Image from "next/image";
 import Link from "next/link";
-import signupAction from "@/components/actions/singupAction";
+import { signupAction } from "@/components/actions/authentication";
 import toast from "react-hot-toast";
 
 export const SignupButton = () => {

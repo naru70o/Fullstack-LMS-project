@@ -23,6 +23,13 @@ export async function getAllCourses(
         instructor: true,
       },
     })
+
+    res.cookie('test', 'test', {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+    })
+
     return res.status(200).json({
       status: 'success',
       data: {

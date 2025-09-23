@@ -1,5 +1,7 @@
 "use server";
 import { apiRoutes } from "@/components/lib/apiRoutes";
+import { cookies } from "next/headers";
+import { parseSetCookie } from "../util/parseSetCookie";
 
 export async function signupAction(
   previousState,
@@ -33,9 +35,18 @@ export async function signupAction(
     });
 
     const data = await response.json();
-
     if (response.ok) {
       console.log(data);
+
+      const setCookieHeader = response.headers.get("set-cookie");
+      console.log(setCookieHeader, "is this undefined or null dude");
+      if (setCookieHeader) {
+        const parsedCookie = parseSetCookie(setCookieHeader);
+        (await cookies()).set(parsedCookie.name, parsedCookie.value, {
+          ...parsedCookie.options,
+        });
+      }
+
       return { status: "success", message: "user created successfully" };
     } else {
       console.error("Signup failed:", data);
@@ -75,7 +86,15 @@ export async function signinAction(
     });
 
     const data = await response.json();
-
+    (await cookies()).set("token", "testdsajkal", { maxAge: 12000 });
+    const setCookieHeader = response.headers.get("set-cookie");
+    if (setCookieHeader) {
+      // Used Next.js server-side header API to set cookie (e.g. next/headers)
+      const parsedCookie = parseSetCookie(setCookieHeader);
+      (await cookies()).set(parsedCookie.name, parsedCookie.value, {
+        ...parsedCookie.options,
+      });
+    }
     if (response.ok) {
       return { status: "success", message: "logged in successfully" };
     } else {

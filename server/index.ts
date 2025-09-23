@@ -19,8 +19,6 @@ import { auth } from './lib/auth.ts'
 // import AppError from "./utils/error.ts";
 dotenv.config()
 
-// dbConnection() // this will connect the database
-
 const app = express()
 
 app.use(cookieParser())
@@ -50,7 +48,7 @@ const limiter = rateLimit({
 
 // SECURITY MIDDLEWARES
 app.use('/api', limiter)
-app.use(helmet())
+app.use(helmet({}))
 // app.use(mongoSanitize());
 app.use(hpp())
 

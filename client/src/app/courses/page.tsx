@@ -12,11 +12,11 @@ const Page = async function () {
     },
   });
 
-  const Sessionresponse = await fetch(apiRoutes.user.getUserSession, {
-    next: {
-      revalidate: 60,
-    },
-  });
+  // const Sessionresponse = await fetch(apiRoutes.user.getUserSession, {
+  //   next: {
+  //     revalidate: 60,
+  //   },
+  // });
 
   // await Sessionresponse.json();
 
@@ -26,7 +26,6 @@ const Page = async function () {
   }
 
   const courses = response.data.courses;
-  console.log(courses);
   return (
     <>
       <Banner />

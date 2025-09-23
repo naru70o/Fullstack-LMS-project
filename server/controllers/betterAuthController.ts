@@ -15,6 +15,7 @@ export async function signupEmailAndPassword(
     console.log(name, email, password)
 
     const data = await auth.api.signUpEmail({
+      asResponse: true,
       body: {
         name,
         email,
@@ -22,6 +23,11 @@ export async function signupEmailAndPassword(
         image: image ? image : 'default.png',
       },
     })
+
+    const cookie = data.headers.get('set-cookie')
+    console.log(cookie)
+    if (!cookie) return res.status(401).json({ message: 'invalid credentials' })
+    res.setHeader('Set-Cookie', cookie)
 
     return res
       .status(201)
@@ -60,7 +66,10 @@ export async function signinEmail(req: Request, res: Response) {
     }
     const cookie = data.headers.get('set-cookie')
     console.log(cookie)
-    if (!cookie) return
+    if (!cookie)
+      return res
+        .status(401)
+        .json({ status: 'error', message: 'invalid credentials' })
     res.setHeader('Set-Cookie', cookie)
 
     return res.status(200).json({

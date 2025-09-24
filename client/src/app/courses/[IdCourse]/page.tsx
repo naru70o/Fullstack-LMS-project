@@ -5,6 +5,7 @@ import Example from "@/components/components/vedioPlayer";
 import { Course, Lecture } from "../_components/feed";
 import Block from "../_components/purchaseCard";
 import InstructorProfile from "../_components/instructorProfile";
+import { cookies } from "next/headers";
 
 const Page = async ({
   params,
@@ -15,16 +16,24 @@ const Page = async ({
 }) => {
   const { IdCourse } = await params;
   const { vedio } = await searchParams;
-  console.log(IdCourse, vedio);
+
+  const cookieStore = await cookies();
+  const cookieHeader = cookieStore
+    .getAll()
+    .map((c) => `${c.name}=${c.value}`)
+    .join("; ");
+
   const response = await fetch(
-    `http://localhost:3000/api/v1/course/${IdCourse}`,
+    `http://localhost:5050/api/v1/course/${IdCourse}`,
     {
+      headers: { Cookie: cookieHeader },
       credentials: "include",
       next: {
         revalidate: 60,
       },
     }
   );
+
   if (!response.ok) return;
   const { data, message } = await response.json();
   const course: Course = data;

@@ -24,12 +24,6 @@ export async function getAllCourses(
       },
     })
 
-    res.cookie('test', 'test', {
-      httpOnly: true,
-      sameSite: 'none',
-      secure: true,
-    })
-
     return res.status(200).json({
       status: 'success',
       data: {

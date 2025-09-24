@@ -39,7 +39,6 @@ export async function signupAction(
       console.log(data);
 
       const setCookieHeader = response.headers.get("set-cookie");
-      console.log(setCookieHeader, "is this undefined or null dude");
       if (setCookieHeader) {
         const parsedCookie = parseSetCookie(setCookieHeader);
         (await cookies()).set(parsedCookie.name, parsedCookie.value, {
@@ -86,7 +85,6 @@ export async function signinAction(
     });
 
     const data = await response.json();
-    (await cookies()).set("token", "testdsajkal", { maxAge: 12000 });
     const setCookieHeader = response.headers.get("set-cookie");
     if (setCookieHeader) {
       // Used Next.js server-side header API to set cookie (e.g. next/headers)

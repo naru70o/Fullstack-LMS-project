@@ -89,7 +89,7 @@ function Card({ courses }: { courses: Course[] }) {
     <>
       {courses.map((course: Course) => (
         <div
-          key={course._id}
+          key={course.id}
           className='bg-card text-card-foreground rounded-lg min-w-[285px] max-w-[285px] overflow-hidden relative'
         >
           <Link href={`/courses/${course.id}`} className='no-underline'>

@@ -9,10 +9,10 @@ const nextConfig: NextConfig = {
         {
           loader: "@svgr/webpack",
           options: {
-            icon: true
-          }
-        }
-      ]
+            icon: true,
+          },
+        },
+      ],
     });
     return config;
   },
@@ -22,37 +22,39 @@ const nextConfig: NextConfig = {
         source: "/",
         destination: "/courses",
         permanent: true,
-      }]},
-  images:{
+      },
+    ];
+  },
+  images: {
     remotePatterns: [
       {
         protocol: "https",
         hostname: "dummyimage.com",
         port: "",
-        pathname: "/**"
+        pathname: "/**",
       },
       {
         protocol: "https",
         hostname: "images.pexels.com",
         port: "",
-        pathname: "/**"
+        pathname: "/**",
       },
       {
         protocol: "https",
         hostname: "res.cloudinary.com",
         port: "",
-        pathname: "/**"
-      }
-    ]
+        pathname: "/**",
+      },
+    ],
   },
-    turbopack: {
-      rules: {
-        "*.svg": {
-          loaders: ["@svgr/webpack"],
-          as: "*.js"
-        }
-      }
-    }
+  turbopack: {
+    rules: {
+      "*.svg": {
+        loaders: ["@svgr/webpack"],
+        as: "*.js",
+      },
+    },
+  },
 };
 
 export default nextConfig;

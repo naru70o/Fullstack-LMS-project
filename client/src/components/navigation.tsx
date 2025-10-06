@@ -15,8 +15,8 @@ export const Navigation = ({
   userSession: UserSession | null;
 }) => {
   return (
-    <section className="my-5 container px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      <div className="flex items-center justify-between ">
+    <section className="hidden md:flex w-full my-5 container px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div className="flex w-full items-center justify-between ">
         <div className="flex items-center gap-12">
           <Link href="#">
             <LogoNav />

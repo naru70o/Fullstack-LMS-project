@@ -2,11 +2,12 @@ import React from 'react'
 import { Navigation } from './navigation';
 import Image from 'next/image';
 import { HeroSearchBar } from '../app/courses/_components/heroSearchBar';
-export const Hero = () => {
+import { UserSession } from '../util/interfaces';
+export const Hero = ({ userSession }: { userSession: UserSession | null }) => {
   return (
     <section className='h-[85vh] w-screen flex flex-col items-center relative overflow-c bg-[#1B1B1B]/70'>
       {/* navigation */}
-      <Navigation/>
+      <Navigation userSession={userSession} />
         <Image src={"/assets/HeroIMage.png"} alt="Hero Image" fill className="absolute bottom-0 left-0 w-full h-full object-cover -z-10" />
         {/* Container for the main content */}
         <div className="container mx-auto h-full grid content-center mb-56">

@@ -4,6 +4,8 @@ import { Banner } from "@/components/components/banner";
 import Footer from "@/components/components/footer";
 import { Hero } from "@/components/components/hero";
 import { apiRoutes } from "@/components/lib/apiRoutes";
+import { UserSession } from "@/components/util/interfaces";
+import { cookies } from "next/dist/server/request/cookies";
 
 const Page = async function () {
   const data = await fetch(apiRoutes.courses.getAllCourses, {
@@ -12,13 +14,27 @@ const Page = async function () {
     },
   });
 
-  // const Sessionresponse = await fetch(apiRoutes.user.getUserSession, {
-  //   next: {
-  //     revalidate: 60,
-  //   },
-  // });
+  const cookieStore = await cookies();
+  const cookieHeader = cookieStore
+    .getAll()
+    .map((c) => `${c.name}=${c.value}`)
+    .join("; ");
 
-  // await Sessionresponse.json();
+  let userSession;
+  const userSessionResponse = await fetch(apiRoutes.user.getUserSession, {
+    headers: { Cookie: cookieHeader },
+    credentials: "include",
+    next: {
+      revalidate: 60,
+    },
+  });
+
+  if (!userSessionResponse.ok) userSession = null;
+  else {
+    const userSessionData = await userSessionResponse.json();
+    userSession = userSessionData.data.user;
+    console.log("user session", userSession);
+  }
 
   const response = await data.json();
   if (!data.ok) {
@@ -29,7 +45,7 @@ const Page = async function () {
   return (
     <>
       <Banner />
-      <Hero />
+      <Hero userSession={userSession} />
       <Filtering />
       <Feed data={courses} />
       <Footer />

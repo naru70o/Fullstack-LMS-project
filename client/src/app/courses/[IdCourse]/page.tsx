@@ -6,6 +6,7 @@ import { Course, Lecture } from "../_components/feed";
 import Block from "../_components/purchaseCard";
 import InstructorProfile from "../_components/instructorProfile";
 import { cookies } from "next/headers";
+import { apiRoutes } from "@/components/lib/apiRoutes";
 
 const Page = async ({
   params,
@@ -24,7 +25,7 @@ const Page = async ({
     .join("; ");
 
   const response = await fetch(
-    `http://localhost:5050/api/v1/course/${IdCourse}`,
+    apiRoutes.courses.getCourseById(IdCourse),
     {
       headers: { Cookie: cookieHeader },
       credentials: "include",

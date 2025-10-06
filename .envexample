@@ -1,0 +1,19 @@
+# Example .env file for Fullstack-LMS-project
+# Copy this file to .env and fill in your actual values
+
+# Server/Database
+DATABASE_URL=
+NODE_ENV=development
+PORT=3000
+SERVER_URL=http://localhost:3000
+
+# Email (SMTP)
+SMPT_HOST=
+SMPT_PORT=
+SMPT_HOST_USERNAME=
+SMPT_PASSWORD=
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_APIKEY=
+CLOUDINARY_APISECRET=

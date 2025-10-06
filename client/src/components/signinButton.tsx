@@ -30,7 +30,7 @@ export const SigninButton = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className='text-xl py-3 px-8 rounded-[8px] text-center bg-[var(--primary-color)] text-white font-bold cursor-pointer hover:bg-[var(--primary-color)]/90 transition-all'>
+        <button className='text-lg lg:text-xl py-3 px-8 rounded-[8px] text-center bg-[var(--primary-color)] text-white font-bold cursor-pointer hover:bg-[var(--primary-color)]/90 transition-all'>
           Log in
         </button>
       </DialogTrigger>

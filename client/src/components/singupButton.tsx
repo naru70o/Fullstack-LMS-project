@@ -33,7 +33,7 @@ export const SignupButton = () => {
     <Dialog>
       {/* <form action={formAction}> */}
       <DialogTrigger asChild>
-        <button className='text-xl py-2.5 px-8 rounded-[8px] text-center transparent inner-border border-2 border-[var(--primary-color)] text-[var(--primary-color)] font-bold cursor-pointer hover:bg-[var(--primary-color)]/10 transition-all'>
+        <button className='text-lg lg:text-xl py-2.5 px-8 rounded-[8px] text-center transparent inner-border border-2 border-[var(--primary-color)] text-[var(--primary-color)] font-bold cursor-pointer hover:bg-[var(--primary-color)]/10 transition-all'>
           Sign up
         </button>
       </DialogTrigger>

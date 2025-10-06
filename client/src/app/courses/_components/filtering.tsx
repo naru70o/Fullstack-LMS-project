@@ -18,7 +18,7 @@ export const Filtering = () => {
   ];
 
   return (
-    <section className='container mx-auto pt-40'>
+    <section className='container px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pt-40'>
       <div className='flex items-center justify-start gap-4 flex-nowrap overflow-x-auto scrollbar-hidden'>
         {studyFields.map((field) => (
           <button

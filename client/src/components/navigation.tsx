@@ -8,7 +8,7 @@ import { SignupButton } from './singupButton'
 
 export const Navigation = () => {
   return (
-    <section className='container mx-auto my-5'>
+    <section className='my-5 container px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto'>
         <div className='flex items-center justify-between '>
             <div className='flex items-center gap-12'>
               <Link href="#">

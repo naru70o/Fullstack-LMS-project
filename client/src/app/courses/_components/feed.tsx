@@ -174,7 +174,7 @@ function Card({ courses }: { courses: Course[] }) {
 
 export const Feed = ({ data }: { data: Course[] }) => {
   return (
-    <section className='container mx-auto py-[60px]'>
+    <section className='container px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-[60px]'>
       <h2 className='text-popover-foreground font-poppins text-xl font-bold leading-[26px]'>
         Here are your personalized recommendations
       </h2>

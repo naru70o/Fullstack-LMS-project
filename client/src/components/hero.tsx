@@ -6,7 +6,7 @@ import { UserSession } from "../util/interfaces";
 import MobileNavigation from "./mobileNavigation";
 export const Hero = ({ userSession }: { userSession: UserSession | null }) => {
   return (
-    <section className="h-[85vh] w-screen flex flex-col items-center relative overflow-clip bg-[#1B1B1B]/70">
+    <section className="h-[85vh] w-screen flex flex-col items-center relative bg-[#1B1B1B]/70">
       {/* navigation */}
       <Navigation userSession={userSession} />
       <MobileNavigation />

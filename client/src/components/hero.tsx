@@ -19,7 +19,7 @@ export const Hero = ({ userSession }: { userSession: UserSession | null }) => {
       {/* Container for the main content */}
       <div className="container mx-auto h-full grid content-center mb-56">
         {/* Main heading */}
-        <div className="flex flex-col justify-center gap-2">
+        <div className="flex flex-col justify-center gap-2 px-4">
           <h1 className="text-white text-center font-poppins text-5xl not-italic font-bold leading-[62px]">
             Learn something new everyday.
           </h1>

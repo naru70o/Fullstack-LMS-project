@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 export const Filtering = () => {
   const studyFields = [
@@ -18,17 +18,17 @@ export const Filtering = () => {
   ];
 
   return (
-    <section className='container px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pt-40'>
-      <div className='flex items-center justify-start gap-4 flex-nowrap overflow-x-auto scrollbar-hidden'>
+    <section className="container px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto md:pt-40 pt-4">
+      <div className="flex items-center justify-start gap-4 flex-nowrap overflow-x-auto scrollbar-hidden">
         {studyFields.map((field) => (
           <button
             key={field.id}
-            className='bg-popover text-nowrap text-popover-foreground/60 rounded-[12px] font-poppins py-2 px-4 border-1 border-[#3DCBB1]'
+            className="bg-popover text-nowrap text-popover-foreground/60 rounded-[12px] font-poppins py-2 px-4 border-1 border-[#3DCBB1]"
           >
             {field.name}
           </button>
         ))}
       </div>
     </section>
-  )
-}
+  );
+};

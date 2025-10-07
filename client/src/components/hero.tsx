@@ -1,15 +1,9 @@
-import React from "react";
-import { Navigation } from "./navigation";
 import Image from "next/image";
 import { HeroSearchBar } from "../app/courses/_components/heroSearchBar";
-import { UserSession } from "../util/interfaces";
-import MobileNavigation from "./mobileNavigation";
-export const Hero = ({ userSession }: { userSession: UserSession | null }) => {
+export const Hero = () => {
   return (
-    <section className="h-[85vh] w-screen flex flex-col items-center relative bg-[#1B1B1B]/70">
+    <section className="hidden h-[85vh] w-screen md:flex flex-col items-center relative bg-[#1B1B1B]/70">
       {/* navigation */}
-      <Navigation userSession={userSession} />
-      <MobileNavigation />
       <Image
         src={"/assets/HeroIMage.png"}
         alt="Hero Image"

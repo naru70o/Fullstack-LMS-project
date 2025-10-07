@@ -3,6 +3,9 @@ import { Filtering } from "@/components/app/courses/_components/filtering";
 import { Banner } from "@/components/components/banner";
 import Footer from "@/components/components/footer";
 import { Hero } from "@/components/components/hero";
+import MobileHero from "@/components/components/mobile-hero";
+import MobileNavigation from "@/components/components/mobileNavigation";
+import { Navigation } from "@/components/components/navigation";
 import { apiRoutes } from "@/components/lib/apiRoutes";
 import { UserSession } from "@/components/util/interfaces";
 import { cookies } from "next/dist/server/request/cookies";
@@ -45,7 +48,10 @@ const Page = async function () {
   return (
     <>
       <Banner />
-      <Hero userSession={userSession} />
+      <Navigation userSession={userSession} />
+      <MobileNavigation />
+      <Hero />
+      <MobileHero />
       <Filtering />
       <Feed data={courses} />
       <Footer />

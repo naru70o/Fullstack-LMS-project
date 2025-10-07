@@ -1,9 +1,13 @@
 import Image from "next/image";
 import { HeroSearchBar } from "../app/courses/_components/heroSearchBar";
-export const Hero = () => {
+import { UserSession } from "../util/interfaces";
+import { Navigation } from "./navigation";
+export const Hero = ({ userSession }: { userSession: UserSession | null }) => {
   return (
     <section className="hidden h-[85vh] w-screen md:flex flex-col items-center relative bg-[#1B1B1B]/70">
       {/* navigation */}
+      <Navigation userSession={userSession} />
+
       <Image
         src={"/assets/HeroIMage.png"}
         alt="Hero Image"

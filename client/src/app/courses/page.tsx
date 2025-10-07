@@ -48,9 +48,8 @@ const Page = async function () {
   return (
     <>
       <Banner />
-      <Navigation userSession={userSession} />
       <MobileNavigation />
-      <Hero />
+      <Hero userSession={userSession} />
       <MobileHero />
       <Filtering />
       <Feed data={courses} />

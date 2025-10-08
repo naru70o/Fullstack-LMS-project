@@ -26,7 +26,10 @@ While the project is under development, the planned core features include:
     *   [Node.js](https://nodejs.org/) - A JavaScript runtime built on Chrome's V8 JavaScript engine.
 *   **Linting:**
     *   [ESLint](https://eslint.org/) - For identifying and reporting on patterns found in ECMAScript/JavaScript code.
-
+ *   [Better Auth](https://better-auth.com/) - A fully-featured, type-safe authentication library for Node.js.
+    *   [Prisma](https://www.prisma.io/) - A next-generation ORM for Node.js and TypeScript.
+*   **Database:**
+    *   [MongoDB](https://www.mongodb.com/) - A document-oriented NoSQL database.
 ## 🏁 Getting Started
 
 Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.

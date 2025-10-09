@@ -2,12 +2,23 @@
 
 import { Search, Menu, Heart, X } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { use, useEffect } from "react";
 import NavLogo from "@/components/../public/assets/logoNav.svg";
 import Cart from "@/components/../public/assets/Cart.svg";
 import Image from "next/image";
+import { get } from "http";
+import { getUserSession } from "../actions/authentication";
 export default function MobileNavigation() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [userSession, setUserSession] = React.useState<any>(null);
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      const session = await getUserSession();
+      setUserSession(session);
+    };
+    fetchSession();
+  }, []);
 
   // handle menu toggle
   const toggleMenu = () => {
@@ -62,34 +73,56 @@ export default function MobileNavigation() {
           <div className="flex flex-col justify-start items-start gap-4 w-full">
             {/* user profile */}
             <div className="bg-popover-foreground/10 flex flex-row items-center justify-start gap-4 px-4 py-4 w-full">
-              <div className="relative inline-flex w-[60px] h-[60px] rounded-full overflow-hidden flex-none">
-                <Image
-                  src="/assets/default.png"
-                  alt="User Profile"
-                  fill
-                  className="absolute object-fill"
-                />
-              </div>
-              <div className="flex flex-col justify-start w-fit">
-                <h2 className="text-xl font-bold break-all">Hi, John Doe</h2>
-                <p className="text-popover-foreground/60 text-sm break-all">
-                  welcome back
-                </p>
-              </div>
+              {userSession && (
+                <>
+                  <div className="relative inline-flex w-[60px] h-[60px] rounded-full overflow-hidden flex-none">
+                    <Image
+                      src="/assets/default.png"
+                      alt="User Profile"
+                      fill
+                      className="absolute object-fill"
+                    />
+                  </div>
+                  <div className="flex flex-col justify-start w-fit">
+                    <h2 className="text-xl font-bold break-all">
+                      Hi, {userSession?.name}
+                    </h2>
+                    <p className="text-popover-foreground/60 text-sm break-all">
+                      welcome back
+                    </p>
+                  </div>
+                </>
+              )}
             </div>
             {/* navigation links */}
             <div className="flex flex-col gap-4 text-lg text-popover-foreground px-4">
+              {userSession && (
+                <Link
+                  href="/my-learning"
+                  className="hover:text-popover-foreground/60 flex gap-2 items-center transition-all duration-200"
+                >
+                  <span>my-learning</span>
+                </Link>
+              )}
+              {userSession && (
+                <Link
+                  href="/about"
+                  className="hover:text-popover-foreground/60 transition-all duration-200"
+                >
+                  Account
+                </Link>
+              )}
               <Link
-                href="/my-learning"
-                className="hover:text-popover-foreground/60 flex gap-2 items-center transition-all duration-200"
-              >
-                <span>my-learning</span>
-              </Link>
-              <Link
-                href="/about"
+                href="/auth/login"
                 className="hover:text-popover-foreground/60 transition-all duration-200"
               >
-                Account
+                login
+              </Link>
+              <Link
+                href="/auth/sign-up"
+                className="hover:text-popover-foreground/60 transition-all duration-200"
+              >
+                sign-up
               </Link>
               <Link
                 href="/services"

@@ -5,9 +5,7 @@ import Footer from "@/components/components/footer";
 import { Hero } from "@/components/components/hero";
 import MobileHero from "@/components/components/mobile-hero";
 import MobileNavigation from "@/components/components/mobileNavigation";
-import { Navigation } from "@/components/components/navigation";
 import { apiRoutes } from "@/components/lib/apiRoutes";
-import { UserSession } from "@/components/util/interfaces";
 import { cookies } from "next/dist/server/request/cookies";
 
 const Page = async function () {

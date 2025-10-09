@@ -5,19 +5,24 @@ import { Button } from "@/components/components/ui/button";
 import { Input } from "@/components/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useActionState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useActionState, useEffect } from "react";
 import { toast } from "react-hot-toast";
+
 export default function page() {
   const [message, formAction, pending] = useActionState(signinAction, null);
+  const router = useRouter();
   console.log(message);
 
   useEffect(() => {
     if (message?.status === "success") {
       toast.success(message.message);
+      router.push("/courses");
     } else if (message?.status === "error") {
       toast.error(message.message);
     }
   }, [message]);
+
   return (
     <>
       <MobileNavigation />

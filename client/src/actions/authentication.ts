@@ -4,6 +4,31 @@ import { cookies } from "next/headers";
 import { parseSetCookie } from "../util/parseSetCookie";
 import { redirect } from "next/navigation";
 
+// getting active user session
+export async function getUserSession() {
+  const cookieStore = await cookies();
+  const cookieHeader = cookieStore
+    .getAll()
+    .map((c) => `${c.name}=${c.value}`)
+    .join("; ");
+  let userSession;
+  const userSessionResponse = await fetch(apiRoutes.user.getUserSession, {
+    headers: { Cookie: cookieHeader },
+    credentials: "include",
+    next: {
+      revalidate: 60,
+    },
+  });
+
+  if (!userSessionResponse.ok) userSession = null;
+  else {
+    const userSessionData = await userSessionResponse.json();
+    userSession = userSessionData.data.user;
+    console.log("user session", userSession);
+  }
+  return userSession;
+}
+
 export async function signupAction(
   previousState,
   formData: FormData
@@ -46,7 +71,7 @@ export async function signupAction(
           ...parsedCookie.options,
         });
       }
-      redirect("/courses");
+      return { status: "success", message: "Signup successful" };
     } else {
       console.error("Signup failed:", data);
       return {
@@ -94,7 +119,7 @@ export async function signinAction(
       });
     }
     if (response.ok) {
-      redirect("/courses");
+      return { status: "success", message: "Signin successful" };
     } else {
       console.error("Signin failed:", data);
       return {

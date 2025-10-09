@@ -19,7 +19,7 @@ export const Filtering = () => {
 
   return (
     <section className="container px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto md:pt-40 pt-4">
-      <div className="flex items-center justify-start gap-4 flex-nowrap overflow-x-auto scrollbar-hidden">
+      <div className="flex items-center justify-start gap-4 flex-nowrap overflow-x-auto scrollbar-hide">
         {studyFields.map((field) => (
           <button
             key={field.id}

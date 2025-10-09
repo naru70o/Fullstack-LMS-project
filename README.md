@@ -24,9 +24,13 @@ While the project is under development, the planned core features include:
     *   [Next.js](https://nextjs.org/) - The React Framework for the Web.
 *   **Backend:**
     *   [Node.js](https://nodejs.org/) - A JavaScript runtime built on Chrome's V8 JavaScript engine.
+    *   [Better Auth](https://better-auth.com/) - A fully-featured, type-safe authentication library for Node.js.
+    *   [Prisma](https://www.prisma.io/) - A next-generation ORM for Node.js and TypeScript.
 *   **Linting:**
     *   [ESLint](https://eslint.org/) - For identifying and reporting on patterns found in ECMAScript/JavaScript code.
-
+   
+*   **Database:**
+    *   [MongoDB](https://www.mongodb.com/) - A document-oriented NoSQL database.
 ## 🏁 Getting Started
 
 Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.

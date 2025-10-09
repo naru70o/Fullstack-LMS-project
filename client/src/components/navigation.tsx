@@ -28,6 +28,11 @@ export const Navigation = ({
         </div>
         {userSession ? (
           <div className="flex items-center gap-5">
+            <Link href="/my-learning">
+              <button className="text-white hover:text-white/60 transition-all cursor-pointer">
+                my learning
+              </button>
+            </Link>
             <Cart className="cursor-pointer" />
             <Image
               src={`/assets/${userSession.image}`}

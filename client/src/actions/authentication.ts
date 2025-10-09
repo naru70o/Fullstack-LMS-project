@@ -2,6 +2,7 @@
 import { apiRoutes } from "@/components/lib/apiRoutes";
 import { cookies } from "next/headers";
 import { parseSetCookie } from "../util/parseSetCookie";
+import { redirect } from "next/navigation";
 
 export async function signupAction(
   previousState,
@@ -45,8 +46,7 @@ export async function signupAction(
           ...parsedCookie.options,
         });
       }
-
-      return { status: "success", message: "user created successfully" };
+      redirect("/courses");
     } else {
       console.error("Signup failed:", data);
       return {
@@ -94,7 +94,7 @@ export async function signinAction(
       });
     }
     if (response.ok) {
-      return { status: "success", message: "logged in successfully" };
+      redirect("/courses");
     } else {
       console.error("Signin failed:", data);
       return {

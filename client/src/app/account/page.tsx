@@ -5,12 +5,14 @@ import { Camera } from "lucide-react";
 import { NavigationFixed } from "@/components/components/navigation";
 import { SelectInput } from "../courses/_components/heroSearchBar";
 import { Button } from "@/components/components/ui/button";
+import MobileNavigation from "@/components/components/mobileNavigation";
 
 export default function page() {
   return (
     <div className="container max-w-7xl mx-auto px-4 mt-[var(--margin-section-top)]">
       {/* navigation */}
       <NavigationFixed />
+      <MobileNavigation />
       {/* title */}
       <h1 className="py-3 lg:py-0 text-2xl font-bold text-center text-popover-foreground">
         My Account

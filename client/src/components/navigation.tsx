@@ -8,6 +8,7 @@ import { SignupButton } from "./singupButton";
 import { UserSession } from "../util/interfaces";
 import Image from "next/image";
 import Cart from "@/components/../public/assets/Cart.svg";
+import { Avatar, AvatarFallback } from "./ui/avatar";
 
 export const Navigation = ({
   userSession,
@@ -54,20 +55,21 @@ export const Navigation = ({
 };
 
 export const NavigationFixed = () => {
+  const userSession = true; // Replace with actual user session logic
   return (
-    <section className="fixed top-0 left-0 right-0 z-50 bg-popover shadow-[var(--shadow-search-bar)] py-4">
+    <section className="hidden lg:flex fixed top-0 left-0 right-0 z-50 bg-popover shadow-[var(--shadow-search-bar)] py-4">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center gap-12">
           <Link href="/">
             <LogoNav />
           </Link>
-          <button className="flex items-center text-[var(--primary-color)] font-poppins text-[16px] not-italic font-normal leading-[21px] bg-transparent cursor-pointer hover:text-[var(--primary-color)]/70 transition-all">
+          <button className="items-center text-[var(--primary-color)] font-poppins text-[16px] not-italic font-normal leading-[21px] bg-transparent cursor-pointer hover:text-[var(--primary-color)]/70 transition-all hidden">
             <span>Browse</span>
             <ChevronRight />
           </button>
         </div>
         {/* searchBar */}
-        <div className="flex items-center gap-5 relative">
+        <div className="hidden lg:flex items-center gap-5 relative">
           <Input
             type="text"
             placeholder="Search keywords"
@@ -76,10 +78,26 @@ export const NavigationFixed = () => {
           <Search className="text-[var(--primary-color)] absolute left-0 top-1/2 transform -translate-y-1/2 ml-2" />
         </div>
         {/* Auth-Buttons */}
-        <div className="flex items-center gap-5">
-          <SigninButton />
-          <SignupButton />
-        </div>
+        {userSession ? (
+          <div className="flex items-center gap-5">
+            <Link href="/my-learning">
+              <button className="text-popover-foreground hover:text-popover-foreground/70 transition-all cursor-pointer">
+                my learning
+              </button>
+            </Link>
+            <div className="p-2 hover:bg-popover-foreground/7 rounded-md">
+              <Cart className="cursor-pointer" />
+            </div>
+            <Avatar asChild className="w-9 h-9">
+              <AvatarFallback>KN</AvatarFallback>
+            </Avatar>
+          </div>
+        ) : (
+          <div className="flex items-center gap-5">
+            <SigninButton />
+            <SignupButton />
+          </div>
+        )}
       </div>
     </section>
   );

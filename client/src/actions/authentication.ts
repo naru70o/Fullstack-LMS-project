@@ -2,7 +2,6 @@
 import { apiRoutes } from "@/components/lib/apiRoutes";
 import { cookies } from "next/headers";
 import { parseSetCookie } from "../util/parseSetCookie";
-import { redirect } from "next/navigation";
 
 // getting active user session
 export async function getUserSession() {

@@ -1,5 +1,5 @@
-import { Feed } from "@/components/app/courses/_components/feed";
-import { Filtering } from "@/components/app/courses/_components/filtering";
+import { Feed } from "@/components/app/(home)/courses/_components/feed";
+import { Filtering } from "@/components/app/(home)/courses/_components/filtering";
 import { Banner } from "@/components/components/banner";
 import Footer from "@/components/components/footer";
 import { Hero } from "@/components/components/hero";

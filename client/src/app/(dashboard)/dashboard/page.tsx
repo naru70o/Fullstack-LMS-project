@@ -3,7 +3,6 @@ import { Sidebar } from "../../../components/side-bar";
 export default function page() {
   return (
     <div className="flex h-screen">
-      <Sidebar />
       <main className="flex-1 p-8">
         <h1 className="text-2xl font-bold">Dashboard Content</h1>
         <p className="mt-2 text-muted-foreground">

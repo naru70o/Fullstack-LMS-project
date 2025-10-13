@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { HeroSearchBar } from "../app/courses/_components/heroSearchBar";
+import { HeroSearchBar } from "../app/(home)/courses/_components/heroSearchBar";
 import { UserSession } from "../util/interfaces";
 import { Navigation } from "./navigation";
 export const Hero = ({ userSession }: { userSession: UserSession | null }) => {

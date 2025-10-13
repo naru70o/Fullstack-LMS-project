@@ -9,6 +9,7 @@ import { UserSession } from "../util/interfaces";
 import Image from "next/image";
 import Cart from "@/components/../public/assets/Cart.svg";
 import { Avatar, AvatarFallback } from "./ui/avatar";
+import Browse from "./browse";
 
 export const Navigation = ({
   userSession,
@@ -22,10 +23,7 @@ export const Navigation = ({
           <Link href="#">
             <LogoNav />
           </Link>
-          <button className="flex items-center text-[var(--primary-color)] font-poppins text-[16px] not-italic font-normal leading-[21px] bg-transparent cursor-pointer hover:text-[var(--primary-color)]/70 transition-all">
-            <span>Browse</span>
-            <ChevronRight />
-          </button>
+          <Browse />
         </div>
         {userSession ? (
           <div className="flex items-center gap-5">

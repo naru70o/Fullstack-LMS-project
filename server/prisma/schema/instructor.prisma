@@ -1,0 +1,21 @@
+model Instructor {
+    id                    String   @id @default(auto()) @map("_id") @db.ObjectId
+    // personal
+    expertise             String[]
+    specificSkillsToTeach String[]
+    yearsOfExperience     Int
+    qualifications        String[]
+
+    // content
+    guidelinesReviewed Boolean
+    hasEquipment       Boolean
+    referralSource     String
+
+    // projects
+    hasExistingProject Boolean
+    sampleContentUrl   String?
+
+    // reference
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String @unique @db.ObjectId
+}

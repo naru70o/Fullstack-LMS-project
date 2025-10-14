@@ -11,6 +11,7 @@ model User {
   courses         Course[]
   sessions        Session[]
   accounts        Account[]
+  instructor      Instructor?
 
   emailVerified Boolean  @default(false)
   lastActive    DateTime @default(now())

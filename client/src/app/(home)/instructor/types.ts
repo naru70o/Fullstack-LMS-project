@@ -1,6 +1,5 @@
 export enum AddStepRoutes {
-  PRODUCT_INFO = "/add/step-one",
-  COUPON_DETAILS = "/add/step-two",
-  CONTACT_INFO = "/add/step-three",
-  REVIEW_DEAL = "/add/review",
+  EXPERTISE_BACKGROUND = "/add/step-one",
+  CONTENT_PRODUCTION = "/add/step-two",
+  REVIEW_FORM = "/add/review",
 }

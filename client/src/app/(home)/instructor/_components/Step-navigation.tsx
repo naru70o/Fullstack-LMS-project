@@ -10,19 +10,14 @@ const steps = [
   {
     title: "Step One",
     route: "step-one",
-    link: AddStepRoutes.PRODUCT_INFO,
+    link: AddStepRoutes.EXPERTISE_BACKGROUND,
   },
   {
     title: "Step Two",
     route: "step-two",
-    link: AddStepRoutes.COUPON_DETAILS,
+    link: AddStepRoutes.CONTENT_PRODUCTION,
   },
-  {
-    title: "Step Three",
-    route: "step-three",
-    link: AddStepRoutes.CONTACT_INFO,
-  },
-  { title: "Review", route: "review", link: AddStepRoutes.REVIEW_DEAL },
+  { title: "Review", route: "review", link: AddStepRoutes.REVIEW_FORM },
 ];
 
 export default function StepNavigation() {

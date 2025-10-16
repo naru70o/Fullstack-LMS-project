@@ -18,6 +18,7 @@ interface SelectDemoProps {
   selectLabel?: string;
   selectPlaceholder?: string;
   className?: string;
+  required?: boolean;
 }
 
 export function SelectInput({
@@ -25,9 +26,10 @@ export function SelectInput({
   selectLabel,
   selectPlaceholder,
   className,
+  required,
 }: SelectDemoProps) {
   return (
-    <Select>
+    <Select required={required}>
       <SelectTrigger
         size="lg"
         className={`bg-[var(--input-bg-color)] w-[248px] max-w-md p-4 h-[50px] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-[var(--input-text-color)] font-poppins text-[16px] font-normal leading-[24px] border-none ${className}`}

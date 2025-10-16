@@ -1,10 +1,20 @@
-import { Button } from "@/components/components/ui/button";
 import React from "react";
-import { SelectInput } from "../../courses/_components/heroSearchBar";
+import { addinstructor } from "../action";
 
-export default function Form() {
+export default function Form({ children }: { children: React.ReactNode }) {
   return (
     <div className="w-full flex flex-col items-center gap-4 mt-8 lg:mt-0">
+      <form
+        action={addinstructor}
+        className="flex flex-col gap-4 w-[300px] md:w-xl"
+      >
+        {children}
+      </form>
+    </div>
+  );
+}
+
+/*
       <form className="flex flex-col gap-4 w-[300px] md:w-xl">
         <input
           type="text"
@@ -35,6 +45,4 @@ export default function Form() {
           Next step
         </Button>
       </form>
-    </div>
-  );
-}
+      */

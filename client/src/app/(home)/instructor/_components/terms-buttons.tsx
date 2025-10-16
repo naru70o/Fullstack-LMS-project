@@ -3,6 +3,7 @@ import React from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/components/ui/button";
+import Link from "next/link";
 
 export default function TermsButtons() {
   const router = useRouter();
@@ -20,14 +21,16 @@ export default function TermsButtons() {
       {showagreeMessage ? (
         <div className="text-center space-y-4">
           <p className="text-white/80">are you sure you want to agree?</p>
-          <Button
-            onClick={() => setShowagreeMessage(false)}
-            variant="outline"
-            size="lg"
-            className="cursor-pointer bg-transparent border-primary/20 text-white hover:bg-primary/10"
-          >
-            yes, i agree
-          </Button>
+          <Link href="/instructor/step-one">
+            <Button
+              onClick={() => setShowagreeMessage(false)}
+              variant="outline"
+              size="lg"
+              className="cursor-pointer bg-transparent border-primary/20 text-white hover:bg-primary/10"
+            >
+              yes, i agree
+            </Button>
+          </Link>
         </div>
       ) : (
         <div className="flex flex-col sm:flex-row gap-3 justify-center">

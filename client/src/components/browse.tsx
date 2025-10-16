@@ -46,7 +46,7 @@ export default function Browse() {
               <ListItem href="/how-things-work" title="How Things Work">
                 Understand the structure and features
               </ListItem>
-              <ListItem href="/instructor" title="Be an Instructor">
+              <ListItem href="/instructor/terms" title="Be an Instructor">
                 Information on becoming a teacher
               </ListItem>
               <ListItem href="/learning-paths" title="Learning Paths">

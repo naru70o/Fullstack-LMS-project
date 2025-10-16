@@ -2,18 +2,27 @@
 import React, { useState } from "react";
 import StepNavigation from "../_components/Step-navigation";
 import Form from "../_components/form";
-import { InstructorFormInput } from "../_components/instructor-form-input";
+import {
+  InstructorFormInput,
+  InstructorFormSelect,
+} from "../_components/instructor-form-input";
 import StepButton from "../_components/step-button";
 import { MultiSelect } from "../_components/multi-select";
-import { expertiseOptions, fruits, Option } from "../_libs/options";
+import {
+  expertiseOptions,
+  Option,
+  specificSkillsOptions,
+} from "../_libs/options";
 
 export default function page() {
   const [selected, setSelected] = useState<{
     occupation: Option[];
-    expertise: Option[];
+    specificSkills: Option[];
+    qualification: Option[];
   }>({
     occupation: [],
-    expertise: [],
+    specificSkills: [],
+    qualification: [],
   });
 
   const handleSelectionChange = (
@@ -44,12 +53,25 @@ export default function page() {
           />
           <MultiSelect
             discription="your expertice"
-            options={fruits}
-            selected={selected.expertise}
-            name="expertise"
-            onChange={(value) => handleSelectionChange("expertise", value)}
+            options={specificSkillsOptions}
+            selected={selected.specificSkills}
+            name="specificSkills"
+            onChange={(value) => handleSelectionChange("specificSkills", value)}
           />
-
+          <InstructorFormInput
+            type="number"
+            name="yearsOfExpertise"
+            placeholder="years of expertise"
+            description="Select all that apply (e.g., Programming, Design, Music, etc.)"
+          />
+          <MultiSelect
+            discription="your qualifications"
+            options={expertiseOptions}
+            placeholder="your"
+            name="qualification"
+            selected={selected.qualification}
+            onChange={(value) => handleSelectionChange("qualification", value)}
+          />
           <StepButton step="Next step" />
         </Form>
       </div>

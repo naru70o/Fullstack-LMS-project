@@ -8,6 +8,8 @@ type InputProps = {
   placeholder?: string;
   description: string;
   name: string;
+  min?: number;
+  max?: number;
 };
 
 type InputSelectProps = {
@@ -22,6 +24,8 @@ export function InstructorFormInput({
   placeholder,
   description,
   name,
+  min,
+  max,
 }: InputProps) {
   return (
     <>
@@ -30,8 +34,10 @@ export function InstructorFormInput({
         type={type}
         name={name}
         placeholder={placeholder}
+        min={min}
+        max={max}
         className={clsx(
-          "bg-[var(--input-bg-color)] w-full max-w-xl p-4 rounded-lg outline-none ring-2 ring-[var(--primary-color)] text-[var(--input-text-color)] font-poppins text-[16px] font-normal leading-[24px]"
+          "bg-[var(--input-bg-color)] w-full max-w-xl p-4 rounded-lg outline-none ring-2 ring-[var(--primary-color)] text-[var(--input-text-color)] font-poppins text-[16px] font-normal leading-[24px] placeholder:overflow-hidden"
         )}
       />
     </>

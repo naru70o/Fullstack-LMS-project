@@ -1,16 +1,14 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import StepNavigation from "../_components/Step-navigation";
 import Form from "../_components/form";
-import {
-  InstructorFormInput,
-  InstructorFormSelect,
-} from "../_components/instructor-form-input";
-import StepButton from "../_components/step-button";
+import { InstructorFormInput } from "../_components/instructor-form-input";
 import { MultiSelect } from "../_components/multi-select";
+import StepButton from "../_components/step-button";
 import {
   expertiseOptions,
   Option,
+  qualificationOptions,
   specificSkillsOptions,
 } from "../_libs/options";
 
@@ -38,36 +36,37 @@ export default function page() {
       <div className="mx-auto flex flex-col items-start lg:flex lg:flex-row gap-4">
         <StepNavigation />
         <Form>
-          {/* <InstructorFormInput
-            type="text"
-            name="expertice"
-            placeholder="expertice"
-            description="Select all that apply (e.g., Programming, Design, Music, etc.)"
-          /> */}
           <MultiSelect
-            discription="your occupation"
+            description="What are your main professional roles or occupations?"
+            placeholder="Search or select your occupations (e.g., Software Engineer, Marketing Manager, Yoga Instructor)"
             options={expertiseOptions}
             selected={selected.occupation}
             name="occupation"
             onChange={(value) => handleSelectionChange("occupation", value)}
           />
+
           <MultiSelect
-            discription="your expertice"
+            description="What specific skills and topics are you qualified to teach?"
+            placeholder="Select the subjects you can teach (e.g., Python Programming, Social Media Marketing, Graphic Design)"
             options={specificSkillsOptions}
             selected={selected.specificSkills}
             name="specificSkills"
             onChange={(value) => handleSelectionChange("specificSkills", value)}
           />
+
           <InstructorFormInput
             type="number"
             name="yearsOfExpertise"
-            placeholder="years of expertise"
-            description="Select all that apply (e.g., Programming, Design, Music, etc.)"
+            placeholder="Enter years of professional experience (e.g., 3, 7, 12)"
+            description="How many years of professional experience do you have in your field?"
+            min={1}
+            max={10}
           />
+
           <MultiSelect
-            discription="your qualifications"
-            options={expertiseOptions}
-            placeholder="your"
+            description="What formal qualifications, certifications, or education support your expertise?"
+            placeholder="Select your qualifications or add custom ones (e.g., Bachelor's Degree, AWS Certified, 10+ Years Experience)"
+            options={qualificationOptions}
             name="qualification"
             selected={selected.qualification}
             onChange={(value) => handleSelectionChange("qualification", value)}

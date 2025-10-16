@@ -30,7 +30,7 @@ export default function StepNavigation() {
   }, [currentPath]);
 
   return (
-    <div className="w-full mb-12 lg:mb-0 min-w-60 lg:border-r-2 lg:border-foreground/10 lg:pr-12">
+    <div className="w-full mb-12 lg:mb-0 min-w-60">
       {/* back button */}
       <Link
         href={steps[stepBack]?.link || steps[0].link}

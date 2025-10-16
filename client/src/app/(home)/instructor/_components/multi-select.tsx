@@ -31,7 +31,7 @@ interface MultiSelectProps {
   selected: Option[];
   onChange: (options: Option[]) => void;
   placeholder?: string;
-  discription: string;
+  description: string;
   name?: string;
 }
 
@@ -40,7 +40,7 @@ export function MultiSelect({
   selected,
   onChange,
   placeholder = "Select items...",
-  discription,
+  description,
   name,
   ...props
 }: MultiSelectProps) {
@@ -63,7 +63,7 @@ export function MultiSelect({
     <Popover open={open} onOpenChange={setOpen} {...props}>
       <input type="hidden" name={name} value={JSON.stringify(selected)} />
       <div className="flex items-center gap-2 text-sm leading-none font-medium select-none">
-        {discription}
+        {description}
       </div>
       <PopoverTrigger asChild>
         <Button
@@ -100,7 +100,9 @@ export function MultiSelect({
                 </Badge>
               ))
             ) : (
-              <span className="text-muted-foreground">{placeholder}</span>
+              <span className="text-muted-foreground overflow-hidden">
+                {placeholder}
+              </span>
             )}
           </div>
           <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />

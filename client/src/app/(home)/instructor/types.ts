@@ -1,5 +1,5 @@
 export enum AddStepRoutes {
-  EXPERTISE_BACKGROUND = "/add/step-one",
-  CONTENT_PRODUCTION = "/add/step-two",
-  REVIEW_FORM = "/add/review",
+  EXPERTISE_BACKGROUND = "/instructor/step-one",
+  CONTENT_PRODUCTION = "/instructor/step-two",
+  REVIEW_FORM = "/instructor/review",
 }

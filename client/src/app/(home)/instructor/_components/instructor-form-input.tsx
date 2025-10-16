@@ -2,6 +2,7 @@ import clsx from "clsx";
 import React from "react";
 import { SelectInput } from "../../courses/_components/heroSearchBar";
 import { Label } from "@/components/components/ui/label";
+import { Checkbox } from "@/components/components/ui/checkbox";
 
 type InputProps = {
   type: string;
@@ -17,6 +18,11 @@ type InputSelectProps = {
   selectLabel: string;
   selectPlaceholder: string;
   multiple?: boolean;
+};
+type InputCheckboxProps = {
+  checkboxId: string;
+  label: string;
+  paragraph?: string;
 };
 
 export function InstructorFormInput({
@@ -56,5 +62,23 @@ export function InstructorFormSelect({
       selectLabel={selectLabel}
       selectPlaceholder={selectPlaceholder}
     />
+  );
+}
+
+export function InstructorFormCheckbox({
+  checkboxId,
+  label,
+  paragraph,
+}: InputCheckboxProps) {
+  return (
+    <div className="flex items-center gap-3">
+      <Checkbox id={checkboxId} className="h-6 w-6 border-1 border-primary" />
+      <div className="grid gap-2">
+        <Label htmlFor={checkboxId}>{label}</Label>
+        {paragraph && (
+          <p className="text-muted-foreground text-sm">{paragraph}</p>
+        )}
+      </div>
+    </div>
   );
 }

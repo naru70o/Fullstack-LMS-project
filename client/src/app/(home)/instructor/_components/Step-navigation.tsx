@@ -34,7 +34,7 @@ export default function StepNavigation() {
       {/* back button */}
       <Link
         href={steps[stepBack]?.link || steps[0].link}
-        className="mb-4 flex items-center gap-2 text-xl disabled:text-white/50 lg:mb-12 lg:gap-5"
+        className="mb-4 flex w-fit items-center gap-2 text-xl disabled:text-white/50 lg:mb-12 lg:gap-5"
       >
         <Button variant="ghost" size="md" className="cursor-pointer">
           Back

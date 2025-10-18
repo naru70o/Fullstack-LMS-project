@@ -59,8 +59,8 @@ export default function page() {
             name="yearsOfExpertise"
             placeholder="Enter years of professional experience (e.g., 3, 7, 12)"
             description="How many years of professional experience do you have in your field?"
-            min={1}
-            max={10}
+            // min={1}
+            // max={10}
           />
 
           <MultiSelect

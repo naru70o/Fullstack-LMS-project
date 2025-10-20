@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import StepNavigation from "../_components/Step-navigation";
 import Form from "../_components/form";
 import {
@@ -7,26 +8,48 @@ import {
 } from "../_components/instructor-form-input";
 import StepButton from "../_components/step-button";
 
+export interface SelectedFormTwoProps {
+  termsAndConditions: boolean;
+  equipment: boolean;
+  sampleContentUrl: string;
+}
+
 export default function page() {
+  const [selected, setSelected] = useState<SelectedFormTwoProps>({
+    termsAndConditions: false,
+    equipment: false,
+    sampleContentUrl: "",
+  });
+
+  const handleSelectionChange = (field: string, value: any) => {
+    console.log(field, value);
+    setSelected((prev) => ({ ...prev, [field]: value }));
+  };
+
   return (
     <section className="container h-screen grid grid-cols-1 content-center justify-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-[60px]">
       <div className="mx-auto flex flex-col items-start lg:flex lg:flex-row gap-4">
         <StepNavigation />
         <Form>
           <InstructorFormCheckbox
-            checkboxId="terms-and-conditions"
+            selectedOption={selected.termsAndConditions}
+            onhandleSelectionChange={handleSelectionChange}
+            checkboxId="termsAndConditions"
             label="I agree to the Instructor Terms & Conditions and platform guidelines"
             paragraph="By checking this box, you agree to our Instructor Terms of Service and commit to maintaining 
   high-quality standards for all course content you publish on our platform."
           />
 
           <InstructorFormCheckbox
+            selectedOption={selected.equipment}
+            onhandleSelectionChange={handleSelectionChange}
             checkboxId="equipment"
             label="I confirm I have access to necessary equipment for creating quality course content"
             paragraph="Confirm that you have access to basic recording equipment (microphone, camera, and screen 
   recording software) to ensure your students receive a professional learning experience."
           />
           <InstructorFormInput
+            setSelected={setSelected}
             type="url"
             name="sampleContentUrl"
             placeholder="https://youtube.com/your-video-sample or https://your-portfolio.com"

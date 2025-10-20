@@ -3,11 +3,13 @@ import React from "react";
 import { SelectInput } from "../../courses/_components/heroSearchBar";
 import { Label } from "@/components/components/ui/label";
 import { Checkbox } from "@/components/components/ui/checkbox";
+import { SelectedFormTwoProps } from "../step-two/page";
 
 type InputProps = {
   type: string;
   placeholder?: string;
   description: string;
+  setSelected?: React.Dispatch<React.SetStateAction<any>>;
   name: string;
   min?: number;
   max?: number;
@@ -23,10 +25,13 @@ type InputCheckboxProps = {
   checkboxId: string;
   label: string;
   paragraph?: string;
+  selectedOption: boolean;
+  onhandleSelectionChange: (field: string, value: any) => void;
 };
 
 export function InstructorFormInput({
   type,
+  setSelected,
   placeholder,
   description,
   name,
@@ -42,6 +47,14 @@ export function InstructorFormInput({
         placeholder={placeholder}
         min={min}
         max={max}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          if (setSelected) {
+            setSelected((prev: any) => ({
+              ...prev,
+              [name]: e.target.value,
+            }));
+          }
+        }}
         className={clsx(
           "bg-[var(--input-bg-color)] w-full max-w-xl p-4 rounded-lg outline-none ring-2 ring-[var(--primary-color)] text-[var(--input-text-color)] font-poppins text-[16px] font-normal leading-[24px] placeholder:overflow-hidden"
         )}
@@ -69,10 +82,20 @@ export function InstructorFormCheckbox({
   checkboxId,
   label,
   paragraph,
+  selectedOption,
+  onhandleSelectionChange,
 }: InputCheckboxProps) {
+  console.log(selectedOption);
   return (
     <div className="flex items-center gap-3">
-      <Checkbox id={checkboxId} className="h-6 w-6 border-1 border-primary" />
+      <Checkbox
+        id={checkboxId}
+        className="h-6 w-6 border-1 border-primary cursor-pointer"
+        required
+        onCheckedChange={() =>
+          onhandleSelectionChange(checkboxId, !selectedOption)
+        }
+      />
       <div className="grid gap-2">
         <Label htmlFor={checkboxId}>{label}</Label>
         {paragraph && (

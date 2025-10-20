@@ -7,6 +7,12 @@ export const stepOneSchema = z.object({
   qualification: z.array(z.string()),
 });
 
+export const stepTwoSchema = z.object({
+  terms: z.boolean(),
+  equipment: z.boolean(),
+  sampleContentUrl: z.string(),
+});
+
 export function formatZodErrors(error: z.ZodError) {
   return error.issues.reduce((acc, err) => {
     const field = err.path.join(".");

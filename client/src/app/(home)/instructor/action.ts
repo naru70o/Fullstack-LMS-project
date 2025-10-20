@@ -20,7 +20,9 @@ function formatSelectOptions(obj: any) {
 export async function registerInstructorOne(
   prev,
   formdata: FormData
-): Promise<void | string | Record<string, string>> {
+): Promise<
+  { success: boolean; message: string; route?: string } | Record<string, string>
+> {
   try {
     formatSelectOptions(formdata.getAll("occupation"));
     const data = {
@@ -31,8 +33,12 @@ export async function registerInstructorOne(
     };
 
     console.log(data);
-    const validated = stepOneSchema.parse(data);
-    redirect("instructor/step-two");
+    stepOneSchema.parse(data);
+    return {
+      success: true,
+      message: "Validation successful",
+      route: "/instructor/step-two",
+    };
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       const formatedZoderrors = formatZodErrors(error);
@@ -40,7 +46,7 @@ export async function registerInstructorOne(
       return formatedZoderrors;
     } else {
       console.error(error);
-      return "Something went wrong";
+      return { success: false, message: "Something went wrong" };
     }
   }
 }

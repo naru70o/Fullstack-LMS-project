@@ -54,13 +54,20 @@ export async function registerInstructorOne(
 export async function registerInstructorTwo(
   prev,
   formdata: FormData
-): Promise<void | string | Record<string, string>> {
+): Promise<
+  { success: boolean; message: string; route?: string } | Record<string, string>
+> {
   try {
     const data = {
-      termsandconditions: formdata.get("terms-and-conditions"),
+      termsandconditions: formdata.get("termsAndConditions"),
     };
 
     console.log(data);
+    return {
+      success: true,
+      message: "Validation successful",
+      // route: "/instructor/step-two",
+    };
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       const formatedZoderrors = formatZodErrors(error);
@@ -68,7 +75,7 @@ export async function registerInstructorTwo(
       return formatedZoderrors;
     } else {
       console.error(error);
-      return "Something went wrong";
+      return { success: false, message: "Something went wrong" };
     }
   }
 }

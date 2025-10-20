@@ -88,6 +88,11 @@ export function InstructorFormCheckbox({
   console.log(selectedOption);
   return (
     <div className="flex items-center gap-3">
+      <input
+        type="hidden"
+        name={checkboxId}
+        value={selectedOption.toString()}
+      />
       <Checkbox
         id={checkboxId}
         className="h-6 w-6 border-1 border-primary cursor-pointer"

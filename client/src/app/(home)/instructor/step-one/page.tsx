@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useActionState, useState } from "react";
 import StepNavigation from "../_components/Step-navigation";
 import Form from "../_components/form";
 import { InstructorFormInput } from "../_components/instructor-form-input";
@@ -11,6 +11,8 @@ import {
   qualificationOptions,
   specificSkillsOptions,
 } from "../_libs/options";
+import { useRouter } from "next/navigation";
+import { registerInstructorOne } from "../action";
 
 export default function page() {
   const [selected, setSelected] = useState<{
@@ -22,6 +24,13 @@ export default function page() {
     specificSkills: [],
     qualification: [],
   });
+
+  const [state, formAction, pending] = useActionState(
+    registerInstructorOne,
+    null
+  );
+
+  console.log(state);
 
   const handleSelectionChange = (
     field: keyof typeof selected,
@@ -35,7 +44,7 @@ export default function page() {
     <section className="container h-screen grid grid-cols-1 content-center justify-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-[60px]">
       <div className="mx-auto flex flex-col items-start lg:flex lg:flex-row gap-4">
         <StepNavigation />
-        <Form>
+        <Form action={formAction} state={state}>
           <MultiSelect
             description="What are your main professional roles or occupations?"
             placeholder="Search or select your occupations (e.g., Software Engineer, Marketing Manager, Yoga Instructor)"

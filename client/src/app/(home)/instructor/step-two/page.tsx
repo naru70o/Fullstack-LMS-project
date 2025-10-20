@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useActionState, useState } from "react";
 import StepNavigation from "../_components/Step-navigation";
 import Form from "../_components/form";
 import {
@@ -7,6 +7,7 @@ import {
   InstructorFormInput,
 } from "../_components/instructor-form-input";
 import StepButton from "../_components/step-button";
+import { registerInstructorTwo } from "../action";
 
 export interface SelectedFormTwoProps {
   termsAndConditions: boolean;
@@ -21,6 +22,13 @@ export default function page() {
     sampleContentUrl: "",
   });
 
+  const [state, formAction, pending] = useActionState(
+    registerInstructorTwo,
+    null
+  );
+
+  console.log(state);
+
   const handleSelectionChange = (field: string, value: any) => {
     console.log(field, value);
     setSelected((prev) => ({ ...prev, [field]: value }));
@@ -30,7 +38,7 @@ export default function page() {
     <section className="container h-screen grid grid-cols-1 content-center justify-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-[60px]">
       <div className="mx-auto flex flex-col items-start lg:flex lg:flex-row gap-4">
         <StepNavigation />
-        <Form>
+        <Form action={formAction} state={state}>
           <InstructorFormCheckbox
             selectedOption={selected.termsAndConditions}
             onhandleSelectionChange={handleSelectionChange}

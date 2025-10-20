@@ -63,7 +63,7 @@ export default function page() {
             placeholder="https://youtube.com/your-video-sample or https://your-portfolio.com"
             description="Share a link to your existing content (YouTube, portfolio, previous courses, etc.)"
           />
-          <StepButton step="Review" />
+          <StepButton step="Review" isPending={pending} />
         </Form>
       </div>
     </section>

@@ -80,7 +80,7 @@ export default function page() {
             selected={selected.qualification}
             onChange={(value) => handleSelectionChange("qualification", value)}
           />
-          <StepButton step="Next step" />
+          <StepButton step="Next step" isPending={pending} />
         </Form>
       </div>
     </section>

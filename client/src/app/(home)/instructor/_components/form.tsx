@@ -1,7 +1,6 @@
 "use client";
-import React, { useEffect, useActionState } from "react";
-import { registerInstructorOne } from "../action";
 import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 
 export default function Form({
   children,

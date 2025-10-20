@@ -2,7 +2,6 @@
 
 import z from "zod";
 import { formatZodErrors, stepOneSchema } from "./zodTypes";
-import { redirect } from "next/navigation";
 
 interface ObjType {
   label: string;

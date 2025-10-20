@@ -1,5 +1,5 @@
 "use client";
-import React, { useActionState } from "react";
+import React, { useEffect, useActionState } from "react";
 import { registerInstructorOne } from "../action";
 import { useRouter } from "next/navigation";
 
@@ -11,9 +11,12 @@ export default function Form({ children }: { children: React.ReactNode }) {
   );
 
   console.log(state);
-  if (state?.route) {
-    return navigator.push(state.route);
-  }
+  useEffect(() => {
+    if (state?.route) {
+      navigator.push(state.route);
+    }
+  }, [state?.route, navigator]);
+
   return (
     <div className="w-full flex flex-col items-center gap-4 mt-8 lg:mt-0">
       <form

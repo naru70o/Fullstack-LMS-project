@@ -50,3 +50,25 @@ export async function registerInstructorOne(
     }
   }
 }
+
+export async function registerInstructorTwo(
+  prev,
+  formdata: FormData
+): Promise<void | string | Record<string, string>> {
+  try {
+    const data = {
+      termsandconditions: formdata.get("terms-and-conditions"),
+    };
+
+    console.log(data);
+  } catch (error: unknown) {
+    if (error instanceof z.ZodError) {
+      const formatedZoderrors = formatZodErrors(error);
+      console.log(formatedZoderrors);
+      return formatedZoderrors;
+    } else {
+      console.error(error);
+      return "Something went wrong";
+    }
+  }
+}

@@ -1,5 +1,5 @@
 "use client";
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import StepNavigation from "../_components/Step-navigation";
 import Form from "../_components/form";
 import { InstructorFormInput } from "../_components/instructor-form-input";
@@ -27,7 +27,35 @@ export default function page() {
 
   const { updateRegisterDataForm, registerFormData } =
     useRegisterInstructorContext();
-  console.log(registerFormData, "------------register form data");
+
+  useEffect(() => {
+    if (registerFormData) {
+      setSelected((prev) => ({
+        ...prev,
+        occupation: registerFormData.occupation
+          ? registerFormData.occupation.map((val) => ({
+              label: val,
+              value: val,
+            }))
+          : [],
+        specificSkills: registerFormData.specificSkills
+          ? registerFormData.specificSkills.map((val) => ({
+              label: val,
+              value: val,
+            }))
+          : [],
+        qualification: registerFormData.qualification
+          ? registerFormData.qualification.map((val) => ({
+              label: val,
+              value: val,
+            }))
+          : [],
+      }));
+    }
+  }, [registerFormData]);
+
+  console.log(registerFormData, "------------register form data from context");
+  console.log(selected, "------------selected state");
 
   function formatSelectOptions(obj: any) {
     const values = obj.map(
@@ -54,7 +82,7 @@ export default function page() {
     updateRegisterDataForm({ [field]: formatSelectOptions(value) });
   };
 
-  // console.log(selected);
+  console.log(selected, "selecteted ------");
   return (
     <section className="container h-screen grid grid-cols-1 content-center justify-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-[60px]">
       <div className="mx-auto flex flex-col items-start lg:flex lg:flex-row gap-4">
@@ -83,9 +111,12 @@ export default function page() {
             name="yearsOfExpertise"
             placeholder="Enter years of professional experience (e.g., 3, 7, 12)"
             description="How many years of professional experience do you have in your field?"
-            setSelected={setSelected}
-            // min={1}
-            // max={10}
+            setSelected={(prev: any) => ({
+              ...prev,
+              yearsOfExpertise: registerFormData.yearsOfExpertise,
+            })}
+            min={1}
+            max={10}
           />
 
           <MultiSelect

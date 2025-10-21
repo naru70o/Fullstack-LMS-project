@@ -1,7 +1,11 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { InitialInstructorData, InstructorData } from "../zodTypes";
+import {
+  InitialInstructorData,
+  InstructorData,
+  instructorRegisterFormSchema,
+} from "../zodTypes";
 
 interface registerInstructorProps {
   registerFormData: InitialInstructorData;
@@ -32,7 +36,7 @@ export function RegisterInstructorProvider({
   children: React.ReactNode;
 }) {
   const [registerFormData, setRegisterFormData] =
-    useState<InstructorData>(defaultFormData);
+    useState<InitialInstructorData>(defaultFormData);
   const [dataLoaded, setDataLoaded] = useState(false);
 
   const updateRegisterDataForm = (formData: Partial<InstructorData>) => {
@@ -42,10 +46,45 @@ export function RegisterInstructorProvider({
     }));
   };
 
+  const readFromLocalStorage = () => {
+    const loadedDataString = localStorage.getItem(REGISTER_INSTRUCTOR_DATA_KEY);
+    if (!loadedDataString) return setRegisterFormData(registerFormData);
+    const validated = instructorRegisterFormSchema.safeParse(
+      JSON.parse(loadedDataString)
+    );
+
+    if (validated.success) {
+      console.log(validated.data, "---------------------- from localStorage");
+      setRegisterFormData(validated.data);
+    } else {
+      setRegisterFormData(defaultFormData);
+      console.log(validated, "---------------------- from localStorage error");
+    }
+  };
+
+  useEffect(() => {
+    readFromLocalStorage();
+    console.log("data loaded ---------------------------");
+    setDataLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (dataLoaded) {
+      saveDataToLocalStorage(registerFormData);
+    }
+  }, [registerFormData, dataLoaded]);
+
   function resetLocalStorage() {
     localStorage.removeItem(REGISTER_INSTRUCTOR_DATA_KEY);
     setRegisterFormData(defaultFormData);
   }
+
+  const saveDataToLocalStorage = (currentFormData: InitialInstructorData) => {
+    localStorage.setItem(
+      REGISTER_INSTRUCTOR_DATA_KEY,
+      JSON.stringify(currentFormData)
+    );
+  };
 
   return (
     <registerInstructorContext.Provider

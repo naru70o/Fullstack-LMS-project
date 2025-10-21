@@ -13,6 +13,26 @@ export const stepTwoSchema = z.object({
   sampleContentUrl: z.string(),
 });
 
+export const instructorRegisterFormSchema = z.object({
+  occupation: z.array(z.string()).optional(),
+  specificSkills: z.array(z.string()).optional(),
+  yearsOfExpertise: z.coerce.number().min(1).max(10).optional(),
+  qualification: z.array(z.string()).optional(),
+  terms: z.boolean().optional(),
+  equipment: z.boolean().optional(),
+  sampleContentUrl: z.string().optional(),
+});
+
+export const registerInstrucor = z.object({
+  ...stepOneSchema.shape,
+  ...stepTwoSchema.shape,
+});
+
+export type InstructorData = z.infer<typeof registerInstrucor>;
+export type InitialInstructorData = z.infer<
+  typeof instructorRegisterFormSchema
+>;
+
 export function formatZodErrors(error: z.ZodError) {
   return error.issues.reduce((acc, err) => {
     const field = err.path.join(".");

@@ -1,5 +1,5 @@
 "use client";
-import React, { useActionState, useState } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import StepNavigation from "../_components/Step-navigation";
 import Form from "../_components/form";
 import {
@@ -8,6 +8,7 @@ import {
 } from "../_components/instructor-form-input";
 import StepButton from "../_components/step-button";
 import { registerInstructorTwo } from "../action";
+import { useRegisterInstructorContext } from "../_components/registerInstructorContext";
 
 export interface SelectedFormTwoProps {
   termsAndConditions: boolean;
@@ -27,12 +28,32 @@ export default function page() {
     null
   );
 
+  const { updateRegisterDataForm, registerFormData } =
+    useRegisterInstructorContext();
+
+  useEffect(() => {
+    if (registerFormData) {
+      setSelected(
+        (prev) =>
+          ({
+            ...prev,
+            termsAndConditions: registerFormData.termsAndConditions,
+            equipment: registerFormData.equipment,
+            sampleContentUrl: registerFormData.sampleContentUrl,
+          } as SelectedFormTwoProps)
+      );
+    }
+  }, [setSelected, registerFormData]);
+
   console.log(state);
 
   const handleSelectionChange = (field: string, value: any) => {
     console.log(field, value);
     setSelected((prev) => ({ ...prev, [field]: value }));
+    updateRegisterDataForm({ [field]: value });
   };
+
+  console.log("is checked ", selected.termsAndConditions);
 
   return (
     <section className="container h-screen grid grid-cols-1 content-center justify-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-[60px]">

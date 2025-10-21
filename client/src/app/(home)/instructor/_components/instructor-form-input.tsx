@@ -103,6 +103,7 @@ export function InstructorFormCheckbox({
         id={checkboxId}
         className="h-6 w-6 border-1 border-primary cursor-pointer"
         required
+        checked={selectedOption}
         onCheckedChange={() =>
           onhandleSelectionChange(checkboxId, !selectedOption)
         }

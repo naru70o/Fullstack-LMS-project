@@ -1,15 +1,15 @@
+import { Checkbox } from "@/components/components/ui/checkbox";
+import { Label } from "@/components/components/ui/label";
 import clsx from "clsx";
 import React from "react";
 import { SelectInput } from "../../courses/_components/heroSearchBar";
-import { Label } from "@/components/components/ui/label";
-import { Checkbox } from "@/components/components/ui/checkbox";
-import { SelectedFormTwoProps } from "../step-two/page";
+import { useRegisterInstructorContext } from "./registerInstructorContext";
 
 type InputProps = {
   type: string;
   placeholder?: string;
   description: string;
-  setSelected?: React.Dispatch<React.SetStateAction<any>>;
+  setSelected: React.Dispatch<React.SetStateAction<any>>;
   name: string;
   min?: number;
   max?: number;
@@ -38,6 +38,7 @@ export function InstructorFormInput({
   min,
   max,
 }: InputProps) {
+  const { updateRegisterDataForm } = useRegisterInstructorContext();
   return (
     <>
       <Label className="w-[80%]">{description}</Label>
@@ -53,6 +54,11 @@ export function InstructorFormInput({
               ...prev,
               [name]: e.target.value,
             }));
+            updateRegisterDataForm(
+              type === "number"
+                ? { [name]: Number(e.target.value) }
+                : { [name]: e.target.value }
+            );
           }
         }}
         className={clsx(

@@ -8,7 +8,7 @@ export const stepOneSchema = z.object({
 });
 
 export const stepTwoSchema = z.object({
-  terms: z.boolean(),
+  termsAndConditions: z.boolean(),
   equipment: z.boolean(),
   sampleContentUrl: z.string(),
 });
@@ -18,7 +18,7 @@ export const instructorRegisterFormSchema = z.object({
   specificSkills: z.array(z.string()).optional(),
   yearsOfExpertise: z.coerce.number().min(1).max(10).optional(),
   qualification: z.array(z.string()).optional(),
-  terms: z.boolean().optional(),
+  termsAndConditions: z.boolean().optional(),
   equipment: z.boolean().optional(),
   sampleContentUrl: z.string().optional(),
 });

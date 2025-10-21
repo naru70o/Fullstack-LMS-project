@@ -4,6 +4,7 @@ import StepNavigation from "../_components/Step-navigation";
 import Form from "../_components/form";
 import { InstructorFormInput } from "../_components/instructor-form-input";
 import { MultiSelect } from "../_components/multi-select";
+import { useRegisterInstructorContext } from "../_components/registerInstructorContext";
 import StepButton from "../_components/step-button";
 import {
   expertiseOptions,
@@ -11,7 +12,6 @@ import {
   qualificationOptions,
   specificSkillsOptions,
 } from "../_libs/options";
-import { useRouter } from "next/navigation";
 import { registerInstructorOne } from "../action";
 
 export default function page() {
@@ -25,6 +25,19 @@ export default function page() {
     qualification: [],
   });
 
+  const { updateRegisterDataForm, registerFormData } =
+    useRegisterInstructorContext();
+  console.log(registerFormData, "------------register form data");
+
+  function formatSelectOptions(obj: any) {
+    const values = obj.map(
+      (option: { label: string; value: string; category: string }) =>
+        option.value
+    );
+    console.log(values);
+    return values;
+  }
+
   const [state, formAction, pending] = useActionState(
     registerInstructorOne,
     null
@@ -37,9 +50,11 @@ export default function page() {
     value: Option[]
   ) => {
     setSelected((prev) => ({ ...prev, [field]: value }));
+    // updating the contex value
+    updateRegisterDataForm({ [field]: formatSelectOptions(value) });
   };
 
-  console.log(selected);
+  // console.log(selected);
   return (
     <section className="container h-screen grid grid-cols-1 content-center justify-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-[60px]">
       <div className="mx-auto flex flex-col items-start lg:flex lg:flex-row gap-4">
@@ -68,6 +83,7 @@ export default function page() {
             name="yearsOfExpertise"
             placeholder="Enter years of professional experience (e.g., 3, 7, 12)"
             description="How many years of professional experience do you have in your field?"
+            setSelected={setSelected}
             // min={1}
             // max={10}
           />

@@ -78,6 +78,7 @@ export default function page() {
   recording software) to ensure your students receive a professional learning experience."
           />
           <InstructorFormInput
+            inputValue={selected.sampleContentUrl}
             setSelected={setSelected}
             type="url"
             name="sampleContentUrl"

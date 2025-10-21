@@ -10,6 +10,7 @@ type InputProps = {
   placeholder?: string;
   description: string;
   setSelected: React.Dispatch<React.SetStateAction<any>>;
+  inputValue?: string | number;
   name: string;
   min?: number;
   max?: number;
@@ -35,6 +36,7 @@ export function InstructorFormInput({
   placeholder,
   description,
   name,
+  inputValue,
   min,
   max,
 }: InputProps) {
@@ -45,6 +47,7 @@ export function InstructorFormInput({
       <input
         type={type}
         name={name}
+        value={inputValue ? inputValue : ""}
         placeholder={placeholder}
         min={min}
         max={max}

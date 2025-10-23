@@ -54,15 +54,11 @@ export default function page() {
     }
   }, [registerFormData]);
 
-  console.log(registerFormData, "------------register form data from context");
-  console.log(selected, "------------selected state");
-
   function formatSelectOptions(obj: any) {
     const values = obj.map(
       (option: { label: string; value: string; category: string }) =>
         option.value
     );
-    console.log(values);
     return values;
   }
 
@@ -70,8 +66,6 @@ export default function page() {
     registerInstructorOne,
     null
   );
-
-  console.log(state);
 
   const handleSelectionChange = (
     field: keyof typeof selected,
@@ -82,7 +76,6 @@ export default function page() {
     updateRegisterDataForm({ [field]: formatSelectOptions(value) });
   };
 
-  console.log(selected, "selecteted ------");
   return (
     <section className="container h-screen grid grid-cols-1 content-center justify-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-[60px]">
       <div className="mx-auto flex flex-col items-start lg:flex lg:flex-row gap-4">

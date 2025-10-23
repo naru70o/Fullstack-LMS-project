@@ -54,17 +54,14 @@ export function RegisterInstructorProvider({
     );
 
     if (validated.success) {
-      console.log(validated.data, "---------------------- from localStorage");
       setRegisterFormData(validated.data);
     } else {
       setRegisterFormData(defaultFormData);
-      console.log(validated, "---------------------- from localStorage error");
     }
   };
 
   useEffect(() => {
     readFromLocalStorage();
-    console.log("data loaded ---------------------------");
     setDataLoaded(true);
   }, []);
 

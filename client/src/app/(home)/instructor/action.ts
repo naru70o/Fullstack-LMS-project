@@ -23,7 +23,6 @@ export async function registerInstructorOne(
   { success: boolean; message: string; route?: string } | Record<string, string>
 > {
   try {
-    formatSelectOptions(formdata.getAll("occupation"));
     const data = {
       occupation: formatSelectOptions(formdata.getAll("occupation")),
       specificSkills: formatSelectOptions(formdata.getAll("specificSkills")),
@@ -36,7 +35,7 @@ export async function registerInstructorOne(
     return {
       success: true,
       message: "Validation successful",
-      route: "/instructor/step-two",
+      route: "/instructor/review",
     };
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {

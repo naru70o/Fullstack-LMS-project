@@ -104,10 +104,8 @@ export default function page() {
             name="yearsOfExpertise"
             placeholder="Enter years of professional experience (e.g., 3, 7, 12)"
             description="How many years of professional experience do you have in your field?"
-            setSelected={(prev: any) => ({
-              ...prev,
-              yearsOfExpertise: registerFormData.yearsOfExpertise,
-            })}
+            inputValue={registerFormData.yearsOfExpertise}
+            setSelected={setSelected}
             min={1}
             max={10}
           />

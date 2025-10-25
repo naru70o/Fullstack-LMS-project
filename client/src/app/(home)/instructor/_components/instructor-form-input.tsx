@@ -9,7 +9,7 @@ type InputProps = {
   type: string;
   placeholder?: string;
   description: string;
-  setSelected: React.Dispatch<React.SetStateAction<any>>;
+  setSelected?: React.Dispatch<React.SetStateAction<any>>;
   inputValue?: string | number;
   name: string;
   min?: number;
@@ -47,16 +47,19 @@ export function InstructorFormInput({
       <input
         type={type}
         name={name}
+        id={name}
         value={inputValue ? inputValue : ""}
         placeholder={placeholder}
         min={min}
         max={max}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          console.log(e.target.type);
           if (setSelected) {
             setSelected((prev: any) => ({
               ...prev,
               [name]: e.target.value,
             }));
+
             updateRegisterDataForm(
               type === "number"
                 ? { [name]: Number(e.target.value) }

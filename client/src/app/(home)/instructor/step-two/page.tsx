@@ -9,6 +9,7 @@ import {
 import StepButton from "../_components/step-button";
 import { registerInstructorTwo } from "../action";
 import { useRegisterInstructorContext } from "../_components/registerInstructorContext";
+import { useRouter } from "next/navigation";
 
 export interface SelectedFormTwoProps {
   termsAndConditions: boolean;
@@ -27,6 +28,14 @@ export default function page() {
     registerInstructorTwo,
     null
   );
+
+  const navigate = useRouter();
+
+  useEffect(() => {
+    if (state?.success) {
+      navigate.push("/instructor/review");
+    }
+  }, [state]);
 
   const { updateRegisterDataForm, registerFormData } =
     useRegisterInstructorContext();

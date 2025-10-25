@@ -15,10 +15,10 @@ interface registerInstructorProps {
 }
 
 const defaultFormData: InstructorData = {
-  occupation: [""],
-  specificSkills: [""],
+  occupation: [],
+  specificSkills: [],
   yearsOfExpertise: 0,
-  qualification: [""],
+  qualification: [],
   termsAndConditions: false,
   equipment: false,
   sampleContentUrl: "",
@@ -52,8 +52,10 @@ export function RegisterInstructorProvider({
     const validated = instructorRegisterFormSchema.safeParse(
       JSON.parse(loadedDataString)
     );
+    console.log(validated);
 
     if (validated.success) {
+      console.log("the stored data", validated.data);
       setRegisterFormData(validated.data);
     } else {
       setRegisterFormData(defaultFormData);

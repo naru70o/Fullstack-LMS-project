@@ -189,11 +189,15 @@ export default function ReviewPage() {
           <Button
             variant="outline"
             onClick={handleBack}
-            className="gap-2 bg-transparent"
+            className="gap-2 bg-transparent cursor-pointer"
           >
             ← Back to Edit
           </Button>
-          <Button onClick={handleSubmit} size="sm" className="gap-2">
+          <Button
+            onClick={handleSubmit}
+            size="sm"
+            className="gap-2 cursor-pointer"
+          >
             Submit Application →
           </Button>
         </div>

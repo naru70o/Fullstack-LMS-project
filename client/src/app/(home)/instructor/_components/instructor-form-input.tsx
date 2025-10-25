@@ -9,7 +9,7 @@ type InputProps = {
   type: string;
   placeholder?: string;
   description: string;
-  setSelected?: React.Dispatch<React.SetStateAction<any>>;
+  setSelected: React.Dispatch<React.SetStateAction<any>>;
   inputValue?: string | number;
   name: string;
   min?: number;

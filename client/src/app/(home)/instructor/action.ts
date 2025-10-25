@@ -17,7 +17,7 @@ function formatSelectOptions(obj: any) {
 }
 
 export async function registerInstructorOne(
-  prev,
+  prev: unknown,
   formdata: FormData
 ): Promise<
   { success: boolean; message: string; route?: string } | Record<string, string>
@@ -50,7 +50,7 @@ export async function registerInstructorOne(
 }
 
 export async function registerInstructorTwo(
-  prev,
+  prev: unknown,
   formdata: FormData
 ): Promise<
   { success: boolean; message: string; route?: string } | Record<string, string>

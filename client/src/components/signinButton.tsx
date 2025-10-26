@@ -17,15 +17,23 @@ import Link from "next/link";
 import { signinAction } from "../actions/authentication";
 import toast from "react-hot-toast";
 export const SigninButton = () => {
-  const [message, formAction, pending] = useActionState(signinAction, null);
+  const [state, formAction, pending] = useActionState(signinAction, null);
 
   useEffect(() => {
-    if (message?.status === "success") {
-      toast.success(message.message);
-    } else if (message?.status === "error") {
-      toast.error(message?.message);
+    if (state?.status === "success") {
+      if (Array.isArray(state.message)) {
+        toast.success(`${state.message[0]}: ${state.message[1]}`);
+      } else {
+        toast.success(state.message);
+      }
+    } else if (state?.status === "error") {
+      if (Array.isArray(state.message)) {
+        toast.error(`${state.message[0]}: ${state.message[1]}`);
+      } else {
+        toast.error(state.message);
+      }
     }
-  }, [message]);
+  }, [state]);
 
   return (
     <Dialog>
@@ -34,7 +42,7 @@ export const SigninButton = () => {
           Log in
         </button>
       </DialogTrigger>
-      <DialogContent className="grid grid-cols-2 max-w-[800px] min-w-[800px] rounded-md text-popover-foreground overflow-hidden border-none bg-[var(--surface-light)]">
+      <DialogContent className="bg-popover grid grid-cols-2  min-w-[80vw] rounded-md text-popover-foreground overflow-hidden border-none p-0">
         <div className="col-start-1 relative">
           <Image
             src="/assets/sign-image.jpg"
@@ -84,10 +92,10 @@ export const SigninButton = () => {
                 variant="primary"
                 type="submit"
                 size="md"
-                className="w-full bg-[var(--primary-color)] text-white font-bold hover:bg-[var(--primary-color)]/90"
+                className="w-full bg-[var(--primary-color)] text-white font-bold hover:bg-[var(--primary-color)]/90 cursor-pointer"
                 disabled={pending}
               >
-                log In
+                LogIn
               </Button>
               <p className="text-popover-foreground text-center font-poppins text-[14px] font-normal leading-[18px]">
                 or you can
@@ -97,7 +105,7 @@ export const SigninButton = () => {
                 <Button
                   variant="facebook"
                   size="md"
-                  className="w-full bg-[#4267b2] hover:bg-none text-white hover:text-white/70 transition-all rounded-xl flex items-center"
+                  className="w-full bg-[#4267b2] hover:bg-none text-white hover:text-white/70 transition-all rounded-xl flex items-center cursor-pointer"
                 >
                   <span className="mr-2">
                     <Image
@@ -111,7 +119,7 @@ export const SigninButton = () => {
                 </Button>
                 <Button
                   size="md"
-                  className="w-full bg-popover/90 text-popover-foreground/90 hover:bg-popover/80 rounded-xl flex items-center shadow-none"
+                  className="w-full bg-popover/90 text-popover-foreground/90 hover:bg-popover/80 rounded-xl flex items-center shadow-none cursor-pointer"
                 >
                   <span className="mr-2">
                     <Image

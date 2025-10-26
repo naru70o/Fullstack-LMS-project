@@ -60,7 +60,6 @@ export async function registerInstructor(
       message: 'Instructor registered successfully',
     })
   } catch (error) {
-    // return well typed prisma error message
     if (error instanceof Error) {
       return next(new AppError(error.message, 500))
     }

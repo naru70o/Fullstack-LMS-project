@@ -106,7 +106,7 @@ export async function signupAction(
 }
 
 export async function signinAction(
-  previousState,
+  previousState: unknown,
   formData: FormData
 ): Promise<{
   status: string;

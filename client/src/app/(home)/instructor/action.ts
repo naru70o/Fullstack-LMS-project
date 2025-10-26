@@ -1,7 +1,7 @@
 "use server";
 
 import z from "zod";
-import { formatZodErrors, stepOneSchema } from "./zodTypes";
+import { formatZodErrors, stepOneSchema, stepTwoSchema } from "./zodTypes";
 
 interface ObjType {
   label: string;
@@ -14,6 +14,10 @@ function formatSelectOptions(obj: any) {
   const values = deserialesed.map((option: ObjType) => option.value);
   console.log(values);
   return values;
+}
+
+function stingToBoolean(str: FormDataEntryValue | null) {
+  return str === "true";
 }
 
 export async function registerInstructorOne(
@@ -35,7 +39,7 @@ export async function registerInstructorOne(
     return {
       success: true,
       message: "Validation successful",
-      route: "/instructor/review",
+      route: "/instructor/step-two",
     };
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
@@ -57,14 +61,17 @@ export async function registerInstructorTwo(
 > {
   try {
     const data = {
-      termsandconditions: formdata.get("termsAndConditions"),
+      termsandconditions: stingToBoolean(formdata.get("termsAndConditions")),
+      equipment: stingToBoolean(formdata.get("equipment")),
+      sampleContentUrl: formdata.get("sampleContentUrl"),
     };
+    console.log("the data from the formdata", data);
 
-    console.log(data);
+    stepTwoSchema.parse(data);
     return {
       success: true,
       message: "Validation successful",
-      // route: "/instructor/step-two",
+      route: "/instructor/review",
     };
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {

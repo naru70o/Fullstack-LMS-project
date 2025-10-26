@@ -8,7 +8,7 @@ export const stepOneSchema = z.object({
 });
 
 export const stepTwoSchema = z.object({
-  termsAndConditions: z.boolean(),
+  termsandconditions: z.boolean(),
   equipment: z.boolean(),
   sampleContentUrl: z.string(),
 });

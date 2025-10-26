@@ -73,6 +73,7 @@ export async function registerInstructor(
 export async function getAllInstructors(_req, res, next) {
   try {
     const instructors = await prisma.instructor.findMany()
+    console.warn('do not forget to remove this route')
     return res.status(200).json({
       status: 'success',
       data: instructors,

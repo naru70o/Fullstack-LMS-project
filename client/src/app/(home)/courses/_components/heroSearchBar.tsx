@@ -32,7 +32,7 @@ export function SelectInput({
     <Select required={required}>
       <SelectTrigger
         size="lg"
-        className={`bg-[var(--input-bg-color)] w-[248px] max-w-md p-4 h-[50px] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-[var(--input-text-color)] font-poppins text-[16px] font-normal leading-[24px] border-none ${className}`}
+        className={`bg-popover-foreground/10 w-[248px] max-w-md p-4 h-[56px] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px] border-none ${className}`}
       >
         <SelectValue placeholder={selectPlaceholder} className="" />
       </SelectTrigger>
@@ -52,8 +52,8 @@ export function SelectInput({
 
 export const HeroSearchBar = () => {
   return (
-    <div className="hidden absolute container mx-auto md:flex flex-col gap-4 p-8 justify-center bottom-0 translate-y-1/2 bg-white rounded-3xl shadow-[var(--shadow-search-bar)] max-w-5xl">
-      <h1 className="text-black font-poppins text-xl not-italic font-bold leading-[30px]">
+    <div className="hidden absolute container mx-auto md:flex flex-col gap-4 p-8 justify-center bottom-0 translate-y-1/2 bg-popover rounded-3xl shadow-[var(--shadow-search-bar)] max-w-5xl">
+      <h1 className="text-popover-foreground font-poppins text-xl not-italic font-bold leading-[30px]">
         What do you want to learn?
       </h1>
 
@@ -62,7 +62,7 @@ export const HeroSearchBar = () => {
         <input
           type="text"
           placeholder="Find courses, skills, software, etc"
-          className="bg-[var(--input-bg-color)] w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-[var(--input-text-color)] font-poppins text-[16px] font-normal leading-[24px]"
+          className="bg-popover-foreground/10 w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px]"
         />
         <SelectInput
           selectItems={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}

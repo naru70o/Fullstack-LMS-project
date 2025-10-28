@@ -9,11 +9,9 @@ model Instructor {
     // content
     guidelinesReviewed Boolean
     hasEquipment       Boolean
-    referralSource     String
 
     // projects
-    hasExistingProject Boolean
-    sampleContentUrl   String?
+    sampleContentUrl String?
 
     // reference
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)

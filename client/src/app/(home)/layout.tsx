@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Outfit, Poppins } from "next/font/google";
 import "@/components/app/globals.css";
 import { Toaster } from "react-hot-toast";
+import { RegisterInstructorProvider } from "./instructor/_components/registerInstructorContext";
 
 const PoppinsFont = Poppins({
   variable: "--font-poppins",
@@ -27,11 +28,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body
         className={`${PoppinsFont.variable} ${OutfitFont.variable} antialiased overflow-x-hidden`}
       >
-        {children}
+        <RegisterInstructorProvider>{children}</RegisterInstructorProvider>
         <Toaster />
       </body>
     </html>

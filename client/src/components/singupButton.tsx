@@ -18,16 +18,24 @@ import { signupAction } from "@/components/actions/authentication";
 import toast from "react-hot-toast";
 
 export const SignupButton = () => {
-  const [message, formAction, pending] = useActionState(signupAction, null);
-  console.log(message);
+  const [state, formAction, pending] = useActionState(signupAction, null);
+  console.log(state);
 
   useEffect(() => {
-    if (message?.status === "success") {
-      toast.success(message.message);
-    } else if (message?.status === "error") {
-      toast.error(message.message);
+    if (state?.status === "success") {
+      if (Array.isArray(state.message)) {
+        toast.success(`${state.message[0]}: ${state.message[1]}`);
+      } else {
+        toast.success(state.message);
+      }
+    } else if (state?.status === "error") {
+      if (Array.isArray(state.message)) {
+        toast.error(`${state.message[0]}: ${state.message[1]}`);
+      } else {
+        toast.error(state.message);
+      }
     }
-  }, [message]);
+  }, [state]);
 
   return (
     <Dialog>
@@ -37,7 +45,7 @@ export const SignupButton = () => {
           Sign up
         </button>
       </DialogTrigger>
-      <DialogContent className="grid grid-cols-2 max-w-[800px] min-w-[800px] rounded-md text-popover-foreground overflow-hidden border-none bg-[var(--surface-light)]">
+      <DialogContent className="bg-popover grid grid-cols-2 min-w-[80vw] rounded-md text-popover-foreground overflow-hidden border-none p-0">
         <div className="col-start-1 relative">
           <Image
             src="/assets/sign-image.jpg"
@@ -101,8 +109,8 @@ export const SignupButton = () => {
               <div className="grid gap-3">
                 <Input
                   className="py-6 border-none bg-popover/90 shadow-none text-popover-foreground/70 rounded-lg placeholder:text-popover-foreground/30"
-                  id="confirmpassword"
-                  name="confirmpassword"
+                  id="passwordConfirm"
+                  name="passwordConfirm"
                   type="password"
                   required
                   placeholder="confirm password"

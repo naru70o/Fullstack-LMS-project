@@ -16,6 +16,7 @@ import authRouter from './routes/authRoute.ts'
 import userRouter from './routes/userRoutes.ts'
 import courseRouter from './routes/courseRoute.ts'
 import { auth } from './lib/auth.ts'
+import InstructorRouter from './routes/instructorRoute.ts'
 // import AppError from "./utils/error.ts";
 dotenv.config()
 
@@ -79,6 +80,7 @@ app.use(
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/course', courseRouter)
+app.use('/api/v1/instructor', InstructorRouter)
 
 app.listen(process.env['PORT'], () => {
   console.log(`app is running at ${process.env['PORT']}`)

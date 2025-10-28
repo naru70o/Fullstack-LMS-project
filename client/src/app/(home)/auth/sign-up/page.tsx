@@ -10,18 +10,28 @@ import React, { use, useActionState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 
 export default function page() {
-  const [message, formAction, pending] = useActionState(signupAction, null);
+  const [state, formAction, pending] = useActionState(signupAction, null);
   const router = useRouter();
-  console.log(message);
+  console.log(state);
 
   useEffect(() => {
-    if (message?.status === "success") {
-      toast.success(message.message);
-      router.push("/courses");
-    } else if (message?.status === "error") {
-      toast.error(message.message);
+    if (state?.status === "success") {
+      if (Array.isArray(state.message)) {
+        toast.success(`${state.message[0]}: ${state.message[1]}`);
+        router.push("/");
+      } else {
+        toast.success(state.message);
+        router.push("/");
+      }
+    } else if (state?.status === "error") {
+      if (Array.isArray(state.message)) {
+        toast.error(`${state.message[0]}: ${state.message[1]}`);
+      } else {
+        toast.error(state.message);
+      }
     }
-  }, [message]);
+  }, [state]);
+
   return (
     <>
       <MobileNavigation />

@@ -14,8 +14,10 @@ import { submitForm } from "./action";
 import { InstructorData } from "../zodTypes";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 
 export default function ReviewPage() {
+  const [isPending, startTransition] = useTransition();
   const { registerFormData, resetLocalStorage } =
     useRegisterInstructorContext();
   const navigate = useRouter();
@@ -31,6 +33,9 @@ export default function ReviewPage() {
     if (success === false && message) {
       toast.error(message);
       if (redirect) {
+        if (redirect === "/dashboard") {
+          resetLocalStorage();
+        }
         return navigate.push(redirect);
       }
       return;
@@ -219,14 +224,18 @@ export default function ReviewPage() {
             variant="outline"
             onClick={handleBack}
             className="gap-2 bg-transparent cursor-pointer"
+            disabled={isPending}
           >
             ← Back to Edit
           </Button>
           <Button
-            onClick={handleSubmit}
+            onClick={() => {
+              startTransition(async () => await handleSubmit());
+            }}
             size="sm"
             type="submit"
             className="gap-2 cursor-pointer"
+            disabled={isPending}
           >
             Submit Application →
           </Button>

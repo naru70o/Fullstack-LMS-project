@@ -13,23 +13,36 @@ import { useRegisterInstructorContext } from "../_components/registerInstructorC
 import { submitForm } from "./action";
 import { InstructorData } from "../zodTypes";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function ReviewPage() {
-  const { registerFormData } = useRegisterInstructorContext();
+  const { registerFormData, resetLocalStorage } =
+    useRegisterInstructorContext();
+  const navigate = useRouter();
 
   const handleSubmit = async () => {
     console.log("Form submitted");
     // Handle final submission
     //1 submit the data
-    const { success, errorMsg, redirect } = await submitForm(
+    const { success, message, redirect } = await submitForm(
       registerFormData as InstructorData
     );
     console.log(success);
-    if (success === false && errorMsg) {
-      toast.error(errorMsg);
+    if (success === false && message) {
+      toast.error(message);
       return;
     }
-    console.log("Submitting form data:", registerFormData);
+
+    if (redirect) {
+      // 2 navigate to the dashboard
+      navigate.push(redirect);
+    }
+
+    //3 display toaster
+    toast.success("Form submitted successfully!");
+
+    //4 reset the local storage
+    return resetLocalStorage();
   };
 
   const handleBack = () => {

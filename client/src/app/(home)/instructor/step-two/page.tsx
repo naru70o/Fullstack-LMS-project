@@ -52,9 +52,10 @@ export default function page() {
           } as SelectedFormTwoProps)
       );
     }
-  }, [setSelected, registerFormData]);
+  }, [registerFormData]);
 
   const handleSelectionChange = (field: string, value: any) => {
+    if (state?.data !== undefined) return null;
     setSelected((prev) => ({ ...prev, [field]: value }));
     updateRegisterDataForm({ [field]: value });
   };

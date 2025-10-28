@@ -53,15 +53,22 @@ export async function registerInstructorOne(
   }
 }
 
+interface Data {
+  termsAndConditions: boolean;
+  equipment: boolean;
+  sampleContentUrl: FormDataEntryValue | null;
+}
+
 export async function registerInstructorTwo(
   prev: unknown,
   formdata: FormData
 ): Promise<
-  { success: boolean; message: string; route?: string } | Record<string, string>
+  | { success: boolean; message: string; route?: string; data?: Data }
+  | Record<string, string>
 > {
   try {
     const data = {
-      termsandconditions: stingToBoolean(formdata.get("termsAndConditions")),
+      termsAndConditions: stingToBoolean(formdata.get("termsAndConditions")),
       equipment: stingToBoolean(formdata.get("equipment")),
       sampleContentUrl: formdata.get("sampleContentUrl"),
     };
@@ -71,6 +78,7 @@ export async function registerInstructorTwo(
     return {
       success: true,
       message: "Validation successful",
+      data: data,
       route: "/instructor/review",
     };
   } catch (error: unknown) {

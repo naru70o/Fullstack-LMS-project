@@ -10,12 +10,25 @@ import {
   CardTitle,
 } from "@/components/components/ui/card";
 import { useRegisterInstructorContext } from "../_components/registerInstructorContext";
+import { submitForm } from "./action";
+import { InstructorData } from "../zodTypes";
+import toast from "react-hot-toast";
 
 export default function ReviewPage() {
   const { registerFormData } = useRegisterInstructorContext();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    console.log("Form submitted");
     // Handle final submission
+    //1 submit the data
+    const { success, errorMsg, redirect } = await submitForm(
+      registerFormData as InstructorData
+    );
+    console.log(success);
+    if (success === false && errorMsg) {
+      toast.error(errorMsg);
+      return;
+    }
     console.log("Submitting form data:", registerFormData);
   };
 
@@ -196,6 +209,7 @@ export default function ReviewPage() {
           <Button
             onClick={handleSubmit}
             size="sm"
+            type="submit"
             className="gap-2 cursor-pointer"
           >
             Submit Application →

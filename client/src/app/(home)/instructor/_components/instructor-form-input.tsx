@@ -4,6 +4,7 @@ import clsx from "clsx";
 import React from "react";
 import { SelectInput } from "../../courses/_components/heroSearchBar";
 import { useRegisterInstructorContext } from "./registerInstructorContext";
+import { CheckedState } from "@radix-ui/react-checkbox";
 
 type InputProps = {
   type: string;
@@ -97,7 +98,6 @@ export function InstructorFormCheckbox({
   selectedOption,
   onhandleSelectionChange,
 }: InputCheckboxProps) {
-  console.log(selectedOption);
   return (
     <div className="flex items-center gap-3">
       <input
@@ -110,9 +110,9 @@ export function InstructorFormCheckbox({
         className="h-6 w-6 border-1 border-primary cursor-pointer"
         required
         checked={selectedOption}
-        onCheckedChange={() =>
-          onhandleSelectionChange(checkboxId, !selectedOption)
-        }
+        onCheckedChange={(checked: CheckedState) => {
+          onhandleSelectionChange(checkboxId, checked);
+        }}
       />
       <div className="grid gap-2">
         <Label htmlFor={checkboxId}>{label}</Label>

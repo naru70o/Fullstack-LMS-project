@@ -8,7 +8,9 @@ export const stepOneSchema = z.object({
 });
 
 export const stepTwoSchema = z.object({
-  termsandconditions: z.boolean(),
+  termsAndConditions: z.boolean().refine((val) => val === true, {
+    message: "You must accept the terms and conditions.",
+  }),
   equipment: z.boolean(),
   sampleContentUrl: z.string(),
 });

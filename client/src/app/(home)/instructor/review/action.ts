@@ -9,8 +9,11 @@ export async function submitForm(
 ): Promise<{ success?: boolean; message?: string; redirect?: string }> {
   try {
     const stepOneValidated = stepOneSchema.safeParse(instructorData);
+    console.log(stepOneValidated);
     if (!stepOneValidated.success) {
+      console.log("--------", stepOneValidated.error);
       return {
+        success: false,
         redirect: AddStepRoutes.EXPERTISE_BACKGROUND,
         message: "Please validate expertise background.",
       };
@@ -19,13 +22,13 @@ export async function submitForm(
     const stepTwoValidated = stepTwoSchema.safeParse(instructorData);
     if (!stepTwoValidated.success) {
       return {
+        success: false,
         redirect: AddStepRoutes.CONTENT_PRODUCTION,
         message: "Please validate content production.",
       };
     }
 
     const cookies = await getCookies();
-    console.log(cookies);
 
     const url = `${process.env.SERVER_URL}/instructor/register`;
     const response = await fetch(url, {
@@ -37,8 +40,6 @@ export async function submitForm(
       credentials: "include",
       body: JSON.stringify(instructorData),
     });
-
-    console.log(response.ok);
 
     if (!response.ok) {
       return { success: false, message: "Something went wrong" };

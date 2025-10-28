@@ -6,7 +6,7 @@ import type { NextFunction, Request, Response } from 'express'
 export async function registerInstructor(
   req: Request,
   res: Response,
-  next: NextFunction,
+  _next: NextFunction,
 ) {
   try {
     //1 get the body
@@ -23,7 +23,10 @@ export async function registerInstructor(
     //2 get the user session
     const user: User | undefined = req.user
     if (!user) {
-      return next(new AppError('User not found', 404))
+      return res.status(404).json({
+        status: 'error',
+        message: 'User not found',
+      })
     }
 
     //3 check if he is already registered
@@ -31,7 +34,10 @@ export async function registerInstructor(
       where: { userId: user.id },
     })
     if (isRegistered !== null) {
-      return next(new AppError('User already registered', 400))
+      return res.status(400).json({
+        status: 'error',
+        message: 'User already registered',
+      })
     }
 
     //4 post the instructor form
@@ -60,10 +66,10 @@ export async function registerInstructor(
       message: 'Instructor registered successfully',
     })
   } catch (error) {
-    if (error instanceof Error) {
-      return next(new AppError(error.message, 500))
-    }
-    return next(new AppError('Something went wrong', 500))
+    return res.status(500).json({
+      status: 'error',
+      message: 'Internal server error',
+    })
   }
 }
 

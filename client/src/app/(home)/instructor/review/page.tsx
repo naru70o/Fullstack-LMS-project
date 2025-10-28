@@ -28,9 +28,12 @@ export default function ReviewPage() {
       registerFormData as InstructorData
     );
     console.log(success);
-    if (success === false && message && redirect) {
+    if (success === false && message) {
       toast.error(message);
-      return navigate.push(redirect);
+      if (redirect) {
+        return navigate.push(redirect);
+      }
+      return;
     }
 
     if (redirect) {

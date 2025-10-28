@@ -41,8 +41,9 @@ export async function submitForm(
       body: JSON.stringify(instructorData),
     });
 
+    const data = await response.json();
     if (!response.ok) {
-      return { success: false, message: "Something went wrong" };
+      return { success: false, message: data.message, redirect: "/dashboard" };
     }
 
     const retVal = {

@@ -81,7 +81,10 @@ export async function signupAction(
       if (setCookieHeader) {
         const parsedCookie = parseSetCookie(setCookieHeader);
         (await cookies()).set(parsedCookie.name, parsedCookie.value, {
-          ...parsedCookie.options,
+          sameSite: "lax",
+          maxAge: 604800,
+          httpOnly: true,
+          secure: true,
         });
       }
       return { status: "success", message: "Signup successful" };
@@ -146,8 +149,12 @@ export async function signinAction(
     if (setCookieHeader) {
       // Used Next.js server-side header API to set cookie (e.g. next/headers)
       const parsedCookie = parseSetCookie(setCookieHeader);
+      console.log(parsedCookie.options);
       (await cookies()).set(parsedCookie.name, parsedCookie.value, {
-        ...parsedCookie.options,
+        sameSite: "lax",
+        maxAge: 604800,
+        httpOnly: true,
+        secure: true,
       });
     }
     if (response.ok) {

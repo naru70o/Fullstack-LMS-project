@@ -26,7 +26,6 @@ export async function getUserSession() {
   else {
     const userSessionData = await userSessionResponse.json();
     userSession = userSessionData.data.user;
-    console.log("user session", userSession);
   }
   return userSession;
 }
@@ -54,7 +53,6 @@ export async function signupAction(
     if (!validatedUser.success) {
       if (validatedUser.error instanceof z.ZodError) {
         const formatedZoderrors = formatZodErrors(validatedUser.error);
-        console.log(formatedZoderrors);
         return {
           status: "error",
           message: Object.entries(formatedZoderrors)[0],
@@ -79,13 +77,14 @@ export async function signupAction(
 
     const data = await response.json();
     if (response.ok) {
-      console.log(data);
-
       const setCookieHeader = response.headers.get("set-cookie");
       if (setCookieHeader) {
         const parsedCookie = parseSetCookie(setCookieHeader);
         (await cookies()).set(parsedCookie.name, parsedCookie.value, {
-          ...parsedCookie.options,
+          sameSite: "lax",
+          maxAge: 604800,
+          httpOnly: true,
+          secure: true,
         });
       }
       return { status: "success", message: "Signup successful" };
@@ -150,8 +149,12 @@ export async function signinAction(
     if (setCookieHeader) {
       // Used Next.js server-side header API to set cookie (e.g. next/headers)
       const parsedCookie = parseSetCookie(setCookieHeader);
+      console.log(parsedCookie.options);
       (await cookies()).set(parsedCookie.name, parsedCookie.value, {
-        ...parsedCookie.options,
+        sameSite: "lax",
+        maxAge: 604800,
+        httpOnly: true,
+        secure: true,
       });
     }
     if (response.ok) {

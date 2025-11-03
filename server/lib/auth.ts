@@ -7,6 +7,10 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'mongodb',
   }),
+  session: {
+    expiresIn: 60 * 60 * 24 * 7,
+    disableSessionRefresh: true,
+  },
   emailAndPassword: {
     enabled: true,
   },
@@ -15,7 +19,7 @@ export const auth = betterAuth({
       generateId: () => new ObjectId().toString(), // Default is `crypto.randomUUID()`
     },
     defaultCookieAttributes: {
-      sameSite: 'none',
+      SameSite: 'Lax',
       secure: true,
       httpOnly: true,
     },

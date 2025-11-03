@@ -1,5 +1,6 @@
 "use server";
 
+import { apiRoutes } from "@/components/lib/apiRoutes";
 import { AddStepRoutes } from "../types";
 import { InstructorData, stepOneSchema, stepTwoSchema } from "../zodTypes";
 import { getCookies } from "@/components/lib/helpers";
@@ -30,8 +31,7 @@ export async function submitForm(
 
     const cookies = await getCookies();
 
-    const url = `${process.env.SERVER_URL}/instructor/register`;
-    const response = await fetch(url, {
+    const response = await fetch(apiRoutes.instructor.registerInstructor, {
       method: "POST",
       headers: {
         Cookie: cookies,

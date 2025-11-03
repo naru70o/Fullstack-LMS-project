@@ -33,13 +33,15 @@ export const Navigation = ({
               </button>
             </Link>
             <Cart className="cursor-pointer" />
-            <Image
-              src={`/assets/${userSession.image}`}
-              alt="User Image"
-              width={36}
-              height={36}
-              className="rounded-full"
-            />
+            <Link href="/account">
+              <Image
+                src={`/assets/${userSession.image}`}
+                alt="User Image"
+                width={36}
+                height={36}
+                className="rounded-full"
+              />
+            </Link>
           </div>
         ) : (
           <div className="flex items-center gap-5">

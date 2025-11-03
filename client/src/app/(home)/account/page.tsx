@@ -4,8 +4,13 @@ import { Avatar, AvatarImage } from "@/components/components/ui/avatar";
 import { Camera } from "lucide-react";
 import Tabs from "../my-learning/_components/tabs";
 import Form from "./_components/form";
+import { getUserSession } from "@/components/actions/authentication";
+import { UserSession } from "@/components/util/interfaces";
 
-export default function page() {
+export default async function page() {
+  const userSession: UserSession = await getUserSession();
+  const { image } = userSession;
+  console.log(userSession);
   return (
     <div className="container max-w-7xl mx-auto px-4 mt-[var(--margin-section-top)]">
       {/* navigation */}
@@ -23,7 +28,7 @@ export default function page() {
           <Avatar asChild className="w-24 h-24 mt-10">
             <AvatarImage
               className="object-cover"
-              src="https://placehold.co/600x400/png"
+              src={`/assets/${image}`}
               alt="User Avatar"
             />
           </Avatar>
@@ -38,7 +43,7 @@ export default function page() {
       </div>
       {/* form */}
       <div className="flex flex-col items-center gap-4 mt-8">
-        <Form />
+        <Form userSession={userSession} />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma.ts'
-import { uploadImage } from '../utils/cloudinary.ts'
+import { deleteImage, uploadImage } from '../utils/cloudinary.ts'
 import AppError from '../utils/error.ts'
 import type { Request, Response, NextFunction } from 'express'
 import { auth } from '@/lib/auth.ts'
@@ -47,6 +47,12 @@ export const updateProfile = async (
       return next(new AppError('User not found', 404))
     }
 
+    if (!name || name === user.name) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'name is required',
+      })
+    }
     const updatedUser = await prisma.user.update({
       where: { id: user.id },
       data: { name, bio },
@@ -166,6 +172,10 @@ export const updateProfileImage = async (
 
     if (!updatedUser) {
       return next(new AppError('User not found', 404))
+    }
+
+    if (user.secret && user.secret !== '') {
+      await deleteImage(user.secret)
     }
 
     return res.status(200).json({

@@ -6,10 +6,13 @@ import Tabs from "../my-learning/_components/tabs";
 import Form from "./_components/form";
 import { getUserSession } from "@/components/actions/authentication";
 import { UserSession } from "@/components/util/interfaces";
+import { updateProfile } from "./action";
+import ProfileEditor from "./_components/EditProfileImage";
 
 export default async function page() {
   const userSession: UserSession = await getUserSession();
   const { image } = userSession;
+
   console.log(userSession);
   return (
     <div className="container max-w-7xl mx-auto px-4 mt-[var(--margin-section-top)]">
@@ -22,7 +25,7 @@ export default async function page() {
       </h1>
       {/* tabs -- this component will be a reusable component */}
       <Tabs />
-      {/* avatar upload */}
+      {/* avatar upload --- React Image Crop */}
       <div className="flex flex-col items-center">
         <div className="cursor-pointer relative">
           <Avatar asChild className="w-24 h-24 mt-10">
@@ -32,13 +35,7 @@ export default async function page() {
               alt="User Avatar"
             />
           </Avatar>
-          <label className="absolute right-0 bottom-0 w-6 h-6 bg-popover/50 rounded-full flex items-center justify-center cursor-pointer">
-            <Camera
-              size={14}
-              className="text-popover-foreground transition-all ease-in-out hover:text-primary"
-            />
-            <input type="file" className="hidden" />
-          </label>
+          <ProfileEditor />
         </div>
       </div>
       {/* form */}

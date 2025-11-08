@@ -1,9 +1,9 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { SelectInput } from "../../courses/_components/heroSearchBar";
 import { Button } from "@/components/components/ui/button";
 import { UserSession } from "@/components/util/interfaces";
-import { email } from "zod";
+import { useActionState, useEffect, useState } from "react";
+import { SelectInput } from "../../courses/_components/heroSearchBar";
+import { updateProfile } from "../action";
 
 export default function Form({ userSession }: { userSession: UserSession }) {
   const [user, setUser] = useState({
@@ -11,32 +11,38 @@ export default function Form({ userSession }: { userSession: UserSession }) {
     email: "",
     displayName: "",
   });
+  const [state, formAction, pending] = useActionState(updateProfile, null);
   const { email, image, name } = userSession;
   useEffect(() => {
     setUser((prev) => ({ ...prev, email, image, name }));
   }, [email, image, name]);
-
-  const displayName = user.name.split(" ")[0];
-  console.log(displayName);
+  console.log(state);
+  const displayName = name.split(" ")[0];
   return (
-    <form className="flex flex-col gap-4 w-[300px] md:w-xl">
+    <form action={formAction} className="flex flex-col gap-4 w-[300px] md:w-xl">
       <input
         type="text"
-        placeholder="full name"
+        placeholder="name"
         value={user.name}
+        name="name"
+        onChange={(e) => setUser((prev) => ({ ...prev, name: e.target.value }))}
         className="bg-[var(--input-bg-color)] w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-[var(--input-text-color)] font-poppins text-[16px] font-normal leading-[24px]"
       />
       <input
         type="text"
+        readOnly={true}
+        disabled={true}
         placeholder="display name"
         value={displayName}
-        className="bg-[var(--input-bg-color)] w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-[var(--input-text-color)] font-poppins text-[16px] font-normal leading-[24px]"
+        className="bg-[var(--input-bg-color)] w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-[var(--input-text-color)] font-poppins text-[16px] font-normal leading-[24px] disabled:bg-[var(--input-bg-color)]/70 disabled:text-[var(--input-text-color)]/70"
       />
       <input
         type="email"
+        readOnly={true}
+        disabled
         value={user.email}
         placeholder="john.doe@example.com"
-        className="bg-[var(--input-bg-color)] w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-[var(--input-text-color)] font-poppins text-[16px] font-normal leading-[24px]"
+        className="bg-[var(--input-bg-color)] w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-[var(--input-text-color)] font-poppins text-[16px] font-normal leading-[24px] disabled:bg-[var(--input-bg-color)]/70 disabled:text-[var(--input-text-color)]/70"
       />
       <SelectInput
         className="w-full max-w-full"
@@ -48,6 +54,8 @@ export default function Form({ userSession }: { userSession: UserSession }) {
         size="lg"
         variant="primary"
         className="w-full bg-[var(--primary-color)] text-white hover:bg-primary/80 focus:ring-2 focus:ring-[var(--primary-color)] cursor-pointer mt-2"
+        type="submit"
+        disabled={pending}
       >
         Save Changes
       </Button>

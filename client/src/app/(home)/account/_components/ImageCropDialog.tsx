@@ -8,12 +8,18 @@ import {
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { AlertCircle, Upload, X } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import React, { useRef, useState } from "react";
 import ReactCrop, {
   centerCrop,
+  convertToPixelCrop,
   makeAspectCrop,
   type Crop,
 } from "react-image-crop";
+import setCanvasPreview from "./setCanvasPrev";
+import { ScrollArea } from "@/components/components/ui/scroll-area";
+import SelectImageBtn from "./selectImageBtn";
+import CropButton from "./cropButton";
+import ErrorMessage from "./errorMessage";
 
 interface ImageCropDialogProps {
   open: boolean;
@@ -23,19 +29,11 @@ const ASPECT_RATIO = 1; // 1:1 for square crop
 const MIN_DIMENSION = 150;
 
 export function ImageCropDialog({ open, setDialogOpen }: ImageCropDialogProps) {
-  const [crop, setCrop] = useState<Crop>({
-    unit: "%",
-    x: 25,
-    y: 25,
-    height: 50,
-    width: 50,
-  });
+  const [crop, setCrop] = useState<Crop | undefined>(undefined);
   const [errorMessage, setErrorMessage] = useState("");
   const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
-  const [imageProperties, setImageProperties] = useState<{
-    height: number;
-    width: number;
-  } | null>(null);
+  const previewCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const imageRef = useRef<HTMLImageElement | null>(null);
 
   const onHandleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const { width, height, naturalHeight, naturalWidth } = e.currentTarget;
@@ -61,11 +59,6 @@ export function ImageCropDialog({ open, setDialogOpen }: ImageCropDialogProps) {
     );
 
     const centeredCrop = centerCrop(crop, width, height);
-    setImageProperties((prev) => ({
-      ...prev,
-      height: height,
-      width: width,
-    }));
     setCrop(centeredCrop);
   };
 
@@ -79,9 +72,18 @@ export function ImageCropDialog({ open, setDialogOpen }: ImageCropDialogProps) {
     }
   };
 
-  const handleUpload = () => {
+  const handleUpload = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setCanvasPreview(
+      imageRef?.current!,
+      previewCanvasRef?.current!,
+      convertToPixelCrop(
+        crop!,
+        imageRef?.current!?.width,
+        imageRef?.current!?.height
+      )
+    );
     console.log("Upload clicked");
-    setDialogOpen(false);
   };
   const handleClose = () => {
     setDialogOpen(false);
@@ -97,7 +99,7 @@ export function ImageCropDialog({ open, setDialogOpen }: ImageCropDialogProps) {
         setImageUrl(undefined);
       }}
     >
-      <DialogContent className="w-full h-dvh md:w-2xl md:h-4/6 p-0 flex flex-col md:p-6">
+      <DialogContent className="w-full h-dvh md:w-2xl md:h-fit p-0 flex flex-col md:p-6">
         {/* Header */}
         <DialogTitle>
           <div className="p-6 pb-4 border-b md:border-b-0 md:p-0">
@@ -106,7 +108,7 @@ export function ImageCropDialog({ open, setDialogOpen }: ImageCropDialogProps) {
         </DialogTitle>
 
         {/* Image Preview Area - takes up remaining space */}
-        <div className="flex-1 flex items-center justify-center h-fit bg-muted m-6 mt-4 rounded-lg verflow-hidden">
+        <div className="flex-1 flex items-center justify-center h-[500px] bg-muted m-6 mt-4 rounded-lg verflow-hidden">
           {imageUrl ? (
             <ReactCrop
               crop={crop}
@@ -119,10 +121,11 @@ export function ImageCropDialog({ open, setDialogOpen }: ImageCropDialogProps) {
             >
               <Image
                 src={imageUrl}
+                ref={imageRef}
                 onLoad={onHandleImageLoad}
                 alt="To be cropped"
-                width={imageProperties?.width || 500}
-                height={imageProperties?.height || 500}
+                width={300}
+                height={50}
               />
             </ReactCrop>
           ) : (
@@ -131,31 +134,32 @@ export function ImageCropDialog({ open, setDialogOpen }: ImageCropDialogProps) {
             </p>
           )}
         </div>
-        <div className="mx-6 mb-4 p-3 bg-muted border-amber-200 rounded-lg flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-          <p className="text-amber-800 text-sm">{errorMessage}</p>
-        </div>
+
+        <ErrorMessage errorMessage={errorMessage} />
+
+        {crop && (
+          <canvas
+            ref={previewCanvasRef}
+            className="mt-4"
+            style={{
+              display: "flex",
+              border: "1px solid white",
+              objectFit: "contain",
+              width: 150,
+              height: 150,
+            }}
+          />
+        )}
 
         {/* Bottom Buttons - fixed at bottom */}
         <div className="flex items-center justify-center gap-3 p-6 border-t md:border-t-0 md:pt-4">
-          <Button variant="outline" className="gap-2 before:relative">
-            <span className="relative w-full flex items-center justify-center gap-2">
-              <input
-                name="profile"
-                type="file"
-                accept="image/*"
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  onSelectFile(e)
-                }
-              />
-              {/* visible custom content */}
-              <Upload className="w-4 h-4" />
-              <span>Select image</span>
-            </span>
-            {/* select image */}
-          </Button>
-          <Button onClick={handleUpload} className="px-8">
+          {imageUrl ? (
+            <></>
+          ) : (
+            <SelectImageBtn handleSelectFile={onSelectFile} />
+          )}
+
+          <Button onClick={(e) => handleUpload(e)} className="px-8">
             Upload
           </Button>
         </div>

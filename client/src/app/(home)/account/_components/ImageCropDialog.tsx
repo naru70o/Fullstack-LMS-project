@@ -1,6 +1,11 @@
 "use client";
 import { Button } from "@/components/components/ui/button";
-import { Dialog, DialogContent } from "@/components/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogPortal,
+} from "@/components/components/ui/dialog";
+import { DialogTitle } from "@radix-ui/react-dialog";
 import { AlertCircle, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -36,6 +41,7 @@ export function ImageCropDialog({ open, setDialogOpen }: ImageCropDialogProps) {
     const { width, height, naturalHeight, naturalWidth } = e.currentTarget;
     const croppedWidth = (MIN_DIMENSION / 100) * width;
     console.log(width, height, croppedWidth);
+
     if (naturalWidth < MIN_DIMENSION || naturalHeight < MIN_DIMENSION) {
       setErrorMessage(
         `Image is too small. Minimum dimensions are ${MIN_DIMENSION}px by ${MIN_DIMENSION}px.`
@@ -46,12 +52,14 @@ export function ImageCropDialog({ open, setDialogOpen }: ImageCropDialogProps) {
     ) {
       setErrorMessage("Image aspect ratio is too extreme.");
     }
+
     const crop = makeAspectCrop(
       { unit: "%", width: croppedWidth },
       ASPECT_RATIO,
       width,
       height
     );
+
     const centeredCrop = centerCrop(crop, width, height);
     setImageProperties((prev) => ({
       ...prev,
@@ -79,6 +87,8 @@ export function ImageCropDialog({ open, setDialogOpen }: ImageCropDialogProps) {
     setDialogOpen(false);
   };
 
+  console.log("crop...", crop);
+
   return (
     <Dialog
       open={open}
@@ -87,20 +97,23 @@ export function ImageCropDialog({ open, setDialogOpen }: ImageCropDialogProps) {
         setImageUrl(undefined);
       }}
     >
-      <DialogContent className="w-full h-dvh md:max-w-2xl md:h-4/6  p-0 flex flex-col md:p-6">
+      <DialogContent className="w-full h-dvh md:w-2xl md:h-4/6 p-0 flex flex-col md:p-6">
         {/* Header */}
-        <div className="p-6 pb-4 border-b md:border-b-0 md:p-0">
-          <h2 className="text-2xl font-semibold">Crop Image</h2>
-        </div>
+        <DialogTitle>
+          <div className="p-6 pb-4 border-b md:border-b-0 md:p-0">
+            <h2 className="text-2xl font-semibold">Crop Image</h2>
+          </div>
+        </DialogTitle>
 
         {/* Image Preview Area - takes up remaining space */}
-        <div className="flex-1 flex items-center justify-center bg-muted m-6 mt-4 rounded-lg verflow-hidden">
+        <div className="flex-1 flex items-center justify-center h-fit bg-muted m-6 mt-4 rounded-lg verflow-hidden">
           {imageUrl ? (
             <ReactCrop
               crop={crop}
               onChange={(pixelCrop, percentCrop) => setCrop(percentCrop)}
               aspect={ASPECT_RATIO}
               keepSelection
+              ruleOfThirds
               circularCrop
               minWidth={MIN_DIMENSION}
             >

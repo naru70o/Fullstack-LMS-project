@@ -17,7 +17,6 @@ export async function session(
   next: NextFunction,
 ) {
   try {
-    console.log(req.headers)
     const session = await auth.api.getSession({
       headers: fromNodeHeaders(req.headers),
     })

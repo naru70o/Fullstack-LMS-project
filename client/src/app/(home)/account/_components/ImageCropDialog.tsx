@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "@/components/components/ui/button";
 import { Dialog, DialogContent } from "@/components/components/ui/dialog";
-import { apiRoutes } from "@/components/lib/apiRoutes";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
@@ -11,10 +10,10 @@ import ReactCrop, {
   makeAspectCrop,
   type Crop,
 } from "react-image-crop";
+import { uploadProfileImage } from "../action";
 import ErrorMessage from "./errorMessage";
 import SelectImageBtn from "./selectImageBtn";
 import setCanvasPreview from "./setCanvasPrev";
-import { uploadProfileImage } from "../action";
 
 interface ImageCropDialogProps {
   open: boolean;
@@ -97,15 +96,13 @@ export function ImageCropDialog({ open, setDialogOpen }: ImageCropDialogProps) {
     fd.append("file", blob, "profile.png");
 
     const data = await uploadProfileImage(fd);
-    console.log(data);
+
     setDialogOpen(false);
   };
 
   const handleClose = () => {
     setDialogOpen(false);
   };
-
-  console.log("crop...", crop);
 
   return (
     <Dialog

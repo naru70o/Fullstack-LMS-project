@@ -155,7 +155,7 @@ export function ImageCropDialog({ open, setDialogOpen }: ImageCropDialogProps) {
             ref={previewCanvasRef}
             className="mt-4"
             style={{
-              display: "flex",
+              display: "none",
               border: "1px solid white",
               objectFit: "contain",
               width: 150,

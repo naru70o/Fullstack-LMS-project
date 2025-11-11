@@ -14,6 +14,7 @@ import { uploadProfileImage } from "../action";
 import ErrorMessage from "./errorMessage";
 import SelectImageBtn from "./selectImageBtn";
 import setCanvasPreview from "./setCanvasPrev";
+import toast from "react-hot-toast";
 
 interface ImageCropDialogProps {
   open: boolean;
@@ -98,6 +99,11 @@ export function ImageCropDialog({ open, setDialogOpen }: ImageCropDialogProps) {
     const data = await uploadProfileImage(fd);
 
     setDialogOpen(false);
+    if (data.status === "success") {
+      toast.success(data.message);
+    } else {
+      toast.error(data.message);
+    }
   };
 
   const handleClose = () => {

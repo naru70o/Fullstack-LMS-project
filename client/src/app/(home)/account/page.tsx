@@ -6,6 +6,7 @@ import { UserSession } from "@/components/util/interfaces";
 import Tabs from "../my-learning/_components/tabs";
 import ProfileEditor from "./_components/EditProfileImage";
 import Form from "./_components/form";
+import { Skeleton } from "@/components/components/ui/skeleton";
 
 export default async function page() {
   const userSession: UserSession = await getUserSession();
@@ -27,11 +28,17 @@ export default async function page() {
       <div className="flex flex-col items-center">
         <div className="cursor-pointer relative">
           <Avatar asChild className="w-24 h-24 mt-10">
-            <AvatarImage
-              className="object-cover"
-              src={image}
-              alt="User Avatar"
-            />
+            {!image ||
+            image === "" ||
+            image.startsWith("'https://res.cloudinary.com") ? (
+              <Skeleton className="rounded-full" />
+            ) : (
+              <AvatarImage
+                className="object-cover"
+                src={image}
+                alt="User Avatar"
+              />
+            )}
           </Avatar>
           <ProfileEditor />
         </div>

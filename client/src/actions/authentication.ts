@@ -157,7 +157,7 @@ export async function signinAction(
         sameSite: "lax",
         maxAge: 604800,
         httpOnly: true,
-        secure: true,
+        secure: process.env.NODE_ENV === "production",
       });
     }
     if (response.ok) {

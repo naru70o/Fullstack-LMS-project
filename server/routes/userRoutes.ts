@@ -20,7 +20,7 @@ userRouter.route('/updateprofile').patch(session, updateProfile)
 userRouter.route('/changepassword').patch(session, changepassword)
 userRouter
   .route('/updateprofilepicture')
-  .patch(session, upload.single('profile'), updateProfileImage)
+  .patch(session, upload.single('file'), updateProfileImage)
 userRouter.route('/updaterole').post(session, changeUserRole)
 userRouter.route('/').get(session, getUserSession)
 

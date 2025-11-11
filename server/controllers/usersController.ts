@@ -144,31 +144,41 @@ export const updateProfileImage = async (
 ) => {
   //1 getting the image from the req.file becouse of multer middleware running
   const profile = req.file
-  if (!profile) {
-    return next(new AppError('No file uploaded', 400))
-  }
-  console.log(profile)
+
   try {
     if (!profile) {
-      return next(new AppError('No file uploaded', 400))
+      return res.status(400).json({
+        status: 'error',
+        message: 'No file uploaded',
+      })
     }
     //2 uploading the image to cloudinary
     const user = req.user
     if (!user) {
-      return next(new AppError('User not found', 404))
+      return res.status(404).json({
+        status: 'error',
+        message: 'user not found',
+      })
     }
     const uploadImageResult = await uploadImage(profile.buffer)
-    const { public_id } = uploadImageResult || {}
+    const { public_id, secure_url } = uploadImageResult || {}
     console.log('this is the public_ID', public_id)
 
     if (!public_id) {
       return next(new AppError('Image upload failed', 500))
     }
 
+    const updateData: any = { secret: public_id, image: secure_url }
+    if (secure_url) {
+      updateData.image = secure_url
+    }
+
     const updatedUser = await prisma.user.update({
       where: { id: user.id },
-      data: { image: public_id },
+      data: updateData,
     })
+
+    await deleteImage(user.secret)
 
     if (!updatedUser) {
       return next(new AppError('User not found', 404))

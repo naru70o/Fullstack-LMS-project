@@ -49,3 +49,36 @@ export const updateProfile = async (
     return { status: "error", message: "Something went wrong" };
   }
 };
+
+// updating profile picture
+export const uploadProfileImage = async (formData: FormData) => {
+  try {
+    console.log(formData);
+    const response = await fetch(
+      "http://localhost:3000/api/v1/user/updateprofilepicture",
+      {
+        method: "PATCH",
+        body: formData,
+        headers: {
+          cookie: await getCookies(),
+        },
+      }
+    );
+
+    revalidateTag("userSession");
+    const data = await response.json();
+    if (response.ok) {
+      return {
+        status: "success",
+        message: "profile image updated successfully",
+      };
+    } else {
+      return {
+        status: "error",
+        message: data.message || "An unknown error occurred.",
+      };
+    }
+  } catch (error) {
+    return { status: "error", message: "something went wrong" };
+  }
+};

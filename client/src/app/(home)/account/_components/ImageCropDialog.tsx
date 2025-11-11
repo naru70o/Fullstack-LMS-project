@@ -1,12 +1,8 @@
 "use client";
 import { Button } from "@/components/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogPortal,
-} from "@/components/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/components/ui/dialog";
+import { apiRoutes } from "@/components/lib/apiRoutes";
 import { DialogTitle } from "@radix-ui/react-dialog";
-import { AlertCircle, Upload, X } from "lucide-react";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
 import ReactCrop, {
@@ -15,11 +11,10 @@ import ReactCrop, {
   makeAspectCrop,
   type Crop,
 } from "react-image-crop";
-import setCanvasPreview from "./setCanvasPrev";
-import { ScrollArea } from "@/components/components/ui/scroll-area";
-import SelectImageBtn from "./selectImageBtn";
-import CropButton from "./cropButton";
 import ErrorMessage from "./errorMessage";
+import SelectImageBtn from "./selectImageBtn";
+import setCanvasPreview from "./setCanvasPrev";
+import { uploadProfileImage } from "../action";
 
 interface ImageCropDialogProps {
   open: boolean;
@@ -72,7 +67,7 @@ export function ImageCropDialog({ open, setDialogOpen }: ImageCropDialogProps) {
     }
   };
 
-  const handleUpload = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleUpload = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setCanvasPreview(
       imageRef?.current!,
@@ -83,8 +78,29 @@ export function ImageCropDialog({ open, setDialogOpen }: ImageCropDialogProps) {
         imageRef?.current!?.height
       )
     );
-    console.log("Upload clicked");
+
+    // convert canvas -> blob
+    const canvas = previewCanvasRef.current!;
+    if (!canvas) return;
+
+    const blob: Blob | null = await new Promise((resolve) =>
+      canvas.toBlob((b) => resolve(b), "image/png")
+    );
+
+    if (!blob) {
+      console.error("Failed to create blob from canvas");
+      return;
+    }
+
+    // send as multipart/form-data
+    const fd = new FormData();
+    fd.append("file", blob, "profile.png");
+
+    const data = await uploadProfileImage(fd);
+    console.log(data);
+    setDialogOpen(false);
   };
+
   const handleClose = () => {
     setDialogOpen(false);
   };

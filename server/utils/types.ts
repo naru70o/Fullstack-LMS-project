@@ -6,5 +6,6 @@ export interface User {
   createdAt: Date
   updatedAt: Date
   image?: string | null | undefined
+  secret: string
   roles: string[]
 }

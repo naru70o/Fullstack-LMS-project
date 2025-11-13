@@ -9,6 +9,6 @@ import express from 'express'
 const InstructorRouter: Router = express.Router()
 
 InstructorRouter.route('/register').post(session, registerInstructor)
-InstructorRouter.route('/instructors').get(getAllInstructors)
+InstructorRouter.route('/instructors').get(session, getAllInstructors)
 
 export default InstructorRouter

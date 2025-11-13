@@ -5,6 +5,7 @@ import { parseSetCookie } from "../util/parseSetCookie";
 import { signinSchema, signupSchema } from "./zod";
 import { formatZodErrors } from "../app/(home)/instructor/zodTypes";
 import * as z from "zod";
+import { revalidateTag } from "next/cache";
 
 // getting active user session
 export async function getUserSession() {
@@ -19,6 +20,7 @@ export async function getUserSession() {
     credentials: "include",
     next: {
       revalidate: 60,
+      tags: ["userSession"],
     },
   });
 
@@ -27,6 +29,7 @@ export async function getUserSession() {
     const userSessionData = await userSessionResponse.json();
     userSession = userSessionData.data.user;
   }
+
   return userSession;
 }
 
@@ -154,7 +157,7 @@ export async function signinAction(
         sameSite: "lax",
         maxAge: 604800,
         httpOnly: true,
-        secure: true,
+        secure: process.env.NODE_ENV === "production",
       });
     }
     if (response.ok) {

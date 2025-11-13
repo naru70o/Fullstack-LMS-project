@@ -12,6 +12,9 @@ export const apiRoutes = {
   },
   user: {
     getUserSession: `${API_BASE_URL}/user`,
+    updateProfile: `${API_BASE_URL}/user/updateprofile`,
+    changepassword: `${API_BASE_URL}/user/changepassword`,
+    updateProfileImage: `${API_BASE_URL}/user/updateprofilepicture`,
   },
   courses: {
     getAllCourses: `${API_BASE_URL}/course`,

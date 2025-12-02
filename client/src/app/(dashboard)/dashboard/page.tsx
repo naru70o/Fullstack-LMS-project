@@ -1,5 +1,3 @@
-import { Sidebar } from "../../../components/side-bar";
-
 export default function page() {
   return (
     <div className="flex h-screen">

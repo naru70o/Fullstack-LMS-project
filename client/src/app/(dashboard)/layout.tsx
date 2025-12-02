@@ -3,7 +3,7 @@ import { Poppins, Outfit } from "next/font/google";
 // import "/globals.css";
 import "@/components/app/globals.css";
 import { Toaster } from "react-hot-toast";
-import { Sidebar } from "@/components/components/side-bar";
+import { Sidebar } from "./components/side-bar";
 
 const PoppinsFont = Poppins({
   variable: "--font-poppins",

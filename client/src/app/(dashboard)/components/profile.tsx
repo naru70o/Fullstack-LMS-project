@@ -6,13 +6,19 @@ import {
 } from "@/components/components/ui/avatar";
 import { Button } from "@/components/components/ui/button";
 import { ChevronLeft } from "lucide-react";
+import { UserSession } from "@/components/util/interfaces";
+import { getUserSession } from "@/components/actions/authentication";
 
-export default function Profile() {
+export default async function Profile() {
+  const userSession: UserSession = await getUserSession();
+  const { image, name } = userSession;
+
+  console.log(userSession);
   return (
     <div className="flex items-center justify-between border-b border-border p-4">
       <div className="flex items-center gap-3">
         <Avatar className="h-12 w-12">
-          <AvatarImage src="/professional-headshot.png" alt="Andrew Smith" />
+          <AvatarImage src={image} alt={name} />
           <AvatarFallback>AS</AvatarFallback>
         </Avatar>
         <div className="flex flex-col">

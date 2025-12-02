@@ -28,9 +28,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body
-        className={`${PoppinsFont.variable} ${OutfitFont.variable} antialiased overflow-x-hidden`}
+        className={`${PoppinsFont.variable} ${OutfitFont.variable} antialiased flex overflow-x-hidden`}
       >
         <Sidebar />
         {children}

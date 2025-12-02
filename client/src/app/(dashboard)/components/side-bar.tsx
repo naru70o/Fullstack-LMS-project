@@ -1,5 +1,3 @@
-"use client";
-
 import BottomActions from "./bottomActions";
 import Navigation from "./navigation";
 import Profile from "./profile";

@@ -10,6 +10,7 @@ import {
   TrendingUp,
   Users,
 } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function Navigation() {
@@ -50,14 +51,15 @@ export default function Navigation() {
               )}
             </Button>
           </div>
-
-          <Button
-            variant="ghost"
-            className="w-full justify-start gap-3 text-foreground hover:bg-accent cursor-pointer"
-          >
-            <FileText className="h-5 w-5" />
-            <span className="text-sm font-medium">Courses</span>
-          </Button>
+          <Link href="/manage-courses">
+            <Button
+              variant="ghost"
+              className="w-full justify-start gap-3 text-foreground hover:bg-accent cursor-pointer"
+            >
+              <FileText className="h-5 w-5" />
+              <span className="text-sm font-medium">Courses</span>
+            </Button>
+          </Link>
 
           <Button
             variant="ghost"

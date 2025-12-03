@@ -10,7 +10,7 @@ export function Card() {
           key={course._id}
           className=" p-4 border-1 border-popover-foreground/10 w-auto mx-auto rounded-lg"
         >
-          <div className=" flex flex-col gap-1 text-card-foreground rounded-lg w-auto overflow-hidden relative">
+          <div className="flex flex-col gap-1 text-card-foreground rounded-lg w-auto overflow-hidden relative">
             {/* badge / best seller */}
             <div className="absolute top-2 left-2 bg-[#EADB36] text-black/70 text-xs font-bold py-1 px-2 rounded-lg z-10">
               Best Seller

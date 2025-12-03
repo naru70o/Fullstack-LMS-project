@@ -13,7 +13,6 @@ export default async function Profile() {
   const userSession: UserSession = await getUserSession();
   const { image, name } = userSession;
 
-  console.log(userSession);
   return (
     <div className="flex items-center justify-between border-b border-border p-4">
       <div className="flex items-center gap-3">

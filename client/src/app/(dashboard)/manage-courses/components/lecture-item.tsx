@@ -1,0 +1,84 @@
+"use client";
+
+import { useState } from "react";
+import { Card } from "@/components/components/ui/card";
+import { Button } from "@/components/components/ui/button";
+import { Trash2, Edit2, Play } from "lucide-react";
+import EditLectureDialog from "./edit-lecture-dialog";
+
+interface Lecture {
+  id: number;
+  moduleId: number;
+  title: string;
+  description: string;
+  duration: string;
+  order: number;
+}
+
+interface LectureItemProps {
+  lecture: Lecture;
+  onDelete: (lectureId: number) => void;
+  onUpdate: (lectureId: number, updatedData: any) => void;
+}
+
+export default function LectureItem({
+  lecture,
+  onDelete,
+  onUpdate,
+}: LectureItemProps) {
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+
+  const handleEditLecture = (updatedData: any) => {
+    onUpdate(lecture.id, updatedData);
+    setIsEditDialogOpen(false);
+  };
+
+  return (
+    <>
+      <Card className="flex items-start justify-between gap-4 p-4 transition-all hover:shadow-md bg-muted/50">
+        <div className="flex flex-1 items-start gap-4">
+          <div className="rounded bg-primary/10 p-2.5 flex-shrink-0 mt-0.5">
+            <Play className="h-4 w-4 text-primary" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="font-medium text-foreground truncate">
+              {lecture.title}
+            </p>
+            <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+              {lecture.description}
+            </p>
+            <p className="text-xs text-muted-foreground mt-2">
+              {lecture.duration}
+            </p>
+            <div className="flex gap-2 flex-shrink-0 mt-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsEditDialogOpen(true)}
+                className="gap-1 bg-transparent"
+              >
+                <Edit2 className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onDelete(lecture.id)}
+                className="gap-1 bg-transparent text-destructive"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Card>
+
+      {/* Edit Lecture Dialog */}
+      <EditLectureDialog
+        isOpen={isEditDialogOpen}
+        onOpenChange={setIsEditDialogOpen}
+        lecture={lecture}
+        onEditLecture={handleEditLecture}
+      />
+    </>
+  );
+}

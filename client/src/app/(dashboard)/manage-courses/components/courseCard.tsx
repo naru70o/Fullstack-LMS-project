@@ -1,6 +1,7 @@
 import { Button } from "@/components/components/ui/button";
 import { Edit, Trash2, Users, BookOpen, Clock } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface Course {
   id: number;
@@ -60,11 +61,20 @@ export default function CourseCard({ course }: { course: Course }) {
         </div>
 
         {/* Actions */}
-        <div className="mt-4 flex gap-2">
-          <Button variant="outline" size="sm" className="flex-1 bg-transparent">
-            <Edit className="h-4 w-4" />
-            Edit
-          </Button>
+        <div className="mt-4 flex gap-2 ">
+          <Link
+            href={`/manage-courses/${course.id}`}
+            className="flex-1 cursor-pointer"
+          >
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full bg-transparent"
+            >
+              <Edit className="h-4 w-4" />
+              Edit
+            </Button>
+          </Link>
           <Button variant="outline" size="sm" className="flex-1 bg-transparent">
             <Trash2 className="h-4 w-4" />
             Delete

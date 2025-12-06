@@ -5,14 +5,29 @@ import { useActionState, useEffect, useState } from "react";
 import { SelectInput } from "../../courses/_components/heroSearchBar";
 import { updateProfile } from "../action";
 
-export default function Form({ userSession }: { userSession: UserSession }) {
-  const [user, setUser] = useState({
+interface FormProps {
+  name: string;
+  email: string;
+  displayName: string;
+}
+
+export default function Form({
+  userSession,
+}: {
+  userSession: UserSession | null;
+}) {
+  const [user, setUser] = useState<FormProps>({
     name: "",
     email: "",
     displayName: "",
   });
   const [state, formAction, pending] = useActionState(updateProfile, null);
-  const { email, image, name } = userSession;
+  const { email, image, name } = userSession ?? {
+    name: "",
+    email: "",
+    image: "",
+  };
+
   useEffect(() => {
     setUser((prev) => ({ ...prev, email, image, name }));
   }, [email, image, name]);

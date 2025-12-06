@@ -41,6 +41,40 @@ export async function getAllCourses(
   }
 }
 
+export async function getYourCourses(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    // 1) getting the user
+    const user = req.user
+    if (!user) {
+      return next(new AppError('user not found', 404))
+    }
+    // 2) getting the courses of the instructor
+    const courses = await prisma.course.findMany({
+      where: { instructorId: user.id },
+      include: {
+        instructor: true,
+      },
+    })
+    return res.status(200).json({
+      status: 'success',
+      data: {
+        courses,
+      },
+    })
+  } catch (error) {
+    return next(
+      new AppError(
+        `internal server error while fetching your courses ${error.message}`,
+        500,
+      ),
+    )
+  }
+}
+
 // get a course
 export async function getCourse(
   req: Request,
@@ -72,15 +106,18 @@ export async function getCourse(
       message: 'here is your course',
       data: course,
     })
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof AppError) {
-      return next(
-        new AppError(
-          `internal server error while getting a course ${error.message}`,
-          500,
-        ),
-      )
+      return next(error)
     }
+    return next(
+      new AppError(
+        `internal server error while getting a course ${
+          error instanceof Error ? error.message : 'unknown error'
+        }`,
+        500,
+      ),
+    )
   }
 }
 

@@ -1,19 +1,10 @@
 import { Button } from "@/components/components/ui/button";
+import { ICourse } from "@/components/util/interfaces";
 import { Edit, Trash2, Users, BookOpen, Clock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-interface Course {
-  id: number;
-  title: string;
-  description: string;
-  students: number;
-  lessons: number;
-  duration: string;
-  image: string;
-}
-
-export default function CourseCard({ course }: { course: Course }) {
+export default function CourseCard({ course }: { course: ICourse }) {
   return (
     <div className=" p-4 border-1 border-popover-foreground/10 w-auto mx-auto rounded-lg">
       {/* Course Image */}
@@ -43,13 +34,13 @@ export default function CourseCard({ course }: { course: Course }) {
           <div className="flex items-center gap-2">
             <Users className="h-4 w-4 text-muted-foreground" />
             <span className="text-xs text-muted-foreground">
-              {course.students}
+              {100} Enrolled
             </span>
           </div>
           <div className="flex items-center gap-2">
             <BookOpen className="h-4 w-4 text-muted-foreground" />
             <span className="text-xs text-muted-foreground">
-              {course.lessons}
+              {course.numberOfLectures}
             </span>
           </div>
           <div className="flex items-center gap-2">

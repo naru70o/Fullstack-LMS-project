@@ -7,6 +7,7 @@ import {
   updateCourse,
   createNewCourse,
   getCourse,
+  getYourCourses,
 } from '../controllers/courseController/courseController.ts'
 import {
   createNewModule,
@@ -43,10 +44,11 @@ courseRouter
   .route('/newlecture/:moduleId')
   .post(session, upload.single('lecture'), createNewLecture)
 courseRouter.route('/').get(getAllCourses)
-courseRouter.route('/:courseId').get(session, getCourse)
+courseRouter.route('/yourcourses').get(session, getYourCourses)
 courseRouter.route('/modules').get(session, getAllModules)
 courseRouter.route('/lectures').get(session, getAllLectures)
 courseRouter.route('/deletelectures').delete(session, deleteAllLectures)
+courseRouter.route('/:courseId').get(session, getCourse)
 
 // Questions and Answers
 // courseRouter

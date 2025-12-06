@@ -10,3 +10,35 @@ export interface UserSession {
   updatedAt: string;
   roles: Record<Role, string>;
 }
+
+export interface IInstructor {
+  id: string;
+  name: string;
+  email: string;
+  image: string;
+  secret: string;
+  roles: string[];
+  bio: string | null;
+  emailVerified: boolean;
+  lastActive: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ICourse {
+  id: string;
+  title: string;
+  description: string;
+  secureUrl: string;
+  publicId: string;
+  duration: number;
+  level: string[];
+  category: string[];
+  instructorId: string;
+  isPublished: boolean;
+  numberOfLectures: number;
+  totalOfHours: number;
+  createdAt: string;
+  updatedAt: string;
+  instructor: IInstructor;
+}

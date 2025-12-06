@@ -9,8 +9,8 @@ import Form from "./_components/form";
 import { Skeleton } from "@/components/components/ui/skeleton";
 
 export default async function page() {
-  const userSession: UserSession = await getUserSession();
-  const { image } = userSession;
+  const userSession: UserSession | null = await getUserSession();
+  const { image } = userSession ?? {};
 
   console.log(userSession);
   return (

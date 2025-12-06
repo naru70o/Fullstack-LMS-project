@@ -6,6 +6,7 @@ import { signinSchema, signupSchema } from "./zod";
 import { formatZodErrors } from "../app/(home)/instructor/zodTypes";
 import * as z from "zod";
 import { revalidateTag } from "next/cache";
+import { UserSession } from "../util/interfaces";
 
 // getting active user session
 export async function getUserSession() {
@@ -14,7 +15,7 @@ export async function getUserSession() {
     .getAll()
     .map((c) => `${c.name}=${c.value}`)
     .join("; ");
-  let userSession;
+  let userSession: UserSession | null;
   const userSessionResponse = await fetch(apiRoutes.user.getUserSession, {
     headers: { Cookie: cookieHeader },
     credentials: "include",

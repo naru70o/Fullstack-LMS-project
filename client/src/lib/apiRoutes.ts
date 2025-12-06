@@ -19,6 +19,7 @@ export const apiRoutes = {
   courses: {
     getAllCourses: `${API_BASE_URL}/course`,
     getCourseById: (id: string) => `${API_BASE_URL}/course/${id}`,
+    createCourse: `${API_BASE_URL}/course/newcourse`,
   },
   instructor: {
     registerInstructor: `${API_BASE_URL}//instructor/registe`,

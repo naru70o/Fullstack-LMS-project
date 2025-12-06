@@ -4,7 +4,6 @@ import { Button } from "@/components/components/ui/button";
 import { Book } from "lucide-react";
 import { useState } from "react";
 import CourseCard from "./components/courseCard";
-import CreateCourseDialog from "./components/createCourse";
 import Header from "./components/header";
 import Status from "./components/status";
 
@@ -73,24 +72,12 @@ const SAMPLE_COURSES = [
 ];
 
 export default function CoursesPage() {
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [courses, setCourses] = useState(SAMPLE_COURSES);
-
-  const handleCreateCourse = (courseData: any) => {
-    const newCourse = {
-      id: courses.length + 1,
-      ...courseData,
-      students: 0,
-      lessons: 0,
-    };
-    setCourses([...courses, newCourse]);
-    setIsCreateDialogOpen(false);
-  };
 
   return (
     <main className="min-h-screen w-full bg-background">
       {/* Header Section */}
-      <Header setIsCreateDialogOpen={setIsCreateDialogOpen} />
+      <Header />
 
       {/* Stats Section */}
       <Status courses={courses} />
@@ -107,7 +94,7 @@ export default function CoursesPage() {
               Create your first course to get started
             </p>
             <Button
-              onClick={() => setIsCreateDialogOpen(true)}
+              // onClick={() => setIsCreateDialogOpen(true)}
               className="mt-4"
             >
               Create First Course
@@ -121,13 +108,6 @@ export default function CoursesPage() {
           </div>
         )}
       </div>
-
-      {/* Create Course Dialog */}
-      <CreateCourseDialog
-        isOpen={isCreateDialogOpen}
-        onOpenChange={setIsCreateDialogOpen}
-        onCreateCourse={handleCreateCourse}
-      />
     </main>
   );
 }

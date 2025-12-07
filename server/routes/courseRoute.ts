@@ -8,6 +8,7 @@ import {
   createNewCourse,
   getCourse,
   getYourCourses,
+  getYourCourse,
 } from '../controllers/courseController/courseController.ts'
 import {
   createNewModule,
@@ -49,6 +50,7 @@ courseRouter.route('/modules').get(session, getAllModules)
 courseRouter.route('/lectures').get(session, getAllLectures)
 courseRouter.route('/deletelectures').delete(session, deleteAllLectures)
 courseRouter.route('/:courseId').get(session, getCourse)
+courseRouter.route('/yourcourse/:courseId').get(session, getYourCourse)
 
 // Questions and Answers
 // courseRouter

@@ -75,6 +75,54 @@ export async function getYourCourses(
   }
 }
 
+export async function getYourCourse(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  //1 check if the user exist
+  const user = req.user
+  if (!user) {
+    return next(new AppError('user not found', 404))
+  }
+  try {
+    //2 get the course id from params
+    const { courseId } = req.params
+    if (!courseId) {
+      return next(new AppError('course id is required', 400))
+    }
+
+    // 3 get the course
+    const course = await prisma.course.findFirst({
+      where: { id: courseId, instructorId: user.id },
+      include: {
+        modules: {
+          include: {
+            lectures: true,
+          },
+        },
+      },
+    })
+
+    if (!course) {
+      return next(new AppError('course not found', 404))
+    }
+    return res.status(200).json({
+      status: 'success',
+      data: {
+        course,
+      },
+    })
+  } catch (error) {
+    return next(
+      new AppError(
+        `internal server error while fetching your course ${error.message}`,
+        500,
+      ),
+    )
+  }
+}
+
 // get a course
 export async function getCourse(
   req: Request,

@@ -1,18 +1,30 @@
 import { Button } from "@/components/components/ui/button";
-import { ChevronLeft, Plus } from "lucide-react";
+import { getCookies } from "@/components/lib/helpers";
+import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
-import ModuleList from "../components/module-list";
-import CreateModuleDialog from "../components/create-module-dialog";
+import CourseContent from "../components/course-content";
 
 export default async function page({
   params,
 }: {
   params: Promise<{ courseId: string }>;
 }) {
-  const courseId = Number.parseInt(params.courseId);
-  const [modules, setModules] = [];
-  const [isCreateModuleDialogOpen, setIsCreateModuleDialogOpen] = [];
-  const course = [];
+  const { courseId } = await params;
+  const cookieHeader = await getCookies();
+  const response = await fetch(
+    `http://localhost:3000/api/v1/course/yourcourse/${courseId}`,
+    {
+      headers: { cookie: cookieHeader },
+    }
+  );
+  console.log(response);
+  if (!response.ok) {
+    throw new Error("Failed to fetch course");
+  }
+  const { data } = await response.json();
+  const course = data.course;
+  const modules = data.modules;
+  console.log("for testing", course, modules);
   if (!course) {
     return (
       <main className="min-h-screen bg-background p-6">
@@ -20,7 +32,7 @@ export default async function page({
           <h1 className="text-2xl font-bold text-foreground">
             Course not found
           </h1>
-          <Link href="/">
+          <Link href="/manage-courses">
             <Button className="mt-4">Back to Courses</Button>
           </Link>
         </div>
@@ -33,7 +45,7 @@ export default async function page({
       {/* Header */}
       <div className="border-b border-border bg-card p-6">
         <div className="flex items-center gap-4">
-          <Link href="/">
+          <Link href="/manage-courses">
             <Button variant="outline" size="icon">
               <ChevronLeft className="h-4 w-4" />
             </Button>
@@ -48,58 +60,7 @@ export default async function page({
           </div>
         </div>
       </div>
-
-      {/* Content */}
-      <div className="p-6">
-        <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-2xl font-semibold text-foreground">
-            Modules ({modules.length})
-          </h2>
-          <Button
-            onClick={() => setIsCreateModuleDialogOpen(true)}
-            className="gap-2"
-          >
-            <Plus className="h-4 w-4" />
-            Add Module
-          </Button>
-        </div>
-
-        {modules.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border py-12">
-            <Plus className="mb-4 h-12 w-12 text-muted-foreground" />
-            <h3 className="text-lg font-semibold text-foreground">
-              No modules yet
-            </h3>
-            <p className="mt-2 text-muted-foreground">
-              Create your first module to get started
-            </p>
-            <Button
-              onClick={() => setIsCreateModuleDialogOpen(true)}
-              className="mt-4"
-            >
-              Create First Module
-            </Button>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            <ModuleList
-              modules={modules}
-              onDeleteModule={handleDeleteModule}
-              onUpdateModule={handleUpdateModule}
-              onAddLecture={handleAddLecture}
-              onDeleteLecture={handleDeleteLecture}
-              onUpdateLecture={handleUpdateLecture}
-            />
-          </div>
-        )}
-      </div>
-
-      {/* Create Module Dialog */}
-      <CreateModuleDialog
-        isOpen={isCreateModuleDialogOpen}
-        onOpenChange={setIsCreateModuleDialogOpen}
-        onCreateModule={handleCreateModule}
-      />
+      <CourseContent modules={modules} />
     </main>
   );
 }

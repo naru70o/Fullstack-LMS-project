@@ -11,7 +11,6 @@ import {
   DialogTitle,
 } from "@/components/components/ui/dialog";
 import { Button } from "@/components/components/ui/button";
-import { Input } from "@/components/components/ui/input";
 import { Textarea } from "@/components/components/ui/textarea";
 import { Label } from "@/components/components/ui/label";
 
@@ -53,17 +52,17 @@ export default function CreateModuleDialog({
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <Label htmlFor="module-title">Module Title</Label>
-            <Input
-              id="module-title"
-              placeholder="e.g., React Fundamentals"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+          <div className="space-y-2">
+            <Label htmlFor="title">Course Title</Label>
+            <input
+              type="text"
+              name="title"
+              placeholder="Find courses, skills, software, etc"
+              className="bg-popover-foreground/10 w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px]"
             />
           </div>
 
-          <div>
+          <div className="space-y-2">
             <Label htmlFor="module-description">Description</Label>
             <Textarea
               id="module-description"
@@ -82,9 +81,7 @@ export default function CreateModuleDialog({
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={!title.trim()}>
-              Create Module
-            </Button>
+            <Button type="submit">Create Module</Button>
           </div>
         </form>
       </DialogContent>

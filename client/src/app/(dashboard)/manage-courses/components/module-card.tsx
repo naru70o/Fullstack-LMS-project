@@ -7,8 +7,9 @@ import { Trash2, Plus, ChevronDown, ChevronUp, Edit2 } from "lucide-react";
 import EditModuleDialog from "./edit-module-dialog";
 import LectureList from "./lecture-list";
 import CreateLectureDialog from "../components/create-lecture-dialog";
-import DeleteModuleDialog from "./delete-module-dialog";
+import DeleteConfirmDialog from "./delete-confirm-dialog";
 import { Module } from "../types";
+import { deleteModule } from "../action";
 
 interface ModuleCardProps {
   module: Module;
@@ -112,13 +113,22 @@ export default function ModuleCard({ module }: ModuleCardProps) {
       />
 
       {/* Delete Module Dialog */}
-      <DeleteModuleDialog
+      <DeleteConfirmDialog
         isOpen={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDialogOpen}
-        module={module}
+        title="Delete Module?"
+        description={
+          <span>
+            Are you sure you want to delete the module &quot;
+            <strong>{module.title}</strong>&quot;? This action cannot be undone
+            and will delete all lectures within this module.
+          </span>
+        }
+        action={deleteModule}
+        targetId={module.id}
+        inputIdName="moduleId"
       />
 
-      {/* Create Lecture Dialog */}
       <CreateLectureDialog
         isOpen={isCreateLectureDialogOpen}
         onOpenChange={setIsCreateLectureDialogOpen}

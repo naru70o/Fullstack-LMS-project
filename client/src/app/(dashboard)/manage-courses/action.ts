@@ -6,6 +6,7 @@ import { formatZodErrors } from "../../(home)/instructor/zodTypes";
 import { apiRoutes } from "@/components/lib/apiRoutes";
 import { cookies } from "next/headers";
 import { getCookies } from "@/components/lib/helpers";
+import { revalidatePath } from "next/cache";
 
 /*
 i wanna come back to the caching mechanism so first i need to 
@@ -180,6 +181,32 @@ export async function deleteModule(prev: unknown, formdata: FormData) {
     if (error) {
       // Log locally if needed, or simply ignore for now
     }
+    return { status: "error", message: "Something went wrong" };
+  }
+}
+
+export async function deleteCourse(prev: unknown, formdata: FormData) {
+  try {
+    const courseId = formdata.get("courseId") as string;
+    const cookieHeader = await getCookies();
+    const deletedCourse = await fetch(
+      `${apiRoutes.courses.deleteCourse}/${courseId}`,
+      {
+        method: "DELETE",
+        headers: { Cookie: cookieHeader },
+        credentials: "include",
+      }
+    );
+
+    if (!deletedCourse.ok) {
+      return { status: "error", message: "Failed to delete course" };
+    }
+    revalidatePath("/manage-courses");
+    return {
+      status: "success",
+      message: "Course deleted successfully",
+    };
+  } catch (error) {
     return { status: "error", message: "Something went wrong" };
   }
 }

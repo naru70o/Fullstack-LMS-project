@@ -4,13 +4,13 @@ import { Plus } from "lucide-react";
 import React from "react";
 import CreateModuleDialog from "./create-module-dialog";
 
-export default function NoModuleFound() {
+interface NoModuleFoundProps {
+  courseId: string;
+}
+
+export default function NoModuleFound({ courseId }: NoModuleFoundProps) {
   const [isCreateModuleDialogOpen, setIsCreateModuleDialogOpen] =
     React.useState(false);
-
-  const handleCreateModule = (moduleData: any) => {
-    console.log(moduleData);
-  };
 
   return (
     <>
@@ -33,7 +33,7 @@ export default function NoModuleFound() {
       <CreateModuleDialog
         isOpen={isCreateModuleDialogOpen}
         onOpenChange={setIsCreateModuleDialogOpen}
-        onCreateModule={handleCreateModule}
+        courseId={courseId}
       />
     </>
   );

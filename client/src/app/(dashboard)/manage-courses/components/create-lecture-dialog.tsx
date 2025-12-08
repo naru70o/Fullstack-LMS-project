@@ -1,8 +1,6 @@
 "use client";
 
-import type React from "react";
-
-import { useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -11,58 +9,55 @@ import {
   DialogTitle,
 } from "@/components/components/ui/dialog";
 import { Button } from "@/components/components/ui/button";
-import { Input } from "@/components/components/ui/input";
 import { Textarea } from "@/components/components/ui/textarea";
 import { Label } from "@/components/components/ui/label";
-import { Upload, X } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import { createLecture } from "../action";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 interface CreateLectureDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
-  onCreateLecture: (lectureData: any) => void;
+  moduleId: string | number;
 }
+
+const initialState = {
+  message: "",
+  status: "",
+};
 
 export default function CreateLectureDialog({
   isOpen,
   onOpenChange,
-  onCreateLecture,
+  moduleId,
 }: CreateLectureDialogProps) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [duration, setDuration] = useState("");
-  const [file, setFile] = useState<File | null>(null);
-  const [filePreview, setFilePreview] = useState<string>("");
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setFilePreview(selectedFile.name);
+  // Basic file state for validation (checking if file is selected)
+  // We can rely on form "required" and "action" but local state is useful to enable/disable button.
+  // Actually, we can use a ref or just onChange to update a boolean.
+  const [hasFile, setHasFile] = useState(false);
+
+  const [state, formAction, isPending] = useActionState(
+    createLecture,
+    initialState
+  );
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state?.status === "success") {
+      toast.success(state.message || "Lecture created successfully");
+      onOpenChange(false);
+      setTitle("");
+      setDescription("");
+      setHasFile(false);
+      router.refresh();
+    } else if (state?.status === "error") {
+      toast.error(state.message || "Failed to create lecture");
     }
-  };
-
-  const handleRemoveFile = () => {
-    setFile(null);
-    setFilePreview("");
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!title.trim() || !duration.trim()) return;
-
-    onCreateLecture({
-      title,
-      description,
-      duration,
-      file,
-    });
-
-    setTitle("");
-    setDescription("");
-    setDuration("");
-    setFile(null);
-    setFilePreview("");
-  };
+  }, [state, onOpenChange, router]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -74,70 +69,48 @@ export default function CreateLectureDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
+        <form action={formAction} className="space-y-4">
+          <input type="hidden" name="moduleId" value={moduleId} />
+
+          <div className="space-y-2">
             <Label htmlFor="lecture-title">Lecture Title</Label>
-            <Input
+            <input
+              className="bg-popover-foreground/10 w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px]"
               id="lecture-title"
+              name="title"
               placeholder="e.g., Introduction to React"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              required
             />
           </div>
 
-          <div>
+          <div className="space-y-2">
             <Label htmlFor="lecture-description">Description</Label>
             <Textarea
               id="lecture-description"
+              name="description"
               placeholder="Describe the lecture content"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={2}
+              required
             />
           </div>
 
-          <div>
-            <Label htmlFor="lecture-duration">Duration</Label>
-            <Input
-              id="lecture-duration"
-              placeholder="e.g., 15:30"
-              value={duration}
-              onChange={(e) => setDuration(e.target.value)}
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="lecture-file">Lecture Material (Optional)</Label>
+          <div className="space-y-2">
+            <Label htmlFor="lecture-file">Lecture Video</Label>
             <div className="flex items-center gap-2">
-              <Input
+              <input
+                className="bg-popover-foreground/10 w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px]"
                 id="lecture-file"
+                name="lecture"
                 type="file"
-                onChange={handleFileChange}
-                className="flex-1"
+                onChange={(e) => setHasFile(!!e.target.files?.[0])}
                 accept=".pdf,.doc,.docx,.ppt,.pptx,.mp4,.mov,.avi,.zip"
+                required
               />
-              <label
-                htmlFor="lecture-file"
-                className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-md cursor-pointer hover:bg-blue-700 transition-colors whitespace-nowrap"
-              >
-                <Upload size={18} />
-                <span className="text-sm">Browse</span>
-              </label>
             </div>
-            {filePreview && (
-              <div className="mt-2 flex items-center justify-between bg-slate-900 p-3 rounded-md border border-slate-700">
-                <span className="text-sm text-slate-300 truncate">
-                  {filePreview}
-                </span>
-                <button
-                  type="button"
-                  onClick={handleRemoveFile}
-                  className="text-slate-400 hover:text-red-400 transition-colors"
-                >
-                  <X size={18} />
-                </button>
-              </div>
-            )}
           </div>
 
           <div className="flex justify-end gap-2">
@@ -145,11 +118,22 @@ export default function CreateLectureDialog({
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
+              disabled={isPending}
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={!title.trim() || !duration.trim()}>
-              Add Lecture
+            <Button
+              type="submit"
+              disabled={isPending || !title || !description || !hasFile}
+            >
+              {isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Creating...
+                </>
+              ) : (
+                "Add Lecture"
+              )}
             </Button>
           </div>
         </form>

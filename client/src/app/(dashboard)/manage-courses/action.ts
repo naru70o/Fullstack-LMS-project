@@ -5,6 +5,13 @@ import z from "zod";
 import { formatZodErrors } from "../../(home)/instructor/zodTypes";
 import { apiRoutes } from "@/components/lib/apiRoutes";
 import { cookies } from "next/headers";
+import { getCookies } from "@/components/lib/helpers";
+
+/*
+i wanna come back to the caching mechanism so first i need to 
+put the project on a server(production)
+--- now i can't do anytesing cause the cache system in next js do not work in development mode
+*/
 
 interface CreateCourseData {
   title: string;
@@ -62,6 +69,117 @@ export async function createCourse(prev: unknown, formdata: FormData) {
   } catch (err: unknown) {
     if (err instanceof z.ZodError) {
       const formatedZoderrors = formatZodErrors(err);
+      return formatedZoderrors;
+    } else {
+      return { status: "error", message: "Something went wrong" };
+    }
+  }
+}
+
+// create a module
+
+const validateModuleData = z.object({
+  title: z.string().min(5).max(100),
+  description: z.string().min(20).max(1000),
+});
+
+export async function createModule(prev: unknown, formdata: FormData) {
+  try {
+    const data = {
+      title: formdata.get("title") as string,
+      description: formdata.get("description") as string,
+    };
+    const courseId = formdata.get("courseId") as string;
+    validateModuleData.parse(data);
+
+    const cookieHeader = await getCookies();
+    const newModule = await fetch(
+      `${apiRoutes.module.createModule}/${courseId}`,
+      {
+        method: "POST",
+        headers: { Cookie: cookieHeader, "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+        credentials: "include",
+      }
+    );
+    if (!newModule.ok) {
+      return { status: "error", message: "Failed to create module" };
+    }
+    const newModuleData = await newModule.json();
+    return { status: "success", data: newModuleData.data.module };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      const formatedZoderrors = formatZodErrors(error);
+      return formatedZoderrors;
+    } else {
+      return { status: "error", message: "Something went wrong" };
+    }
+  }
+}
+
+// create a lecture
+
+const validateLectureData = z.object({
+  title: z.string().min(5).max(100),
+  description: z.string().min(20).max(1000),
+  moduleId: z.string(),
+});
+
+export async function createLecture(prev: unknown, formdata: FormData) {
+  try {
+    const data = {
+      title: formdata.get("title") as string,
+      description: formdata.get("description") as string,
+      moduleId: formdata.get("moduleId") as string,
+    };
+    validateLectureData.parse(data);
+
+    const cookieHeader = await getCookies();
+    const bodyForm = new FormData();
+    bodyForm.append("title", data.title);
+    bodyForm.append("description", data.description);
+
+    const lectureVideo = formdata.get("lecture");
+    if (lectureVideo) {
+      bodyForm.append("lecture", lectureVideo as File);
+    }
+
+    // Note: The API route is defined as /newlecture/:moduleId
+    // We need to verify if we should use FormData or JSON.
+    // The backend `createNewLecture` uses `upload.single('lecture')` and `req.body` for fields.
+    // So we must use FormData for the fetch body to support file upload.
+    // The `moduleId` is a URL parameter in the backend route.
+
+    const newLecture = await fetch(
+      `${apiRoutes.lectures.createLecture}/${data.moduleId}`,
+      {
+        method: "POST",
+        headers: { Cookie: cookieHeader }, // Do NOT set Content-Type for FormData, browser/fetch sets it with boundary
+        body: bodyForm,
+        credentials: "include",
+      }
+    );
+
+    if (!newLecture.ok) {
+      // Try to parse error message if available
+      let errorMessage = "Failed to create lecture";
+      try {
+        const errorData = await newLecture.json();
+        if (errorData.message) errorMessage = errorData.message;
+      } catch {
+        // ignore JSON parse error
+      }
+      return { status: "error", message: errorMessage };
+    }
+    const newLectureData = await newLecture.json();
+    return {
+      status: "success",
+      data: newLectureData.data.lecture,
+      message: "Lecture created successfully",
+    };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      const formatedZoderrors = formatZodErrors(error);
       return formatedZoderrors;
     } else {
       return { status: "error", message: "Something went wrong" };

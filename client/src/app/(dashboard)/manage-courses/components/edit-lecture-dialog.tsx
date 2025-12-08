@@ -67,7 +67,7 @@ export default function EditLectureDialog({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim() || !duration.trim()) return;
+    // if (!title.trim() || !duration.trim()) return;
 
     onEditLecture({
       title,
@@ -158,9 +158,7 @@ export default function EditLectureDialog({
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={!title.trim() || !duration.trim()}>
-              Save Changes
-            </Button>
+            <Button type="submit">Save Changes</Button>
           </div>
         </form>
       </DialogContent>

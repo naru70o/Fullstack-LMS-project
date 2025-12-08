@@ -113,7 +113,7 @@ export async function updateModule(
 
 // TODO, create new module for a course
 export async function createNewModule(
-  req: Request<{ courseId: string }>,
+  req: Request,
   res: Response,
   next: NextFunction,
 ) {
@@ -121,6 +121,7 @@ export async function createNewModule(
   const { courseId } = req.params
   if (!courseId) return next(new AppError('course id is required', 400))
   // get the module fields
+  console.log(req.body, 'and the course id is ', courseId)
   const { title, description } = req.body
   if (!title || !description)
     return next(new AppError('title and description are required', 400))
@@ -160,12 +161,10 @@ export async function createNewModule(
       message: 'module created successfully',
     })
   } catch (error) {
-    return next(
-      new AppError(
-        `internal server error while creating module : ${error.message}`,
-        500,
-      ),
-    )
+    return res.status(500).json({
+      message: 'Internal server error',
+      status: 'error',
+    })
   }
 }
 

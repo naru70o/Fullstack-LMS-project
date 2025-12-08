@@ -22,6 +22,12 @@ export const apiRoutes = {
     createCourse: `${API_BASE_URL}/course/newcourse`,
     getYourCourses: `${API_BASE_URL}/course/yourcourses`,
   },
+  module: {
+    createModule: `${API_BASE_URL}/course/newmodule`,
+  },
+  lectures: {
+    createLecture: `${API_BASE_URL}/course/newlecture`,
+  },
   instructor: {
     registerInstructor: `${API_BASE_URL}//instructor/registe`,
   },

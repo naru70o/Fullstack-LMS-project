@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useActionState, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -13,33 +13,20 @@ import {
 import { Button } from "@/components/components/ui/button";
 import { Textarea } from "@/components/components/ui/textarea";
 import { Label } from "@/components/components/ui/label";
+import { createModule } from "../action";
 
 interface CreateModuleDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
-  onCreateModule: (moduleData: any) => void;
+  courseId: string;
 }
 
 export default function CreateModuleDialog({
   isOpen,
   onOpenChange,
-  onCreateModule,
+  courseId,
 }: CreateModuleDialogProps) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!title.trim()) return;
-
-    onCreateModule({
-      title,
-      description,
-    });
-
-    setTitle("");
-    setDescription("");
-  };
+  const [state, formAction, pending] = useActionState(createModule, null);
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -51,24 +38,26 @@ export default function CreateModuleDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form action={formAction} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="title">Course Title</Label>
+            <Label htmlFor="title">Module Title</Label>
             <input
               type="text"
               name="title"
-              placeholder="Find courses, skills, software, etc"
+              placeholder="Module Title"
               className="bg-popover-foreground/10 w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px]"
             />
           </div>
+
+          {/* courseId as a hidden input */}
+          <input type="hidden" name="courseId" value={courseId} />
 
           <div className="space-y-2">
             <Label htmlFor="module-description">Description</Label>
             <Textarea
               id="module-description"
+              name="description"
               placeholder="Describe what this module covers"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
               rows={3}
             />
           </div>
@@ -81,7 +70,9 @@ export default function CreateModuleDialog({
             >
               Cancel
             </Button>
-            <Button type="submit">Create Module</Button>
+            <Button type="submit" disabled={pending}>
+              {pending ? "Creating..." : "Create Module"}
+            </Button>
           </div>
         </form>
       </DialogContent>

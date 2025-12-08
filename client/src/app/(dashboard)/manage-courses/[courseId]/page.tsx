@@ -23,8 +23,8 @@ export default async function page({
   }
   const { data } = await response.json();
   const course = data.course;
-  const modules = data.modules;
-  console.log("for testing", course, modules);
+  const modules = course.modules;
+  console.log("for testing", modules);
   if (!course) {
     return (
       <main className="min-h-screen bg-background p-6">
@@ -60,7 +60,7 @@ export default async function page({
           </div>
         </div>
       </div>
-      <CourseContent modules={modules} />
+      <CourseContent modules={modules} courseId={courseId} />
     </main>
   );
 }

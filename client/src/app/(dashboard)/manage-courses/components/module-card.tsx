@@ -28,38 +28,33 @@ interface Module {
 
 interface ModuleCardProps {
   module: Module;
-  onDelete: (moduleId: number) => void;
-  onUpdate: (moduleId: number, updatedData: any) => void;
-  onAddLecture: (moduleId: number, lectureData: any) => void;
-  onDeleteLecture: (moduleId: number, lectureId: number) => void;
-  onUpdateLecture: (
-    moduleId: number,
-    lectureId: number,
-    updatedData: any
-  ) => void;
+  // onDelete: (moduleId: number) => void;
+  // onUpdate: (moduleId: number, updatedData: any) => void;
+  // onAddLecture: (moduleId: number, lectureData: any) => void;
+  // onDeleteLecture: (moduleId: number, lectureId: number) => void;
+  // onUpdateLecture: (
+  //   moduleId: number,
+  //   lectureId: number,
+  //   updatedData: any
+  // ) => void;
 }
 
 export default function ModuleCard({
   module,
-  onDelete,
-  onUpdate,
-  onAddLecture,
-  onDeleteLecture,
-  onUpdateLecture,
-}: ModuleCardProps) {
+}: // onDelete,
+// onUpdate,
+// onAddLecture,
+// onDeleteLecture,
+// onUpdateLecture,
+ModuleCardProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isCreateLectureDialogOpen, setIsCreateLectureDialogOpen] =
     useState(false);
 
   const handleEditModule = (updatedData: any) => {
-    onUpdate(module.id, updatedData);
+    // onUpdate(module.id, updatedData);
     setIsEditDialogOpen(false);
-  };
-
-  const handleAddLecture = (lectureData: any) => {
-    onAddLecture(module.id, lectureData);
-    setIsCreateLectureDialogOpen(false);
   };
 
   return (
@@ -101,7 +96,7 @@ export default function ModuleCard({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => onDelete(module.id)}
+              // onClick={() => onDelete(module.id)}
               className="gap-1 bg-transparent text-destructive"
             >
               <Trash2 className="h-4 w-4" />
@@ -133,12 +128,12 @@ export default function ModuleCard({
             ) : (
               <LectureList
                 lectures={module.lectures}
-                onDeleteLecture={(lectureId) =>
-                  onDeleteLecture(module.id, lectureId)
-                }
-                onUpdateLecture={(lectureId, updatedData) =>
-                  onUpdateLecture(module.id, lectureId, updatedData)
-                }
+                // onDeleteLecture={(lectureId) =>
+                //   onDeleteLecture(module.id, lectureId)
+                // }
+                // onUpdateLecture={(lectureId, updatedData) =>
+                //   onUpdateLecture(module.id, lectureId, updatedData)
+                // }
               />
             )}
           </div>
@@ -157,7 +152,7 @@ export default function ModuleCard({
       <CreateLectureDialog
         isOpen={isCreateLectureDialogOpen}
         onOpenChange={setIsCreateLectureDialogOpen}
-        onCreateLecture={handleAddLecture}
+        moduleId={module.id}
       />
     </>
   );

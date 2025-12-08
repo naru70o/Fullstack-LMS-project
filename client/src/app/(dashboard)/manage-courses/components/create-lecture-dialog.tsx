@@ -19,7 +19,7 @@ import { useRouter } from "next/navigation";
 interface CreateLectureDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
-  moduleId: string | number;
+  moduleId: string;
 }
 
 const initialState = {

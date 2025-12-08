@@ -7,24 +7,7 @@ import { Trash2, Plus, ChevronDown, ChevronUp, Edit2 } from "lucide-react";
 import EditModuleDialog from "./edit-module-dialog";
 import LectureList from "./lecture-list";
 import CreateLectureDialog from "../components/create-lecture-dialog";
-
-interface Lecture {
-  id: number;
-  moduleId: number;
-  title: string;
-  description: string;
-  duration: string;
-  order: number;
-}
-
-interface Module {
-  id: number;
-  courseId: number;
-  title: string;
-  description: string;
-  order: number;
-  lectures: Lecture[];
-}
+import { Module } from "../types";
 
 interface ModuleCardProps {
   module: Module;
@@ -51,11 +34,6 @@ ModuleCardProps) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isCreateLectureDialogOpen, setIsCreateLectureDialogOpen] =
     useState(false);
-
-  const handleEditModule = (updatedData: any) => {
-    // onUpdate(module.id, updatedData);
-    setIsEditDialogOpen(false);
-  };
 
   return (
     <>
@@ -145,7 +123,6 @@ ModuleCardProps) {
         isOpen={isEditDialogOpen}
         onOpenChange={setIsEditDialogOpen}
         module={module}
-        onEditModule={handleEditModule}
       />
 
       {/* Create Lecture Dialog */}

@@ -117,6 +117,45 @@ export async function createModule(prev: unknown, formdata: FormData) {
   }
 }
 
+export async function updateModule(prev: unknown, formdata: FormData) {
+  try {
+    const data = {
+      title: formdata.get("title") as string,
+      description: formdata.get("description") as string,
+    };
+    const moduleId = formdata.get("moduleId") as string;
+    validateModuleData.parse(data);
+
+    const cookieHeader = await getCookies();
+    const updatedModule = await fetch(
+      `${apiRoutes.module.updateModule}/${moduleId}`,
+      {
+        method: "PATCH",
+        headers: { Cookie: cookieHeader, "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+        credentials: "include",
+      }
+    );
+
+    if (!updatedModule.ok) {
+      return { status: "error", message: "Failed to update module" };
+    }
+    const updatedModuleData = await updatedModule.json();
+    return {
+      status: "success",
+      data: updatedModuleData.data.module,
+      message: "Module updated successfully",
+    };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      const formatedZoderrors = formatZodErrors(error);
+      return formatedZoderrors;
+    } else {
+      return { status: "error", message: "Something went wrong" };
+    }
+  }
+}
+
 // create a lecture
 
 const validateLectureData = z.object({

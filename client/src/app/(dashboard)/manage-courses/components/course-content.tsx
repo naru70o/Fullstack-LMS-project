@@ -6,19 +6,18 @@ import NoModuleFound from "./no-module-found";
 import CreateModuleDialog from "./create-module-dialog";
 import ModuleList from "./module-list";
 
+import { Module } from "../types";
+
 export default function CourseContent({
   modules,
   courseId,
 }: {
-  modules: any;
+  modules: Module[];
   courseId: string;
 }) {
   const [isCreateModuleDialogOpen, setIsCreateModuleDialogOpen] =
     React.useState(false);
 
-  const handleCreateModule = (moduleData: any) => {
-    console.log(moduleData);
-  };
   return (
     <div className="p-6">
       <div className="mb-6 flex items-center justify-between">

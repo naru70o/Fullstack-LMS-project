@@ -7,14 +7,7 @@ import { Trash2, Edit2, Play } from "lucide-react";
 import EditLectureDialog from "./edit-lecture-dialog";
 import durationFormatterString from "@/components/util/durationFormatter";
 
-interface Lecture {
-  id: number;
-  moduleId: number;
-  title: string;
-  description: string;
-  duration: string;
-  order: number;
-}
+import { Lecture } from "../types";
 
 interface LectureItemProps {
   lecture: Lecture;

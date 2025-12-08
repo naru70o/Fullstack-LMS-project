@@ -15,15 +15,7 @@ import { Input } from "@/components/components/ui/input";
 import { Textarea } from "@/components/components/ui/textarea";
 import { Label } from "@/components/components/ui/label";
 import { Upload, X } from "lucide-react";
-
-interface Lecture {
-  id: number;
-  moduleId: number;
-  title: string;
-  description: string;
-  duration: string;
-  order: number;
-}
+import { Lecture } from "../types";
 
 interface EditLectureDialogProps {
   isOpen: boolean;
@@ -40,14 +32,14 @@ export default function EditLectureDialog({
 }: EditLectureDialogProps) {
   const [title, setTitle] = useState(lecture.title);
   const [description, setDescription] = useState(lecture.description);
-  const [duration, setDuration] = useState(lecture.duration);
+  const [duration, setDuration] = useState(lecture.duration || "");
   const [file, setFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string>("");
 
   useEffect(() => {
     setTitle(lecture.title);
     setDescription(lecture.description);
-    setDuration(lecture.duration);
+    setDuration(lecture.duration || "");
     setFile(null);
     setFilePreview("");
   }, [lecture, isOpen]);

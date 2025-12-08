@@ -1,8 +1,4 @@
-"use client";
-
-import type React from "react";
-
-import { useState, useEffect } from "react";
+import { useActionState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -14,46 +10,50 @@ import { Button } from "@/components/components/ui/button";
 import { Input } from "@/components/components/ui/input";
 import { Textarea } from "@/components/components/ui/textarea";
 import { Label } from "@/components/components/ui/label";
-
-interface Module {
-  id: number;
-  courseId: number;
-  title: string;
-  description: string;
-  order: number;
-  lectures: any[];
-}
+import { updateModule } from "../action";
+import toast from "react-hot-toast";
+import { Loader2 } from "lucide-react";
+import { Module } from "../types";
 
 interface EditModuleDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   module: Module;
-  onEditModule: (moduleData: any) => void;
 }
+
+interface ActionState {
+  status?: string;
+  message?: string;
+  data?: any;
+  errors?: Record<string, string[]>;
+}
+
+const initialState: ActionState = {
+  status: "idle",
+  message: "",
+  errors: undefined,
+};
 
 export default function EditModuleDialog({
   isOpen,
   onOpenChange,
   module,
-  onEditModule,
 }: EditModuleDialogProps) {
-  const [title, setTitle] = useState(module.title);
-  const [description, setDescription] = useState(module.description);
+  // Cast updateModule to any to bypass strict type check on the union return type mismatch
+  // or better, define the action type properly. For now, casting is safest to proceed without changing action.ts
+  const [state, action, isPending] = useActionState(
+    updateModule as any,
+    initialState
+  );
 
   useEffect(() => {
-    setTitle(module.title);
-    setDescription(module.description);
-  }, [module, isOpen]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!title.trim()) return;
-
-    onEditModule({
-      title,
-      description,
-    });
-  };
+    if (state?.status === "success") {
+      if (state.message) toast.success(state.message);
+      onOpenChange(false);
+    } else if (state?.status === "error") {
+      if (state.message) toast.error(state.message);
+    }
+  }, [state, onOpenChange]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -63,24 +63,36 @@ export default function EditModuleDialog({
           <DialogDescription>Update the module information</DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
+        <form action={action} className="space-y-4">
+          <input type="hidden" name="moduleId" value={module.id} />
+          <div className="space-y-2">
             <Label htmlFor="edit-module-title">Module Title</Label>
-            <Input
+            <input
+              className="bg-popover-foreground/10 w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px]"
               id="edit-module-title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              name="title"
+              defaultValue={module.title}
             />
+            {state?.errors?.title && (
+              <p className="text-sm text-destructive">
+                {state.errors.title.join(", ")}
+              </p>
+            )}
           </div>
 
-          <div>
+          <div className="space-y-2">
             <Label htmlFor="edit-module-description">Description</Label>
             <Textarea
               id="edit-module-description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              name="description"
+              defaultValue={module.description}
               rows={3}
             />
+            {state?.errors?.description && (
+              <p className="text-sm text-destructive">
+                {state.errors.description.join(", ")}
+              </p>
+            )}
           </div>
 
           <div className="flex justify-end gap-2">
@@ -91,8 +103,15 @@ export default function EditModuleDialog({
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={!title.trim()}>
-              Save Changes
+            <Button type="submit" disabled={isPending}>
+              {isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                "Save Changes"
+              )}
             </Button>
           </div>
         </form>

@@ -1,10 +1,16 @@
 export interface Lecture {
   id: string;
-  moduleId: string;
   title: string;
   description: string;
-  duration?: string;
-  order?: number;
+  duration: number;
+  moduleId: string;
+  instructorId?: string;
+  isPreview: boolean;
+  order: number;
+  publicId?: string;
+  secureUrl?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Module {

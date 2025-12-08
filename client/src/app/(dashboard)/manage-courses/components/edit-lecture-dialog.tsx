@@ -32,14 +32,14 @@ export default function EditLectureDialog({
 }: EditLectureDialogProps) {
   const [title, setTitle] = useState(lecture.title);
   const [description, setDescription] = useState(lecture.description);
-  const [duration, setDuration] = useState(lecture.duration || "");
+  const [duration, setDuration] = useState(String(lecture.duration));
   const [file, setFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string>("");
 
   useEffect(() => {
     setTitle(lecture.title);
     setDescription(lecture.description);
-    setDuration(lecture.duration || "");
+    setDuration(String(lecture.duration));
     setFile(null);
     setFilePreview("");
   }, [lecture, isOpen]);
@@ -64,7 +64,7 @@ export default function EditLectureDialog({
     onEditLecture({
       title,
       description,
-      duration,
+      duration: Number(duration),
       file,
     });
   };

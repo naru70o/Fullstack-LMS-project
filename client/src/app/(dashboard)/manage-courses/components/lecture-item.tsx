@@ -47,7 +47,7 @@ LectureItemProps) {
             <div className="flex justify-between items-center gap-2 flex-shrink-0 mt-2">
               <div className="flex-shrink-0">
                 <p className="text-xs font-semibold text-muted-foreground bg-primary/10 px-2 py-1 rounded">
-                  {durationFormatterString(Number(lecture.duration))}
+                  {durationFormatterString(lecture.duration)}
                 </p>
               </div>
               {/* buttons -- edit and delete */}

@@ -82,7 +82,7 @@ export default function EditModuleDialog({
 
           <div className="space-y-2">
             <Label htmlFor="edit-module-description">Description</Label>
-            <Textarea
+            <textarea
               id="edit-module-description"
               name="description"
               defaultValue={module.description}

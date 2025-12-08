@@ -24,7 +24,8 @@ export default async function page({
   const { data } = await response.json();
   const course = data.course;
   const modules = course.modules;
-  console.log("for testing", modules);
+  console.log("for testing", modules.lectures);
+
   if (!course) {
     return (
       <main className="min-h-screen bg-background p-6">

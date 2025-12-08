@@ -156,6 +156,34 @@ export async function updateModule(prev: unknown, formdata: FormData) {
   }
 }
 
+export async function deleteModule(prev: unknown, formdata: FormData) {
+  try {
+    const moduleId = formdata.get("moduleId") as string;
+    const cookieHeader = await getCookies();
+    const deletedModule = await fetch(
+      `${apiRoutes.module.deleteModule}/${moduleId}`,
+      {
+        method: "DELETE",
+        headers: { Cookie: cookieHeader },
+        credentials: "include",
+      }
+    );
+
+    if (!deletedModule.ok) {
+      return { status: "error", message: "Failed to delete module" };
+    }
+    return {
+      status: "success",
+      message: "Module deleted successfully",
+    };
+  } catch (error) {
+    if (error) {
+      // Log locally if needed, or simply ignore for now
+    }
+    return { status: "error", message: "Something went wrong" };
+  }
+}
+
 // create a lecture
 
 const validateLectureData = z.object({

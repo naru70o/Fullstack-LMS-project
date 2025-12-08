@@ -7,31 +7,17 @@ import { Trash2, Plus, ChevronDown, ChevronUp, Edit2 } from "lucide-react";
 import EditModuleDialog from "./edit-module-dialog";
 import LectureList from "./lecture-list";
 import CreateLectureDialog from "../components/create-lecture-dialog";
+import DeleteModuleDialog from "./delete-module-dialog";
 import { Module } from "../types";
 
 interface ModuleCardProps {
   module: Module;
-  // onDelete: (moduleId: number) => void;
-  // onUpdate: (moduleId: number, updatedData: any) => void;
-  // onAddLecture: (moduleId: number, lectureData: any) => void;
-  // onDeleteLecture: (moduleId: number, lectureId: number) => void;
-  // onUpdateLecture: (
-  //   moduleId: number,
-  //   lectureId: number,
-  //   updatedData: any
-  // ) => void;
 }
 
-export default function ModuleCard({
-  module,
-}: // onDelete,
-// onUpdate,
-// onAddLecture,
-// onDeleteLecture,
-// onUpdateLecture,
-ModuleCardProps) {
+export default function ModuleCard({ module }: ModuleCardProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isCreateLectureDialogOpen, setIsCreateLectureDialogOpen] =
     useState(false);
 
@@ -74,7 +60,7 @@ ModuleCardProps) {
             <Button
               variant="outline"
               size="sm"
-              // onClick={() => onDelete(module.id)}
+              onClick={() => setIsDeleteDialogOpen(true)}
               className="gap-1 bg-transparent text-destructive"
             >
               <Trash2 className="h-4 w-4" />
@@ -122,6 +108,13 @@ ModuleCardProps) {
       <EditModuleDialog
         isOpen={isEditDialogOpen}
         onOpenChange={setIsEditDialogOpen}
+        module={module}
+      />
+
+      {/* Delete Module Dialog */}
+      <DeleteModuleDialog
+        isOpen={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
         module={module}
       />
 

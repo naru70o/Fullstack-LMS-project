@@ -17,7 +17,7 @@ export interface IInstructor {
   email: string;
   image: string;
   secret: string;
-  roles: string[];
+  roles: Role[];
   bio: string | null;
   emailVerified: boolean;
   lastActive: string;

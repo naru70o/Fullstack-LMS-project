@@ -1,6 +1,7 @@
+import { ICourse } from "@/components/util/interfaces";
 import { Book, Clock, TrendingUp, Users } from "lucide-react";
 
-export default function Status({ courses }: { courses: any[] }) {
+export default function Status({ courses }: { courses: ICourse[] }) {
   return (
     <div className="grid grid-cols-1 gap-4 border-b border-border bg-card/50 p-6 md:grid-cols-4">
       <div className="flex items-center gap-3">
@@ -19,7 +20,8 @@ export default function Status({ courses }: { courses: any[] }) {
         <div>
           <p className="text-sm text-muted-foreground">Total Students</p>
           <p className="text-2xl font-bold text-foreground">
-            {courses.reduce((sum, c) => sum + c.students, 0)}
+            {/* {courses.reduce((sum, c) => sum + c.students, 0)} // each course will have  students array */}
+            0
           </p>
         </div>
       </div>

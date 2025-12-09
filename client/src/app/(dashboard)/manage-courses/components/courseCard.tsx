@@ -19,7 +19,7 @@ export default function CourseCard({ course }: { course: ICourse }) {
         <div className="relative h-40 w-full overflow-hidden bg-muted">
           <div className="h-[161px] w-full relative">
             <Image
-              src="/assets/Thumbnail.jpg"
+              src={course.secureUrl}
               alt="Thumbnail"
               fill
               className="absolute w-full h-full object-cover rounded-lg"

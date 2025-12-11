@@ -77,6 +77,61 @@ export async function createCourse(prev: unknown, formdata: FormData) {
   }
 }
 
+export async function updateCourse(prev: unknown, formdata: FormData) {
+  try {
+    const data: CreateCourseData = {
+      title: formdata.get("title") as string,
+      description: formdata.get("description") as string,
+      category: formdata.get("category") as string,
+      level: formdata.get("level") as string,
+    };
+    const courseId = formdata.get("courseId") as string;
+    validateCourseData.parse(data);
+
+    const cookieStore = await cookies();
+    const cookieHeader = cookieStore
+      .getAll()
+      .map((c) => `${c.name}=${c.value}`)
+      .join("; ");
+
+    // Build a multipart/form-data body
+    const bodyForm = new FormData();
+    bodyForm.append("title", data.title);
+    bodyForm.append("description", data.description);
+    bodyForm.append("category", data.category);
+    bodyForm.append("level", data.level);
+
+    const thumbnail = formdata.get("thumbnail");
+    if (thumbnail && thumbnail instanceof File && thumbnail.size > 0) {
+      bodyForm.append("thumbnail", thumbnail);
+    }
+
+    const updatedCourse = await fetch(
+      apiRoutes.courses.updateCourse(courseId),
+      {
+        method: "PATCH",
+        headers: { Cookie: cookieHeader },
+        body: bodyForm,
+        credentials: "include",
+      }
+    );
+
+    if (!updatedCourse.ok) {
+      return { status: "error", message: "Failed to update course" };
+    }
+    const updatedCourseData = await updatedCourse.json();
+    revalidatePath("/manage-courses");
+    return { status: "success", data: updatedCourseData.data.course };
+  } catch (err: unknown) {
+    if (err instanceof z.ZodError) {
+      const formatedZoderrors = formatZodErrors(err);
+      return formatedZoderrors;
+    } else {
+      return { status: "error", message: "Something went wrong" };
+    }
+  }
+}
+
 // create a module
 
 const validateModuleData = z.object({

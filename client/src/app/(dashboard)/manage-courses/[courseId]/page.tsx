@@ -1,9 +1,10 @@
 import { Button } from "@/components/components/ui/button";
 import { getCookies } from "@/components/lib/helpers";
-import { ChevronLeft, Edit, Zap } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import CourseContent from "../components/course-content";
 import Image from "next/image";
+import ActionButtons from "../components/action-buttons";
 
 export default async function page({
   params,
@@ -88,25 +89,7 @@ export default async function page({
               </div>
 
               {/* Action Buttons - This will be pushed to the bottom */}
-              <div className="mt-6">
-                <div className="flex flex-col gap-3 sm:flex-row md:flex-col lg:flex-row">
-                  <Button
-                    variant="outline"
-                    className="gap-2 bg-transparent"
-                    // onClick={onEdit}
-                  >
-                    <Edit className="h-4 w-4" />
-                    Edit Course
-                  </Button>
-                  <Button
-                    className="gap-2 bg-blue-600 hover:bg-blue-700 group-hover:cursor-pointer"
-                    // onClick={onPublish}
-                  >
-                    <Zap className="h-4 w-4" />
-                    Publish
-                  </Button>
-                </div>
-              </div>
+              <ActionButtons course={course} />
             </div>
           </div>
         </div>

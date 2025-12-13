@@ -1,4 +1,4 @@
-import { useActionState, useEffect } from "react";
+import { Button } from "@/components/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -6,13 +6,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/components/ui/dialog";
-import { Button } from "@/components/components/ui/button";
-import { Input } from "@/components/components/ui/input";
-import { Textarea } from "@/components/components/ui/textarea";
 import { Label } from "@/components/components/ui/label";
-import { updateModule } from "../action";
-import toast from "react-hot-toast";
 import { Loader2 } from "lucide-react";
+import { useActionState, useEffect } from "react";
+import toast from "react-hot-toast";
+import { updateModule } from "../action";
 import { Module } from "../types";
 
 interface EditModuleDialogProps {
@@ -21,37 +19,32 @@ interface EditModuleDialogProps {
   module: Module;
 }
 
-interface ActionState {
-  status?: string;
-  message?: string;
-  data?: any;
-  errors?: Record<string, string[]>;
-}
-
-const initialState: ActionState = {
-  status: "idle",
-  message: "",
-  errors: undefined,
-};
-
 export default function EditModuleDialog({
   isOpen,
   onOpenChange,
   module,
 }: EditModuleDialogProps) {
-  // Cast updateModule to any to bypass strict type check on the union return type mismatch
-  // or better, define the action type properly. For now, casting is safest to proceed without changing action.ts
-  const [state, action, isPending] = useActionState(
-    updateModule as any,
-    initialState
-  );
+  const [state, action, isPending] = useActionState(updateModule, null);
 
   useEffect(() => {
     if (state?.status === "success") {
-      if (state.message) toast.success(state.message);
-      onOpenChange(false);
+      if (Array.isArray(state.message)) {
+        toast.success(
+          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`
+        );
+        onOpenChange(false);
+      } else {
+        toast.success(state.message ?? "Module updated successfully");
+        onOpenChange(false);
+      }
     } else if (state?.status === "error") {
-      if (state.message) toast.error(state.message);
+      if (Array.isArray(state.message)) {
+        toast.error(
+          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`
+        );
+      } else {
+        toast.error(state.message ?? "Failed to update module");
+      }
     }
   }, [state, onOpenChange]);
 
@@ -73,11 +66,6 @@ export default function EditModuleDialog({
               name="title"
               defaultValue={module.title}
             />
-            {state?.errors?.title && (
-              <p className="text-sm text-destructive">
-                {state.errors.title.join(", ")}
-              </p>
-            )}
           </div>
 
           <div className="space-y-2">
@@ -88,11 +76,6 @@ export default function EditModuleDialog({
               defaultValue={module.description}
               rows={3}
             />
-            {state?.errors?.description && (
-              <p className="text-sm text-destructive">
-                {state.errors.description.join(", ")}
-              </p>
-            )}
           </div>
 
           <div className="flex justify-end gap-2">

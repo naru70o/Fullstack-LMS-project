@@ -87,7 +87,7 @@ export async function createCourse(
       return { status: "error", message: "Failed to create course" };
     }
     return { status: "success", message: "Course created successfully" };
-  } catch (err: unknown) {
+  } catch {
     return { status: "error", message: "Something went wrong" };
   }
 }

@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -14,6 +14,7 @@ import { Button } from "@/components/components/ui/button";
 import { Textarea } from "@/components/components/ui/textarea";
 import { Label } from "@/components/components/ui/label";
 import { createModule } from "../action";
+import toast from "react-hot-toast";
 
 interface CreateModuleDialogProps {
   isOpen: boolean;
@@ -27,6 +28,28 @@ export default function CreateModuleDialog({
   courseId,
 }: CreateModuleDialogProps) {
   const [state, formAction, pending] = useActionState(createModule, null);
+
+  useEffect(() => {
+    if (state?.status === "success") {
+      if (Array.isArray(state.message)) {
+        toast.success(
+          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`
+        );
+        onOpenChange(false);
+      } else {
+        toast.success(state.message ?? "Module created successfully");
+        onOpenChange(false);
+      }
+    } else if (state?.status === "error") {
+      if (Array.isArray(state.message)) {
+        toast.error(
+          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`
+        );
+      } else {
+        toast.error(state.message ?? "Failed to create module");
+      }
+    }
+  }, [state, onOpenChange]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>

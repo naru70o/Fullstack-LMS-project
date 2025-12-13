@@ -44,20 +44,28 @@ export default function CreateLectureDialog({
     createLecture,
     initialState
   );
-  const router = useRouter();
 
   useEffect(() => {
     if (state?.status === "success") {
-      toast.success(state.message || "Lecture created successfully");
-      onOpenChange(false);
-      setTitle("");
-      setDescription("");
-      setHasFile(false);
-      router.refresh();
+      if (Array.isArray(state.message)) {
+        toast.success(
+          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`
+        );
+        onOpenChange(false);
+      } else {
+        toast.success(state.message ?? "Lecture created successfully");
+        onOpenChange(false);
+      }
     } else if (state?.status === "error") {
-      toast.error(state.message || "Failed to create lecture");
+      if (Array.isArray(state.message)) {
+        toast.error(
+          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`
+        );
+      } else {
+        toast.error(state.message ?? "Failed to create lecture");
+      }
     }
-  }, [state, onOpenChange, router]);
+  }, [state, onOpenChange]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>

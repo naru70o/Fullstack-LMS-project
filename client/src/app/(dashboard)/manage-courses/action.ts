@@ -8,6 +8,13 @@ import { cookies } from "next/headers";
 import { getCookies } from "@/components/lib/helpers";
 import { revalidatePath } from "next/cache";
 
+type ServerActionResponse =
+  | {
+      status: string;
+      message?: string | string[];
+    }
+  | Record<string, string>;
+
 /*
 i wanna come back to the caching mechanism so first i need to 
 put the project on a server(production)
@@ -28,7 +35,10 @@ const validateCourseData = z.object({
   level: z.enum(levels),
 });
 
-export async function createCourse(prev: unknown, formdata: FormData) {
+export async function createCourse(
+  prev: unknown,
+  formdata: FormData
+): Promise<ServerActionResponse> {
   try {
     const data: CreateCourseData = {
       title: formdata.get("title") as string,
@@ -36,7 +46,18 @@ export async function createCourse(prev: unknown, formdata: FormData) {
       category: formdata.get("category") as string,
       level: formdata.get("level") as string,
     };
-    validateCourseData.parse(data);
+    const validatedCourse = validateCourseData.safeParse(data);
+    if (!validatedCourse.success) {
+      if (validatedCourse.error instanceof z.ZodError) {
+        const formatedZoderrors = formatZodErrors(validatedCourse.error);
+        return {
+          status: "error",
+          message: Object.entries(formatedZoderrors)[0],
+        };
+      } else {
+        return { status: "error", message: "Something went wrong" };
+      }
+    }
 
     const cookieStore = await cookies();
     const cookieHeader = cookieStore
@@ -65,19 +86,16 @@ export async function createCourse(prev: unknown, formdata: FormData) {
     if (!newCourse.ok) {
       return { status: "error", message: "Failed to create course" };
     }
-    const newCourseData = await newCourse.json();
-    return { status: "success", data: newCourseData.data.course };
+    return { status: "success", message: "Course created successfully" };
   } catch (err: unknown) {
-    if (err instanceof z.ZodError) {
-      const formatedZoderrors = formatZodErrors(err);
-      return formatedZoderrors;
-    } else {
-      return { status: "error", message: "Something went wrong" };
-    }
+    return { status: "error", message: "Something went wrong" };
   }
 }
 
-export async function updateCourse(prev: unknown, formdata: FormData) {
+export async function updateCourse(
+  prev: unknown,
+  formdata: FormData
+): Promise<ServerActionResponse> {
   try {
     const data: CreateCourseData = {
       title: formdata.get("title") as string,
@@ -86,7 +104,18 @@ export async function updateCourse(prev: unknown, formdata: FormData) {
       level: formdata.get("level") as string,
     };
     const courseId = formdata.get("courseId") as string;
-    validateCourseData.parse(data);
+    const validatedCourse = validateCourseData.safeParse(data);
+    if (!validatedCourse.success) {
+      if (validatedCourse.error instanceof z.ZodError) {
+        const formatedZoderrors = formatZodErrors(validatedCourse.error);
+        return {
+          status: "error",
+          message: Object.entries(formatedZoderrors)[0],
+        };
+      } else {
+        return { status: "error", message: "Something went wrong" };
+      }
+    }
 
     const cookieStore = await cookies();
     const cookieHeader = cookieStore
@@ -119,16 +148,10 @@ export async function updateCourse(prev: unknown, formdata: FormData) {
     if (!updatedCourse.ok) {
       return { status: "error", message: "Failed to update course" };
     }
-    const updatedCourseData = await updatedCourse.json();
     revalidatePath("/manage-courses");
-    return { status: "success", data: updatedCourseData.data.course };
-  } catch (err: unknown) {
-    if (err instanceof z.ZodError) {
-      const formatedZoderrors = formatZodErrors(err);
-      return formatedZoderrors;
-    } else {
-      return { status: "error", message: "Something went wrong" };
-    }
+    return { status: "success", message: "Course updated successfully" };
+  } catch {
+    return { status: "error", message: "Something went wrong" };
   }
 }
 
@@ -139,14 +162,28 @@ const validateModuleData = z.object({
   description: z.string().min(20).max(1000),
 });
 
-export async function createModule(prev: unknown, formdata: FormData) {
+export async function createModule(
+  prev: unknown,
+  formdata: FormData
+): Promise<ServerActionResponse> {
   try {
     const data = {
       title: formdata.get("title") as string,
       description: formdata.get("description") as string,
     };
     const courseId = formdata.get("courseId") as string;
-    validateModuleData.parse(data);
+    const validatedModule = validateModuleData.safeParse(data);
+    if (!validatedModule.success) {
+      if (validatedModule.error instanceof z.ZodError) {
+        const formatedZoderrors = formatZodErrors(validatedModule.error);
+        return {
+          status: "error",
+          message: Object.entries(formatedZoderrors)[0],
+        };
+      } else {
+        return { status: "error", message: "Something went wrong" };
+      }
+    }
 
     const cookieHeader = await getCookies();
     const newModule = await fetch(
@@ -161,26 +198,35 @@ export async function createModule(prev: unknown, formdata: FormData) {
     if (!newModule.ok) {
       return { status: "error", message: "Failed to create module" };
     }
-    const newModuleData = await newModule.json();
-    return { status: "success", data: newModuleData.data.module };
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      const formatedZoderrors = formatZodErrors(error);
-      return formatedZoderrors;
-    } else {
-      return { status: "error", message: "Something went wrong" };
-    }
+
+    return { status: "success", message: "Module created successfully" };
+  } catch {
+    return { status: "error", message: "Something went wrong" };
   }
 }
 
-export async function updateModule(prev: unknown, formdata: FormData) {
+export async function updateModule(
+  prev: unknown,
+  formdata: FormData
+): Promise<ServerActionResponse> {
   try {
     const data = {
       title: formdata.get("title") as string,
       description: formdata.get("description") as string,
     };
     const moduleId = formdata.get("moduleId") as string;
-    validateModuleData.parse(data);
+    const validatedModule = validateModuleData.safeParse(data);
+    if (!validatedModule.success) {
+      if (validatedModule.error instanceof z.ZodError) {
+        const formatedZoderrors = formatZodErrors(validatedModule.error);
+        return {
+          status: "error",
+          message: Object.entries(formatedZoderrors)[0],
+        };
+      } else {
+        return { status: "error", message: "Something went wrong" };
+      }
+    }
 
     const cookieHeader = await getCookies();
     const updatedModule = await fetch(
@@ -196,23 +242,19 @@ export async function updateModule(prev: unknown, formdata: FormData) {
     if (!updatedModule.ok) {
       return { status: "error", message: "Failed to update module" };
     }
-    const updatedModuleData = await updatedModule.json();
     return {
       status: "success",
-      data: updatedModuleData.data.module,
       message: "Module updated successfully",
     };
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      const formatedZoderrors = formatZodErrors(error);
-      return formatedZoderrors;
-    } else {
-      return { status: "error", message: "Something went wrong" };
-    }
+  } catch {
+    return { status: "error", message: "Something went wrong" };
   }
 }
 
-export async function deleteModule(prev: unknown, formdata: FormData) {
+export async function deleteModule(
+  prev: unknown,
+  formdata: FormData
+): Promise<ServerActionResponse> {
   try {
     const moduleId = formdata.get("moduleId") as string;
     const cookieHeader = await getCookies();
@@ -232,15 +274,15 @@ export async function deleteModule(prev: unknown, formdata: FormData) {
       status: "success",
       message: "Module deleted successfully",
     };
-  } catch (error) {
-    if (error) {
-      // Log locally if needed, or simply ignore for now
-    }
+  } catch {
     return { status: "error", message: "Something went wrong" };
   }
 }
 
-export async function deleteCourse(prev: unknown, formdata: FormData) {
+export async function deleteCourse(
+  prev: unknown,
+  formdata: FormData
+): Promise<ServerActionResponse> {
   try {
     const courseId = formdata.get("courseId") as string;
     const cookieHeader = await getCookies();
@@ -261,7 +303,7 @@ export async function deleteCourse(prev: unknown, formdata: FormData) {
       status: "success",
       message: "Course deleted successfully",
     };
-  } catch (error) {
+  } catch {
     return { status: "error", message: "Something went wrong" };
   }
 }
@@ -274,14 +316,28 @@ const validateLectureData = z.object({
   moduleId: z.string(),
 });
 
-export async function createLecture(prev: unknown, formdata: FormData) {
+export async function createLecture(
+  prev: unknown,
+  formdata: FormData
+): Promise<ServerActionResponse> {
   try {
     const data = {
       title: formdata.get("title") as string,
       description: formdata.get("description") as string,
       moduleId: formdata.get("moduleId") as string,
     };
-    validateLectureData.parse(data);
+    const validatedLecture = validateLectureData.safeParse(data);
+    if (!validatedLecture.success) {
+      if (validatedLecture.error instanceof z.ZodError) {
+        const formatedZoderrors = formatZodErrors(validatedLecture.error);
+        return {
+          status: "error",
+          message: Object.entries(formatedZoderrors)[0],
+        };
+      } else {
+        return { status: "error", message: "Something went wrong" };
+      }
+    }
 
     const cookieHeader = await getCookies();
     const bodyForm = new FormData();
@@ -320,18 +376,11 @@ export async function createLecture(prev: unknown, formdata: FormData) {
       }
       return { status: "error", message: errorMessage };
     }
-    const newLectureData = await newLecture.json();
     return {
       status: "success",
-      data: newLectureData.data.lecture,
       message: "Lecture created successfully",
     };
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      const formatedZoderrors = formatZodErrors(error);
-      return formatedZoderrors;
-    } else {
-      return { status: "error", message: "Something went wrong" };
-    }
+  } catch {
+    return { status: "error", message: "Something went wrong" };
   }
 }

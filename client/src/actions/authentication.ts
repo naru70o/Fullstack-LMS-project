@@ -5,7 +5,6 @@ import { parseSetCookie } from "../util/parseSetCookie";
 import { signinSchema, signupSchema } from "./zod";
 import { formatZodErrors } from "../app/(home)/instructor/zodTypes";
 import * as z from "zod";
-import { revalidateTag } from "next/cache";
 import { UserSession } from "../util/interfaces";
 
 // getting active user session
@@ -170,7 +169,7 @@ export async function signinAction(
         message: data.message || "An unknown error occurred.",
       };
     }
-  } catch (error) {
+  } catch (error: unknown) {
     return { status: "error", message: "something went wrong" };
   }
 }

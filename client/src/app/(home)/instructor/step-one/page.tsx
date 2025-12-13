@@ -14,7 +14,7 @@ import {
 } from "../_libs/options";
 import { registerInstructorOne } from "../action";
 
-export default function page() {
+export default function Page() {
   const [selected, setSelected] = useState<{
     occupation: Option[];
     specificSkills: Option[];

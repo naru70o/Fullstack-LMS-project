@@ -1,19 +1,44 @@
 # Example .env file for Fullstack-LMS-project
+
 # Copy this file to .env and fill in your actual values
 
 # Server/Database
+
 DATABASE_URL=
 NODE_ENV=development
 PORT=3000
 SERVER_URL=http://localhost:3000
 
 # Email (SMTP)
+
 SMPT_HOST=
 SMPT_PORT=
 SMPT_HOST_USERNAME=
 SMPT_PASSWORD=
 
 # Cloudinary
+
 CLOUDINARY_CLOUD_NAME=
 CLOUDINARY_APIKEY=
 CLOUDINARY_APISECRET=
+
+{
+"id": "693d03c86549135fdf59e685",
+"title": "how to stop gooning",
+"description": "let's give this type to the all server actions in this page if they look valid cause the formatedzoderrors function will return this",
+"secureUrl": "https://res.cloudinary.com/derjdpbl6/image/upload/v1765606343/rbbnukhckiehl7wstucy.png",
+"publicId": "rbbnukhckiehl7wstucy",
+"duration": 0,
+"level": [
+"Advanced"
+],
+"category": [
+"Finance & Accounting"
+],
+"instructorId": "68cf8bb5e33bc34ad186b4b5",
+"isPublished": false,
+"numberOfLectures": 0,
+"totalOfHours": 0,
+"createdAt": "2025-12-13T06:12:24.838Z",
+"updatedAt": "2025-12-13T06:12:24.838Z"
+}

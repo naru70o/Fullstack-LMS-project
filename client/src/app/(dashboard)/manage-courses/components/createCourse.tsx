@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -23,6 +23,7 @@ import { Textarea } from "@/components/components/ui/textarea";
 import { Label } from "@/components/components/ui/label";
 import { categories, levels } from "@/components/lib/utils";
 import { createCourse } from "../action";
+import toast from "react-hot-toast";
 
 interface CreateCourseDialogProps {
   isOpen: boolean;
@@ -41,7 +42,28 @@ export default function CreateCourseDialog({
     level: "",
   });
   const [state, formAction, pending] = useActionState(createCourse, null);
-  console.log("Action state:", state);
+
+  useEffect(() => {
+    if (state?.status === "success") {
+      if (Array.isArray(state.message)) {
+        toast.success(
+          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`
+        );
+        onOpenChange(false);
+      } else {
+        toast.success(state.message ?? "Course created successfully");
+        onOpenChange(false);
+      }
+    } else if (state?.status === "error") {
+      if (Array.isArray(state.message)) {
+        toast.error(
+          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`
+        );
+      } else {
+        toast.error(state.message ?? "Failed to create course");
+      }
+    }
+  }, [state, onOpenChange]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>

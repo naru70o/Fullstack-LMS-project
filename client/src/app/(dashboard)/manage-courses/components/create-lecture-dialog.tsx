@@ -14,7 +14,6 @@ import { Label } from "@/components/components/ui/label";
 import { Loader2, Upload, X } from "lucide-react";
 import { createLecture } from "../action";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 
 interface CreateLectureDialogProps {
   isOpen: boolean;

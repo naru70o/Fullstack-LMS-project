@@ -59,12 +59,23 @@ export default function EditCourseDialog({
   }, [course, isOpen]);
 
   useEffect(() => {
-    if (state && "status" in state) {
-      if (state.status === "success") {
-        toast.success("Course updated successfully");
+    if (state?.status === "success") {
+      if (Array.isArray(state.message)) {
+        toast.success(
+          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`
+        );
         onOpenChange(false);
-      } else if (state.status === "error" && "message" in state) {
-        toast.error(state.message);
+      } else {
+        toast.success(state.message ?? "Course updated successfully");
+        onOpenChange(false);
+      }
+    } else if (state?.status === "error") {
+      if (Array.isArray(state.message)) {
+        toast.error(
+          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`
+        );
+      } else {
+        toast.error(state.message ?? "Failed to update course");
       }
     }
   }, [state, onOpenChange]);

@@ -22,11 +22,6 @@ export default function LectureItem({
 LectureItemProps) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
-  const handleEditLecture = (updatedData: any) => {
-    // onUpdate(lecture.id, updatedData);
-    setIsEditDialogOpen(false);
-  };
-
   return (
     <>
       <Card className="flex items-start justify-between gap-4 p-4 transition-all hover:shadow-md bg-muted/50 cursor-pointer">
@@ -79,7 +74,6 @@ LectureItemProps) {
         isOpen={isEditDialogOpen}
         onOpenChange={setIsEditDialogOpen}
         lecture={lecture}
-        onEditLecture={handleEditLecture}
       />
     </>
   );

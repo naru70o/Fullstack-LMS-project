@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/components/ui/button";
 import { Textarea } from "@/components/components/ui/textarea";
 import { Label } from "@/components/components/ui/label";
-import { Loader2 } from "lucide-react";
+import { Loader2, Upload, X } from "lucide-react";
 import { createLecture } from "../action";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -35,10 +35,7 @@ export default function CreateLectureDialog({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  // Basic file state for validation (checking if file is selected)
-  // We can rely on form "required" and "action" but local state is useful to enable/disable button.
-  // Actually, we can use a ref or just onChange to update a boolean.
-  const [hasFile, setHasFile] = useState(false);
+  const [filePreview, setFilePreview] = useState<string>("");
 
   const [state, formAction, isPending] = useActionState(
     createLecture,
@@ -56,6 +53,10 @@ export default function CreateLectureDialog({
         toast.success(state.message ?? "Lecture created successfully");
         onOpenChange(false);
       }
+      // Reset form
+      setTitle("");
+      setDescription("");
+      setFilePreview("");
     } else if (state?.status === "error") {
       if (Array.isArray(state.message)) {
         toast.error(
@@ -66,6 +67,22 @@ export default function CreateLectureDialog({
       }
     }
   }, [state, onOpenChange]);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      setFilePreview(selectedFile.name);
+    }
+  };
+
+  const handleRemoveFile = () => {
+    setFilePreview("");
+    // Reset the file input
+    const fileInput = document.getElementById(
+      "lecture-file"
+    ) as HTMLInputElement;
+    if (fileInput) fileInput.value = "";
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -110,15 +127,36 @@ export default function CreateLectureDialog({
             <Label htmlFor="lecture-file">Lecture Video</Label>
             <div className="flex items-center gap-2">
               <input
-                className="bg-popover-foreground/10 w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px]"
                 id="lecture-file"
                 name="lecture"
                 type="file"
-                onChange={(e) => setHasFile(!!e.target.files?.[0])}
+                onChange={handleFileChange}
+                className="hidden"
                 accept=".pdf,.doc,.docx,.ppt,.pptx,.mp4,.mov,.avi,.zip"
                 required
               />
+              <label
+                htmlFor="lecture-file"
+                className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-md cursor-pointer hover:bg-blue-700 transition-colors whitespace-nowrap"
+              >
+                <Upload size={18} />
+                <span className="text-sm">Browse</span>
+              </label>
             </div>
+            {filePreview && (
+              <div className="mt-2 flex items-center justify-between bg-slate-900 p-3 rounded-md border border-slate-700">
+                <span className="text-sm text-slate-300 truncate">
+                  {filePreview}
+                </span>
+                <button
+                  type="button"
+                  onClick={handleRemoveFile}
+                  className="text-slate-400 hover:text-red-400 transition-colors"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="flex justify-end gap-2">
@@ -132,7 +170,7 @@ export default function CreateLectureDialog({
             </Button>
             <Button
               type="submit"
-              disabled={isPending || !title || !description || !hasFile}
+              disabled={isPending || !title || !description || !filePreview}
             >
               {isPending ? (
                 <>

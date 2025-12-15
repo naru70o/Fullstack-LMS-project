@@ -384,3 +384,72 @@ export async function createLecture(
     return { status: "error", message: "Something went wrong" };
   }
 }
+
+const validateUpdateLectureData = z.object({
+  title: z.string().min(5).max(100),
+  description: z.string().min(20).max(1000),
+});
+
+export async function updateLecture(
+  prev: unknown,
+  formdata: FormData
+): Promise<ServerActionResponse> {
+  try {
+    const data = {
+      title: formdata.get("title") as string,
+      description: formdata.get("description") as string,
+    };
+    const lectureId = formdata.get("lectureId") as string;
+
+    const validatedLecture = validateUpdateLectureData.safeParse(data);
+    if (!validatedLecture.success) {
+      if (validatedLecture.error instanceof z.ZodError) {
+        const formatedZoderrors = formatZodErrors(validatedLecture.error);
+        return {
+          status: "error",
+          message: Object.entries(formatedZoderrors)[0],
+        };
+      } else {
+        return { status: "error", message: "Something went wrong" };
+      }
+    }
+
+    const cookieHeader = await getCookies();
+    const bodyForm = new FormData();
+    bodyForm.append("title", data.title);
+    bodyForm.append("description", data.description);
+
+    const lectureVideo = formdata.get("lecture");
+    if (lectureVideo && lectureVideo instanceof File && lectureVideo.size > 0) {
+      bodyForm.append("lecture", lectureVideo);
+    }
+
+    const updatedLecture = await fetch(
+      `${apiRoutes.lectures.updateLecture}/${lectureId}`,
+      {
+        method: "PATCH",
+        headers: { Cookie: cookieHeader },
+        body: bodyForm,
+        credentials: "include",
+      }
+    );
+
+    if (!updatedLecture.ok) {
+      let errorMessage = "Failed to update lecture";
+      try {
+        const errorData = await updatedLecture.json();
+        if (errorData.message) errorMessage = errorData.message;
+      } catch {
+        // ignore JSON parse error
+      }
+      return { status: "error", message: errorMessage };
+    }
+
+    return {
+      status: "success",
+      message: "Lecture updated successfully",
+    };
+  } catch {
+    return { status: "error", message: "Something went wrong" };
+  }
+}

@@ -1,8 +1,6 @@
 "use client";
 
-import type React from "react";
-
-import { useState, useEffect } from "react";
+import { Button } from "@/components/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -10,63 +8,72 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/components/ui/dialog";
-import { Button } from "@/components/components/ui/button";
-import { Input } from "@/components/components/ui/input";
-import { Textarea } from "@/components/components/ui/textarea";
 import { Label } from "@/components/components/ui/label";
-import { Upload, X } from "lucide-react";
+import { Loader2, Upload, X } from "lucide-react";
+import { useActionState, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { updateLecture } from "../action";
 import { Lecture } from "../types";
 
 interface EditLectureDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   lecture: Lecture;
-  onEditLecture: (lectureData: any) => void;
 }
 
 export default function EditLectureDialog({
   isOpen,
   onOpenChange,
   lecture,
-  onEditLecture,
 }: EditLectureDialogProps) {
-  const [title, setTitle] = useState(lecture.title);
-  const [description, setDescription] = useState(lecture.description);
-  const [duration, setDuration] = useState(String(lecture.duration));
-  const [file, setFile] = useState<File | null>(null);
+  const [state, action, isPending] = useActionState(updateLecture, null);
   const [filePreview, setFilePreview] = useState<string>("");
 
   useEffect(() => {
-    setTitle(lecture.title);
-    setDescription(lecture.description);
-    setDuration(String(lecture.duration));
-    setFile(null);
-    setFilePreview("");
-  }, [lecture, isOpen]);
+    if (state?.status === "success") {
+      if (Array.isArray(state.message)) {
+        toast.success(
+          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`
+        );
+        onOpenChange(false);
+      } else {
+        toast.success(state.message ?? "Lecture updated successfully");
+        onOpenChange(false);
+      }
+      // Reset file state after successful update
+      setFilePreview("");
+    } else if (state?.status === "error") {
+      if (Array.isArray(state.message)) {
+        toast.error(
+          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`
+        );
+      } else {
+        toast.error(state.message ?? "Failed to update lecture");
+      }
+    }
+  }, [state, onOpenChange]);
+
+  // Reset file state when dialog opens/closes
+  useEffect(() => {
+    if (!isOpen) {
+      setFilePreview("");
+    }
+  }, [isOpen]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
-      setFile(selectedFile);
       setFilePreview(selectedFile.name);
     }
   };
 
   const handleRemoveFile = () => {
-    setFile(null);
     setFilePreview("");
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // if (!title.trim() || !duration.trim()) return;
-
-    onEditLecture({
-      title,
-      description,
-      duration: Number(duration),
-      file,
-    });
+    // Reset the file input
+    const fileInput = document.getElementById(
+      "edit-lecture-file"
+    ) as HTMLInputElement;
+    if (fileInput) fileInput.value = "";
   };
 
   return (
@@ -77,45 +84,41 @@ export default function EditLectureDialog({
           <DialogDescription>Update the lecture information</DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
+        <form action={action} className="space-y-4">
+          <input type="hidden" name="lectureId" value={lecture.id} />
+
+          <div className="space-y-2">
             <Label htmlFor="edit-lecture-title">Lecture Title</Label>
-            <Input
+            <input
+              className="bg-popover-foreground/10 w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px]"
               id="edit-lecture-title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              name="title"
+              defaultValue={lecture.title}
             />
           </div>
 
-          <div>
+          <div className="space-y-2">
             <Label htmlFor="edit-lecture-description">Description</Label>
-            <Textarea
+            <textarea
+              className="bg-popover-foreground/10 w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px]"
               id="edit-lecture-description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={2}
+              name="description"
+              defaultValue={lecture.description}
+              rows={3}
             />
           </div>
 
-          <div>
-            <Label htmlFor="edit-lecture-duration">Duration</Label>
-            <Input
-              id="edit-lecture-duration"
-              value={duration}
-              onChange={(e) => setDuration(e.target.value)}
-            />
-          </div>
-
-          <div>
+          <div className="space-y-2">
             <Label htmlFor="edit-lecture-file">
               Lecture Material (Optional)
             </Label>
             <div className="flex items-center gap-2">
-              <Input
+              <input
                 id="edit-lecture-file"
                 type="file"
+                name="lecture"
                 onChange={handleFileChange}
-                className="flex-1"
+                className="hidden"
                 accept=".pdf,.doc,.docx,.ppt,.pptx,.mp4,.mov,.avi,.zip"
               />
               <label
@@ -125,6 +128,11 @@ export default function EditLectureDialog({
                 <Upload size={18} />
                 <span className="text-sm">Browse</span>
               </label>
+              {filePreview && (
+                <span className="text-sm text-muted-foreground truncate">
+                  {filePreview}
+                </span>
+              )}
             </div>
             {filePreview && (
               <div className="mt-2 flex items-center justify-between bg-slate-900 p-3 rounded-md border border-slate-700">
@@ -147,10 +155,20 @@ export default function EditLectureDialog({
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
+              disabled={isPending}
             >
               Cancel
             </Button>
-            <Button type="submit">Save Changes</Button>
+            <Button type="submit" disabled={isPending}>
+              {isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                "Save Changes"
+              )}
+            </Button>
           </div>
         </form>
       </DialogContent>

@@ -2,12 +2,11 @@ import { Banner } from "@/components/components/banner";
 import { NavigationFixed } from "@/components/components/navigation";
 import { TabMenu } from "@/components/components/tab-menu";
 import Example from "@/components/components/vedioPlayer";
-import { Course, Lecture } from "../_components/feed";
 import Block from "../_components/purchaseCard";
 import InstructorProfile from "../_components/instructorProfile";
 import { cookies } from "next/headers";
 import { apiRoutes } from "@/components/lib/apiRoutes";
-import { ICourse, Module } from "@/components/util/interfaces";
+import { ICourse, Lecture, Module } from "@/components/util/interfaces";
 
 const Page = async ({
   params,
@@ -45,7 +44,7 @@ const Page = async ({
       .find((l) => l.isPreview === true);
 
   const videoUrl = previewLecture
-    ? (previewLecture as Lecture)?.url?.videoUrl
+    ? (previewLecture as Lecture)?.secureUrl
     : undefined;
 
   return (

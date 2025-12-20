@@ -1,92 +1,16 @@
 import { CircleUser } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { ICourse } from "@/components/util/interfaces";
 
-type User = {
-  changedPasswordAt: Date;
-  createdAt: Date;
-  email: string;
-  enrolledCourses: any[]; // Consider using a more specific type if you know the course structure
-  id: string;
-  lastActive: Date;
-  name: string;
-  passwordChangedAt: Date;
-  profile: string;
-  role: string;
-  roles: string[];
-  updatedAt: Date;
-  __v: number;
-  _id: string;
-};
+/*
+ the rating functionality and also the pricing will be implemented in the future
+*/
 
-export type Lecture = {
-  _id: string;
-  id: string; // Again, duplicate of _id
-  url: {
-    videoUrl: string;
-    secureUrl: string;
-  };
-  title: string;
-  description: string;
-  moduleId: string; // Reference to parent module
-  instructor: string; // User ID of instructor
-  duration: number; // in seconds
-  publicId: string; // Cloudinary public ID
-  isPreview: boolean;
-  order: number;
-  questions: Question[]; // Empty array in examples, typed for future use
-  createdAt: string | Date;
-  updatedAt: string | Date;
-  __v: number;
-};
-
-type Modules = {
-  _id: string;
-  title: string;
-  optional: boolean;
-  description: string;
-  course: string;
-  lectures: Lecture[];
-  order: number;
-  __v: number;
-};
-
-// Placeholder for question type (empty in your data)
-type Question = {
-  // Define based on your actual question structure
-  _id?: string;
-  questionText?: string;
-  options?: string[];
-  correctAnswer?: string;
-  // ... other question fields
-};
-
-export type Course = {
-  id: string;
-  category: string[];
-  description: string;
-  isPublished: boolean;
-  secureUrl: string;
-  level: string[];
-  modules: Modules[];
-  title: string;
-  instructor: User;
-  rating: number;
-  numberOfLectures: number;
-  totalOfHours: number;
-  // price: {
-  //   current: number;
-  //   original: number;
-  // };
-  thumbnail: {
-    secure_url: string;
-  };
-};
-
-function Card({ courses }: { courses: Course[] }) {
+function Card({ courses }: { courses: ICourse[] }) {
   return (
     <>
-      {courses.map((course: Course) => (
+      {courses.map((course: ICourse) => (
         <div
           key={course.id}
           className="p-4 border-1 border-popover-foreground/10 w-auto rounded-lg bg-card text-card-foreground overflow-hidden relative"
@@ -116,7 +40,7 @@ function Card({ courses }: { courses: Course[] }) {
             </p>
             <div className="flex items-center gap-1">
               {[...Array(5)].map((_, index) => {
-                if (course.rating >= index + 1) {
+                if (course?.rating >= index + 1) {
                   return (
                     <div className="w-4 h-4 relative" key={index}>
                       <Image
@@ -171,7 +95,7 @@ function Card({ courses }: { courses: Course[] }) {
   );
 }
 
-export const Feed = ({ data }: { data: Course[] }) => {
+export const Feed = ({ data }: { data: ICourse[] }) => {
   return (
     <section className="container px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-[60px]">
       <h2 className="text-popover-foreground font-poppins text-xl font-bold leading-[26px]">

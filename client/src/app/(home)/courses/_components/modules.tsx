@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { ChevronDown, ChevronRight, Play } from "lucide-react";
 import { cn } from "@/components/lib/utils";
-import { Course, Lecture } from "./feed";
 import durationFormatterString from "@/components/util/durationFormatter";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { ICourse, Module, Lecture } from "@/components/util/interfaces";
 
 const StatusIndicator = ({
   status,
@@ -32,7 +32,7 @@ const StatusIndicator = ({
   );
 };
 
-export default function CourseCurriculum({ course }: { course: Course }) {
+export default function CourseCurriculum({ course }: { course: ICourse }) {
   const [expandedChapters, setExpandedChapters] = useState<Set<string>>(
     new Set(["chapter-2"])
   );
@@ -56,23 +56,23 @@ export default function CourseCurriculum({ course }: { course: Course }) {
     router.replace(`${pathname}?${routeURL.toString()}`);
   };
 
-  console.log(course.modules[0].lectures);
+  const modules: Module[] = course?.modules || [];
 
   return (
-    <div className="w-full mt-4">
-      {course.modules.map((chapter) => {
-        const isExpanded = expandedChapters.has(chapter._id);
+    <div className="w-full mt-4 ">
+      {modules?.map((chapter) => {
+        const isExpanded = expandedChapters.has(chapter.id);
         const moduleDuration = chapter.lectures.reduce(
           (total, lecture) => total + lecture.duration,
           0
         );
         return (
           <div
-            key={chapter._id}
+            key={chapter.id}
             className="border-b border-popover-foreground/40 last:border-b-0"
           >
             <button
-              onClick={() => toggleChapter(chapter._id)}
+              onClick={() => toggleChapter(chapter.id)}
               className="w-full flex items-center justify-between p-4 text-left hover:bg-popover-foreground/2 transition-colors cursor-pointer"
             >
               <div className="flex-1">
@@ -97,8 +97,8 @@ export default function CourseCurriculum({ course }: { course: Course }) {
               <div className="pb-2">
                 {chapter.lectures.map((lesson: Lecture) => (
                   <div
-                    onClick={() => handlePlayVedio(lesson.secureUrl)}
-                    key={lesson._id}
+                    onClick={() => handlePlayVedio(lesson.secureUrl || "")}
+                    key={lesson.id}
                     className="flex items-center gap-3 px-4 py-2 hover:bg-popover/50 transition-colors cursor-pointer"
                   >
                     <StatusIndicator status="not-started" />

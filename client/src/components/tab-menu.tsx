@@ -2,9 +2,9 @@
 import React, { useState } from "react";
 import { Reviews } from "../app/(home)/courses/_components/reviews";
 import CourseCurriculum from "../app/(home)/courses/_components/modules";
-import { Course } from "../app/(home)/courses/_components/feed";
+import { ICourse } from "../util/interfaces";
 
-export const TabMenu = ({ data }: { data: Course }) => {
+export const TabMenu = ({ data }: { data: ICourse }) => {
   const [tabMenu, setTabMenu] = useState("reviews");
 
   const HandleTabMenus = (tab: string) => {
@@ -13,7 +13,7 @@ export const TabMenu = ({ data }: { data: Course }) => {
 
   return (
     <>
-      <div className="flex justify-start gap-4 mt-6 text-popover-foreground/80">
+      <div className="flex justify-start gap-4 mt-6 text-popover-foreground/80 px-4 py-2">
         <button
           className={`${
             tabMenu === "reviews" &&

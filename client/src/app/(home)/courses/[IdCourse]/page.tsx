@@ -7,6 +7,7 @@ import Block from "../_components/purchaseCard";
 import InstructorProfile from "../_components/instructorProfile";
 import { cookies } from "next/headers";
 import { apiRoutes } from "@/components/lib/apiRoutes";
+import { ICourse, Module } from "@/components/util/interfaces";
 
 const Page = async ({
   params,
@@ -34,12 +35,14 @@ const Page = async ({
 
   if (!response.ok) return;
   const { data } = await response.json();
-  const course: Course = data;
+  const course: ICourse = data;
   console.log(course);
 
-  const previewLecture = course.modules
-    .flatMap((m) => m.lectures) // merge all lectures into one array
-    .find((l) => l.isPreview === true);
+  const previewLecture =
+    course?.modules ||
+    []
+      .flatMap((m: Module) => m.lectures) // merge all lectures into one array
+      .find((l) => l.isPreview === true);
 
   const videoUrl = previewLecture
     ? (previewLecture as Lecture)?.url?.videoUrl
@@ -51,7 +54,7 @@ const Page = async ({
       <NavigationFixed />
       <section className="container mx-auto py-[60px]">
         {/* container */}
-        <div className="grid grid-cols-3 gap-4 justify-between content-start items-center relative">
+        <div className="grid grid-cols-3 gap-4 justify-between content-start items-center relative px-4 py-2">
           {/* course */}
           <div className="grid-cols-1 col-span-2 flex flex-col justify-start">
             {/* course Video */}

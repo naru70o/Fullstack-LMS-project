@@ -10,7 +10,6 @@ export async function submitForm(
 ): Promise<{ success?: boolean; message?: string; redirect?: string }> {
   try {
     const stepOneValidated = stepOneSchema.safeParse(instructorData);
-    console.log(stepOneValidated);
     if (!stepOneValidated.success) {
       console.log("--------", stepOneValidated.error);
       return {

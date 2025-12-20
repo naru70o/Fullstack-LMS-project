@@ -24,26 +24,22 @@ const Page = async ({
     .map((c) => `${c.name}=${c.value}`)
     .join("; ");
 
-  const response = await fetch(
-    apiRoutes.courses.getCourseById(IdCourse),
-    {
-      headers: { Cookie: cookieHeader },
-      credentials: "include",
-      next: {
-        revalidate: 60,
-      },
-    }
-  );
+  const response = await fetch(apiRoutes.courses.getCourseById(IdCourse), {
+    headers: { Cookie: cookieHeader },
+    credentials: "include",
+    next: {
+      revalidate: 60,
+    },
+  });
 
   if (!response.ok) return;
-  const { data, message } = await response.json();
+  const { data } = await response.json();
   const course: Course = data;
-  console.log("from dynamic route", message, data);
+  console.log(course);
 
   const previewLecture = course.modules
     .flatMap((m) => m.lectures) // merge all lectures into one array
     .find((l) => l.isPreview === true);
-  console.log(previewLecture);
 
   const videoUrl = previewLecture
     ? (previewLecture as Lecture)?.url?.videoUrl
@@ -53,19 +49,19 @@ const Page = async ({
     <>
       <Banner />
       <NavigationFixed />
-      <section className='container mx-auto py-[60px]'>
+      <section className="container mx-auto py-[60px]">
         {/* container */}
-        <div className='grid grid-cols-3 gap-4 justify-between content-start items-center relative'>
+        <div className="grid grid-cols-3 gap-4 justify-between content-start items-center relative">
           {/* course */}
-          <div className='grid-cols-1 col-span-2 flex flex-col justify-start'>
+          <div className="grid-cols-1 col-span-2 flex flex-col justify-start">
             {/* course Video */}
             <Example video={vedio || videoUrl} />
             {/* course title */}
-            <h1 className='text-lg font-bold text-popover-foreground leading-7'>
+            <h1 className="text-lg font-bold text-popover-foreground leading-7">
               {course?.title}
             </h1>
             {/* course description */}
-            <p className='text-sm text-popover-foreground/60 mt-2'>
+            <p className="text-sm text-popover-foreground/60 mt-2">
               {course?.description}
             </p>
             {/* reviews and course modules */}

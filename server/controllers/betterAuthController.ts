@@ -32,7 +32,6 @@ export async function signupEmailAndPassword(
       .json({ status: 'success', message: 'signed in the user', data })
   } catch (error) {
     if (error instanceof APIError) {
-      console.log(error.body?.code, error.body?.message)
       return res
         .status(401)
         .json({ code: error?.body?.code, message: error.body?.message })

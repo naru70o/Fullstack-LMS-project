@@ -12,7 +12,6 @@ interface ObjType {
 function formatSelectOptions(obj: any) {
   const deserialesed = JSON.parse(obj);
   const values = deserialesed.map((option: ObjType) => option.value);
-  console.log(values);
   return values;
 }
 
@@ -34,7 +33,6 @@ export async function registerInstructorOne(
       qualification: formatSelectOptions(formdata.getAll("qualification")),
     };
 
-    console.log(data);
     stepOneSchema.parse(data);
     return {
       success: true,
@@ -44,7 +42,6 @@ export async function registerInstructorOne(
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       const formatedZoderrors = formatZodErrors(error);
-      console.log(formatedZoderrors);
       return formatedZoderrors;
     } else {
       console.error(error);
@@ -72,7 +69,6 @@ export async function registerInstructorTwo(
       equipment: stingToBoolean(formdata.get("equipment")),
       sampleContentUrl: formdata.get("sampleContentUrl"),
     };
-    console.log("the data from the formdata", data);
 
     stepTwoSchema.parse(data);
     return {
@@ -84,7 +80,6 @@ export async function registerInstructorTwo(
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       const formatedZoderrors = formatZodErrors(error);
-      console.log(formatedZoderrors);
       return formatedZoderrors;
     } else {
       console.error(error);

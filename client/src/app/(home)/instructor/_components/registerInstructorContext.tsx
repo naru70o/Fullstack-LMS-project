@@ -52,7 +52,6 @@ export function RegisterInstructorProvider({
     const validated = instructorRegisterFormSchema.safeParse(
       JSON.parse(loadedDataString)
     );
-    console.log(validated);
 
     if (validated.success) {
       console.log("the stored data", validated.data);

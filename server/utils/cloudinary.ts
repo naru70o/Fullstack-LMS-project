@@ -5,8 +5,6 @@ import type { UploadApiResponse, UploadApiOptions } from 'cloudinary'
 
 dotenv.config()
 
-console.log('here are your api keys', process.env['CLOUDINARY_APIKEY'])
-
 cloudinary.config({
   cloud_name: process.env['CLOUDINARY_CLOUD_NAME'] || '',
   api_key: process.env['CLOUDINARY_APIKEY'] || '',

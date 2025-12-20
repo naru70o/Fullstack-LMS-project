@@ -84,7 +84,6 @@ export type Course = {
 };
 
 function Card({ courses }: { courses: Course[] }) {
-  console.log(courses);
   return (
     <>
       {courses.map((course: Course) => (

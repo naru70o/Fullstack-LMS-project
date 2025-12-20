@@ -22,7 +22,6 @@ export const updateProfile = async (
   const updatedUser = {
     name: formdata.get("name") as string,
   };
-  console.log(updatedUser);
 
   try {
     const validated = validatedUser.safeParse(updatedUser);
@@ -53,7 +52,6 @@ export const updateProfile = async (
 // updating profile picture
 export const uploadProfileImage = async (formData: FormData) => {
   try {
-    console.log(formData);
     const response = await fetch(
       "http://localhost:3000/api/v1/user/updateprofilepicture",
       {

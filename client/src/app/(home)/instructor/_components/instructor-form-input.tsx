@@ -54,7 +54,6 @@ export function InstructorFormInput({
         min={min}
         max={max}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          console.log(e.target.type);
           if (setSelected) {
             setSelected((prev: any) => ({
               ...prev,

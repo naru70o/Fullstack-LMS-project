@@ -19,7 +19,6 @@ import toast from "react-hot-toast";
 
 export const SignupButton = () => {
   const [state, formAction, pending] = useActionState(signupAction, null);
-  console.log(state);
 
   useEffect(() => {
     if (state?.status === "success") {

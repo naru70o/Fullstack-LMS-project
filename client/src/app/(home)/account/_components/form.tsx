@@ -31,7 +31,6 @@ export default function Form({
   useEffect(() => {
     setUser((prev) => ({ ...prev, email, image, name }));
   }, [email, image, name]);
-  console.log(state);
   const displayName = name.split(" ")[0];
   return (
     <form action={formAction} className="flex flex-col gap-4 w-[300px] md:w-xl">

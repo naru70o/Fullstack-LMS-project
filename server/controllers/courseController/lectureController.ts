@@ -58,7 +58,6 @@ export async function createNewLecture(
 
   //3) Checking the user (instructor)
   const user = req.user
-  console.log(user?.roles)
   if (!user?.roles.includes('instructor')) {
     return next(new AppError('User not found, please login', 404))
   }

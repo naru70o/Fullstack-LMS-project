@@ -19,14 +19,12 @@ export default async function page({
       headers: { cookie: cookieHeader },
     }
   );
-  console.log(response);
   if (!response.ok) {
     throw new Error("Failed to fetch course");
   }
   const { data } = await response.json();
   const course = data.course;
   const modules = course.modules;
-  console.log("for testing", course);
 
   if (!course) {
     return (

@@ -16,7 +16,6 @@ export const Navigation = ({
 }: {
   userSession: UserSession | null;
 }) => {
-  console.log("come on", userSession);
   return (
     <section className="hidden md:flex w-full my-5 container px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       <div className="flex w-full items-center justify-between ">

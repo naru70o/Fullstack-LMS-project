@@ -1,24 +1,41 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/components/ui/button"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/components/ui/collapsible'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/components/ui/select"
-import { ChevronDown, ChevronUp } from 'lucide-react'
-import { useState } from "react"
-import { CategoryFilter, DurationFilter, LanguageFilter, LevelFilter, RatingFilter, SoftwareFilter } from "../../../components/ratingFilter"
+import { Button } from "@/components/components/ui/button";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/components/ui/collapsible";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/components/ui/select";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { useState } from "react";
+import {
+  CategoryFilter,
+  DurationFilter,
+  LanguageFilter,
+  LevelFilter,
+  RatingFilter,
+  SoftwareFilter,
+} from "../../../components/ratingFilter";
 
 // Filter options data
 interface FilterOption {
-  value: string
-  label: string
-  count?: string
+  value: string;
+  label: string;
+  count?: string;
 }
 
 interface FilterData {
-  rating: FilterOption[]
-  duration: FilterOption[]
-  categories: FilterOption[]
-  level: FilterOption[]
+  rating: FilterOption[];
+  duration: FilterOption[];
+  categories: FilterOption[];
+  level: FilterOption[];
 }
 
 const filterData: FilterData = {
@@ -49,7 +66,7 @@ const filterData: FilterData = {
     { value: "intermediate", label: "Intermediate" },
     { value: "advanced", label: "Advanced" },
   ],
-}
+};
 
 export default function CourseFilters() {
   // State to track which filters are currently selected
@@ -63,35 +80,39 @@ export default function CourseFilters() {
   }
 
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({
-    rating: [], 
-    duration: ["0-2"], 
-    categories: ["design"], 
-    level: ["beginner"], 
+    rating: [],
+    duration: ["0-2"],
+    categories: ["design"],
+    level: ["beginner"],
     software: [],
-    language: [], 
-  })
+    language: [],
+  });
 
   // State to control which filter sections are expanded/collapsed
   interface ExpandedSections {
-    rating: boolean
-    duration: boolean
-    categories: boolean
-    software: boolean
-    level: boolean
-    language: boolean
+    rating: boolean;
+    duration: boolean;
+    categories: boolean;
+    software: boolean;
+    level: boolean;
+    language: boolean;
   }
 
   const [expandedSections, setExpandedSections] = useState<ExpandedSections>({
-    rating: true, 
-    duration: true, 
-    categories: true, 
-    software: false, 
-    level: true, 
-    language: false, 
-  })
+    rating: true,
+    duration: true,
+    categories: true,
+    software: false,
+    level: true,
+    language: false,
+  });
 
   // to handle filter selection/deselection
-  const handleFilterChange = (category: keyof SelectedFilters, value: string, checked: boolean) => {
+  const handleFilterChange = (
+    category: keyof SelectedFilters,
+    value: string,
+    checked: boolean
+  ) => {
     setSelectedFilters((prev) => ({
       ...prev,
       // If checked is true, add the value to the array
@@ -99,8 +120,8 @@ export default function CourseFilters() {
       [category]: checked
         ? [...prev[category], value] // Add value to existing array
         : prev[category].filter((item) => item !== value), // Remove value from array
-    }))
-  }
+    }));
+  };
 
   // Function to clear all selected filters
   const clearFilters = () => {
@@ -111,18 +132,16 @@ export default function CourseFilters() {
       level: [],
       software: [],
       language: [],
-    })
-  }
+    });
+  };
 
   // Function to toggle the expanded/collapsed state of filter sections
   const toggleSection = (section: keyof typeof expandedSections) => {
     setExpandedSections((prev) => ({
       ...prev,
       [section]: !prev[section], // Flip the boolean value
-    }))
-  }
-
-  console.log("Selected Filters:", selectedFilters)
+    }));
+  };
 
   return (
     <div className="flex min-h-screen mt-[var(--margin-section-top)] container mx-auto font-poppins">
@@ -132,7 +151,12 @@ export default function CourseFilters() {
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-semibold">Filter</h2>
           {/* Clear button - calls clearFilters function when clicked */}
-          <Button variant="ghost" size="sm" onClick={clearFilters} className="text-popover-foreground/60 hover:text-popover-foreground/80">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={clearFilters}
+            className="text-popover-foreground/60 hover:text-popover-foreground/80"
+          >
             Clear
           </Button>
         </div>
@@ -211,7 +235,8 @@ export default function CourseFilters() {
           {/* Results count display */}
           <div>
             <p className="text-popover-foreground/70 text-sm">
-              Showing 2,312 results of <span className="font-semibold">UI Design</span>
+              Showing 2,312 results of{" "}
+              <span className="font-semibold">UI Design</span>
             </p>
           </div>
           {/* Sort dropdown */}
@@ -230,11 +255,9 @@ export default function CourseFilters() {
         </div>
 
         {/* Course Grid - Responsive grid layout for course cards */}
-       
 
         {/* Pagination Section */}
-    
       </div>
     </div>
-  )
+  );
 }

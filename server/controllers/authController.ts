@@ -52,7 +52,6 @@ export const signup = async (req: Request, res: Response) => {
       token,
     })
   } catch (error) {
-    console.log(error)
     return res.status(500).json({
       success: false,
       message: 'internal server error',
@@ -69,7 +68,6 @@ export const signin = async (req: Request, res: Response) => {
   try {
     // user Exist
     const user = await User.findOne({ email }).select('+password')
-    console.log(user.password)
 
     // checking if the password is correct
     const verified = await user.comparePassword(password, user.password)
@@ -120,7 +118,6 @@ export const logout = (_req: Request, res: Response) => {
       message: 'logout successful',
     })
   } catch (error) {
-    console.log(error)
     return res.status(500).json({
       success: false,
       message: 'internal server error',
@@ -148,7 +145,6 @@ export const forgetPassword = async (
 
     //2 Generate random token
     const resetToken = user.getResetPasswordToken()
-    console.log(resetToken)
     await user.save({ validateBeforeSave: false })
 
     //3 send the token token via email;
@@ -173,7 +169,6 @@ export const forgetPassword = async (
       next(new appError('email could not be sent', 500))
     }
   } catch (err) {
-    console.log(err)
     return next(new appError(err.message, 500))
   }
 }
@@ -226,7 +221,6 @@ export const resetPassword = async (
       token: tokenGenerated,
     })
   } catch (err) {
-    console.log(err)
     return next(new appError(err.message, 500))
   }
 }

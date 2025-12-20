@@ -39,7 +39,6 @@ export const updateProfile = async (
   res: Response,
   next: NextFunction,
 ) => {
-  console.log(req.user)
   const { name, bio } = req.body
   try {
     const user = req.user
@@ -60,7 +59,6 @@ export const updateProfile = async (
     if (!updatedUser) {
       return next(new AppError('User not found', 404))
     }
-    // console.log(updateProfile)
     return res.status(200).json({
       status: 'success',
       data: {
@@ -162,7 +160,6 @@ export const updateProfileImage = async (
     }
     const uploadImageResult = await uploadImage(profile.buffer)
     const { public_id, secure_url } = uploadImageResult || {}
-    console.log('this is the public_ID', public_id)
 
     if (!public_id) {
       return next(new AppError('Image upload failed', 500))
@@ -217,7 +214,6 @@ export const changepassword = async (
     const email = req.user.email
     const user = await User.findOne({ email }).select('+password')
 
-    console.log(user)
     if (!user) {
       return next(new AppError('User not found', 404))
     }

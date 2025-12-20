@@ -152,7 +152,6 @@ export async function signinAction(
     if (setCookieHeader) {
       // Used Next.js server-side header API to set cookie (e.g. next/headers)
       const parsedCookie = parseSetCookie(setCookieHeader);
-      console.log(parsedCookie.options);
       (await cookies()).set(parsedCookie.name, parsedCookie.value, {
         sameSite: "lax",
         maxAge: 604800,

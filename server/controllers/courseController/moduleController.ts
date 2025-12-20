@@ -17,7 +17,6 @@ export async function getAllModules(
   _next: NextFunction,
 ) {
   try {
-    console.log('Fetching all modules')
     const modules = await prisma.module.findMany({
       include: {
         lectures: true,
@@ -121,7 +120,6 @@ export async function createNewModule(
   const { courseId } = req.params
   if (!courseId) return next(new AppError('course id is required', 400))
   // get the module fields
-  console.log(req.body, 'and the course id is ', courseId)
   const { title, description } = req.body
   if (!title || !description)
     return next(new AppError('title and description are required', 400))

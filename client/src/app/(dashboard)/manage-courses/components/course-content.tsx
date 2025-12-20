@@ -17,7 +17,6 @@ export default function CourseContent({
 }) {
   const [isCreateModuleDialogOpen, setIsCreateModuleDialogOpen] =
     React.useState(false);
-  console.log("course modules ", modules);
   return (
     <div className="p-6">
       <div className="mb-6 flex items-center justify-between">

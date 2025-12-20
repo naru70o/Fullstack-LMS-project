@@ -12,7 +12,6 @@ export default async function page() {
   const userSession: UserSession | null = await getUserSession();
   const { image } = userSession ?? {};
 
-  console.log(userSession);
   return (
     <div className="container max-w-7xl mx-auto px-4 mt-[var(--margin-section-top)]">
       {/* navigation */}

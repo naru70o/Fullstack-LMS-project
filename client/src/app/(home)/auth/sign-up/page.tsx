@@ -6,13 +6,12 @@ import { Input } from "@/components/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { use, useActionState, useEffect } from "react";
+import React, { useActionState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 
-export default function page() {
+export default function Page() {
   const [state, formAction, pending] = useActionState(signupAction, null);
   const router = useRouter();
-  console.log(state);
 
   useEffect(() => {
     if (state?.status === "success") {

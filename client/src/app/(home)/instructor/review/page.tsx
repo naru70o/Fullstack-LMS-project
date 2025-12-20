@@ -23,13 +23,11 @@ export default function ReviewPage() {
   const navigate = useRouter();
 
   const handleSubmit = async () => {
-    console.log("Form submitted");
     // Handle final submission
     //1 submit the data
     const { success, message, redirect } = await submitForm(
       registerFormData as InstructorData
     );
-    console.log(success);
     if (success === false && message) {
       toast.error(message);
       if (redirect) {
@@ -55,7 +53,6 @@ export default function ReviewPage() {
 
   const handleBack = () => {
     // Navigate back to previous step
-    console.log("Going back");
   };
 
   return (

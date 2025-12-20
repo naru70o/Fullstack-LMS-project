@@ -33,7 +33,6 @@ export function ImageCropDialog({ open, setDialogOpen }: ImageCropDialogProps) {
   const onHandleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const { width, height, naturalHeight, naturalWidth } = e.currentTarget;
     const croppedWidth = (MIN_DIMENSION / 100) * width;
-    console.log(width, height, croppedWidth);
 
     if (naturalWidth < MIN_DIMENSION || naturalHeight < MIN_DIMENSION) {
       setErrorMessage(

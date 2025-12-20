@@ -149,7 +149,6 @@ export async function getCourse(
     if (!course) {
       return next(new AppError('no course found with this id', 404))
     }
-    console.log(course)
     res.status(200).json({
       message: 'here is your course',
       data: course,
@@ -187,7 +186,6 @@ export async function createNewCourse(
   if (!title || !description || !level || !category) {
     return next(new AppError('all fields are required', 400))
   }
-  console.log(title, description, level, category)
   //2) getting the Image from multer
   const thumbnail = req.file
   if (!thumbnail) {
@@ -211,12 +209,10 @@ export async function createNewCourse(
     }
 
     const { public_id, secure_url } = uploadResult
-    console.log(public_id, secure_url)
     if (!public_id || !secure_url) {
       return next(new AppError('Failed to upload image to Cloudinary', 500))
     }
 
-    console.log(level, category)
     //5) saving the data in the db
     const course = await prisma.course.create({
       data: {
@@ -229,7 +225,6 @@ export async function createNewCourse(
         instructorId: user.id,
       },
     })
-    console.log(course)
 
     return res.status(200).json({
       status: 'sucess',
@@ -273,7 +268,6 @@ export async function deleteCourse(
         instructor: true,
       },
     })
-    console.log('here is the course', typeof course)
     if (!course) {
       return next(new AppError('course not found', 404))
     }

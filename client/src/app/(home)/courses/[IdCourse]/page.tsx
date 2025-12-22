@@ -35,17 +35,11 @@ const Page = async ({
   if (!response.ok) return;
   const { data } = await response.json();
   const course: ICourse = data;
-  console.log(course);
 
-  const previewLecture =
-    course?.modules ||
-    []
-      .flatMap((m: Module) => m.lectures) // merge all lectures into one array
-      .find((l) => l.isPreview === true);
+  // this is hard coded now and every course will have a preview lecture
+  const previewLecture = course?.modules?.flatMap((m: Module) => m.lectures); // merge all lectures into one array
 
-  const videoUrl = previewLecture
-    ? (previewLecture as Lecture)?.secureUrl
-    : undefined;
+  const videoUrl = previewLecture?.[0]?.secureUrl || "";
 
   return (
     <>

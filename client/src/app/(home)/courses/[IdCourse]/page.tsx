@@ -1,12 +1,12 @@
 import { Banner } from "@/components/components/banner";
 import { NavigationFixed } from "@/components/components/navigation";
 import { TabMenu } from "@/components/components/tab-menu";
-import Example from "@/components/components/vedioPlayer";
-import Block from "../_components/purchaseCard";
-import InstructorProfile from "../_components/instructorProfile";
-import { cookies } from "next/headers";
+import VideoPlayerComponent from "@/components/components/vedioPlayer";
 import { apiRoutes } from "@/components/lib/apiRoutes";
-import { ICourse, Lecture, Module } from "@/components/util/interfaces";
+import { ICourse, Module } from "@/components/util/interfaces";
+import { cookies } from "next/headers";
+import InstructorProfile from "../_components/instructorProfile";
+import PricingCard from "../_components/pricing-card";
 
 const Page = async ({
   params,
@@ -47,11 +47,16 @@ const Page = async ({
       <NavigationFixed />
       <section className="container mx-auto py-[60px]">
         {/* container */}
-        <div className="grid grid-cols-3 gap-4 justify-between content-start items-center relative px-4 py-2">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 justify-between content-start items-center relative px-4 py-2">
           {/* course */}
-          <div className="grid-cols-1 col-span-2 flex flex-col justify-start">
+          <div className="grid-cols-1 md:col-span-2 flex flex-col justify-start">
             {/* course Video */}
-            <Example video={vedio || videoUrl} />
+            <VideoPlayerComponent video={vedio || videoUrl} />
+
+            {/* price card for mobiles*/}
+            <div className="block md:hidden py-2">
+              <PricingCard course={course} />
+            </div>
             {/* course title */}
             <h1 className="text-lg font-bold text-popover-foreground leading-7">
               {course?.title}
@@ -67,7 +72,9 @@ const Page = async ({
             {/* <Reviews/> */}
           </div>
           {/* Block for puying the course */}
-          <Block course={course} />
+          <div className="w-full hidden md:block md:grid-cols-1 md:col-start-3 md:col-end-4 self-start justify-self-center max-w-md mx-auto bg-popover rounded-lg p-6 shadow-search-ba font-poppins">
+            <PricingCard course={course} />
+          </div>
         </div>
       </section>
     </>

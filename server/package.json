@@ -9,7 +9,8 @@
     "build": "prisma generate && tsc --build",
     "format": "prettier --write .",
     "lint": "eslint . ",
-    "lint:fix": "eslint . --fix "
+    "lint:fix": "eslint . --fix ",
+    "migrate:course-fields": "tsx scripts/migrate-course-discount.ts"
   },
   "author": "kadar naruto",
   "license": "ISC",

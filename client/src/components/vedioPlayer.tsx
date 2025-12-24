@@ -14,6 +14,7 @@ import {
 const VideoPlayerComponent = ({ video }: { video: string | undefined }) => {
   // preventing hydration mismatch
   if (!window) return null;
+  console.log(window);
   return (
     <VideoPlayer className="overflow-hidden rounded-lg border mb-4">
       <VideoPlayerContent

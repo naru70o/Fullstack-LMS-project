@@ -25,6 +25,7 @@ export default async function page({
   const { data } = await response.json();
   const course = data.course;
   const modules = course.modules;
+  console.log(course);
 
   if (!course) {
     return (

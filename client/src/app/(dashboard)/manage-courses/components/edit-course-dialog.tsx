@@ -42,6 +42,8 @@ export default function EditCourseDialog({
     duration: "",
     category: "",
     level: "",
+    price: "",
+    discount: "",
   });
 
   const [state, formAction, pending] = useActionState(updateCourse, null);
@@ -54,6 +56,8 @@ export default function EditCourseDialog({
         duration: String(course.duration),
         category: course.category[0] || "",
         level: course.level[0] || "",
+        price: String(course.price),
+        discount: String(course.discount),
       });
     }
   }, [course, isOpen]);
@@ -98,6 +102,26 @@ export default function EditCourseDialog({
               name="title"
               defaultValue={course.title}
               placeholder="Find courses, skills, software, etc"
+              className="bg-popover-foreground/10 w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px]"
+            />
+          </div>
+          {/* course price */}
+          <div className="space-y-2">
+            <Label htmlFor="price">Price</Label>
+            <input
+              type="number"
+              name="price"
+              defaultValue={course.price}
+              className="bg-popover-foreground/10 w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px]"
+            />
+          </div>
+          {/* course discount */}
+          <div className="space-y-2">
+            <Label htmlFor="discount">Discount</Label>
+            <input
+              type="number"
+              name="discount"
+              defaultValue={course.discount}
               className="bg-popover-foreground/10 w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px]"
             />
           </div>

@@ -32,6 +32,8 @@ export interface ICourse {
   secureUrl: string;
   publicId: string;
   duration: number;
+  price: number;
+  discount: number;
   level: string[];
   category: string[];
   instructorId: string;

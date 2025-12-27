@@ -323,7 +323,6 @@ export async function updateCourse(
   next: NextFunction,
 ) {
   //1 getting the params
-
   const { courseId } = req.params
   if (!courseId) {
     return next(new AppError('Course ID is required', 400))
@@ -348,13 +347,31 @@ export async function updateCourse(
     }
 
     //4 get the fields to update from the body
-    const { title, description, level, category } = req.body
+    const { title, description, level, category, price, discount } = req.body
+    if (
+      !title ||
+      !description ||
+      !level ||
+      !category ||
+      price === undefined ||
+      discount === undefined
+    ) {
+      return next(
+        new AppError(
+          'all fields are required: title, description, level, category, price, discount',
+          400,
+        ),
+      )
+    }
+
     const updates: {
       title?: string
       description?: string
       level?: string[]
       category?: string[]
       thumbnail?: { public_id: string; secure_url: string }
+      price?: number
+      discount?: number
     } = {}
 
     if (title) updates.title = title
@@ -362,6 +379,9 @@ export async function updateCourse(
     if (level) updates.level = Array.isArray(level) ? level : [level]
     if (category)
       updates.category = Array.isArray(category) ? category : [category]
+    // Convert string to number for Prisma (FormData sends strings)
+    if (price !== undefined) updates.price = Number(price)
+    if (discount !== undefined) updates.discount = Number(discount)
 
     //5 handle thumbnail update if a new one is provided
     if (req.file) {
@@ -397,13 +417,11 @@ export async function updateCourse(
       message: 'Course updated successfully',
     })
   } catch (error) {
-    if (error instanceof AppError) {
-      return next(
-        new AppError(
-          `internal server error while updating course : ${error.message}`,
-          500,
-        ),
-      )
-    }
+    return next(
+      new AppError(
+        `internal server error while updating course : ${error instanceof Error ? error.message : 'unknown error'}`,
+        500,
+      ),
+    )
   }
 }

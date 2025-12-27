@@ -26,6 +26,8 @@ interface CreateCourseData {
   description: string;
   category: string;
   level: string;
+  price: number;
+  discount: number;
 }
 
 const validateCourseData = z.object({
@@ -33,6 +35,8 @@ const validateCourseData = z.object({
   description: z.string().min(20).max(1000),
   category: z.enum(categories),
   level: z.enum(levels),
+  price: z.number().min(10),
+  discount: z.number().min(0).max(90),
 });
 
 export async function createCourse(
@@ -45,6 +49,8 @@ export async function createCourse(
       description: formdata.get("description") as string,
       category: formdata.get("category") as string,
       level: formdata.get("level") as string,
+      price: Number(formdata.get("price")) as number,
+      discount: Number(formdata.get("discount")) as number,
     };
     const validatedCourse = validateCourseData.safeParse(data);
     if (!validatedCourse.success) {
@@ -71,6 +77,8 @@ export async function createCourse(
     bodyForm.append("description", data.description);
     bodyForm.append("category", data.category);
     bodyForm.append("level", data.level);
+    bodyForm.append("price", data.price.toString());
+    bodyForm.append("discount", data.discount.toString());
 
     const thumbnail = formdata.get("thumbnail");
     if (thumbnail) {
@@ -102,6 +110,8 @@ export async function updateCourse(
       description: formdata.get("description") as string,
       category: formdata.get("category") as string,
       level: formdata.get("level") as string,
+      price: Number(formdata.get("price")) as number,
+      discount: Number(formdata.get("discount")) as number,
     };
     const courseId = formdata.get("courseId") as string;
     const validatedCourse = validateCourseData.safeParse(data);
@@ -129,7 +139,8 @@ export async function updateCourse(
     bodyForm.append("description", data.description);
     bodyForm.append("category", data.category);
     bodyForm.append("level", data.level);
-
+    bodyForm.append("price", data.price.toString());
+    bodyForm.append("discount", data.discount.toString());
     const thumbnail = formdata.get("thumbnail");
     if (thumbnail && thumbnail instanceof File && thumbnail.size > 0) {
       bodyForm.append("thumbnail", thumbnail);

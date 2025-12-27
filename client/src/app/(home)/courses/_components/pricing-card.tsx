@@ -14,10 +14,12 @@ export default function PricingCard({ course }: { course: ICourse }) {
         </h2>
         <div className="flex items-center gap-2">
           <span className="text-2xl font-bold text-popover-foreground/90">
-            $22.40
+            ${course.price}
           </span>
           <span className="text-lg text-popover-foreground/40 line-through">
-            $30.13
+            {course.discount > 0
+              ? `$${(course.price - course.discount).toFixed(2)}`
+              : ""}
           </span>
         </div>
       </div>

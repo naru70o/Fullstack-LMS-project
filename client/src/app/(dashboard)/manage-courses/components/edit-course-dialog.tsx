@@ -24,6 +24,7 @@ import { ICourse } from "@/components/util/interfaces";
 import { updateCourse } from "../action";
 import { categories, levels } from "@/components/lib/utils";
 import { toast } from "react-hot-toast";
+import { Input } from "@/components/components/ui/input";
 
 interface EditCourseDialogProps {
   isOpen: boolean;
@@ -97,32 +98,25 @@ export default function EditCourseDialog({
           {/* course title */}
           <div className="space-y-2">
             <Label htmlFor="title">Course Title</Label>
-            <input
+            <Input
               type="text"
               name="title"
               defaultValue={course.title}
               placeholder="Find courses, skills, software, etc"
-              className="bg-popover-foreground/10 w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px]"
             />
           </div>
           {/* course price */}
           <div className="space-y-2">
             <Label htmlFor="price">Price</Label>
-            <input
-              type="number"
-              name="price"
-              defaultValue={course.price}
-              className="bg-popover-foreground/10 w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px]"
-            />
+            <Input type="number" name="price" defaultValue={course.price} />
           </div>
           {/* course discount */}
           <div className="space-y-2">
             <Label htmlFor="discount">Discount</Label>
-            <input
+            <Input
               type="number"
               name="discount"
               defaultValue={course.discount}
-              className="bg-popover-foreground/10 w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px]"
             />
           </div>
           {/* course description */}
@@ -192,11 +186,7 @@ export default function EditCourseDialog({
           {/* course thumbnail */}
           <div className="space-y-2">
             <Label htmlFor="thumbnail">Course Thumbnail</Label>
-            <input
-              type="file"
-              name="thumbnail"
-              className="bg-popover-foreground/10 w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px]"
-            />
+            <Input type="file" name="thumbnail" />
           </div>
           <div className="flex gap-2 pt-2">
             <Button

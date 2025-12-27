@@ -11,6 +11,7 @@ import {
 } from "@/components/components/ui/select";
 
 import { Button } from "@/components/components/ui/button";
+import { Input } from "@/components/components/ui/input";
 import Link from "next/link";
 
 interface SelectDemoProps {
@@ -59,11 +60,7 @@ export const HeroSearchBar = () => {
 
       {/* inputs and button */}
       <div className="flex items-center justify-center gap-2">
-        <input
-          type="text"
-          placeholder="Find courses, skills, software, etc"
-          className="bg-popover-foreground/10 w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px]"
-        />
+        <Input type="text" placeholder="Find courses, skills, software, etc" />
         <SelectInput
           selectItems={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
           selectLabel="Categories"

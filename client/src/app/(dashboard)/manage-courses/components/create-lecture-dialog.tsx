@@ -14,6 +14,7 @@ import { Label } from "@/components/components/ui/label";
 import { Loader2, Upload, X } from "lucide-react";
 import { createLecture } from "../action";
 import toast from "react-hot-toast";
+import { Input } from "@/components/components/ui/input";
 
 interface CreateLectureDialogProps {
   isOpen: boolean;
@@ -85,7 +86,7 @@ export default function CreateLectureDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="sm:max-w-[550px]">
         <DialogHeader>
           <DialogTitle>Add New Lecture</DialogTitle>
           <DialogDescription>
@@ -93,13 +94,12 @@ export default function CreateLectureDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <form action={formAction} className="space-y-4">
+        <form action={formAction} className="space-y-4 overflow-x-hidden">
           <input type="hidden" name="moduleId" value={moduleId} />
 
           <div className="space-y-2">
             <Label htmlFor="lecture-title">Lecture Title</Label>
-            <input
-              className="bg-popover-foreground/10 w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px]"
+            <Input
               id="lecture-title"
               name="title"
               placeholder="e.g., Introduction to React"
@@ -125,7 +125,7 @@ export default function CreateLectureDialog({
           <div className="space-y-2">
             <Label htmlFor="lecture-file">Lecture Video</Label>
             <div className="flex items-center gap-2">
-              <input
+              <Input
                 id="lecture-file"
                 name="lecture"
                 type="file"

@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/components/ui/button";
 import { Textarea } from "@/components/components/ui/textarea";
 import { Label } from "@/components/components/ui/label";
+import { Input } from "@/components/components/ui/input";
 import { createModule } from "../action";
 import toast from "react-hot-toast";
 
@@ -64,12 +65,7 @@ export default function CreateModuleDialog({
         <form action={formAction} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="title">Module Title</Label>
-            <input
-              type="text"
-              name="title"
-              placeholder="Module Title"
-              className="bg-popover-foreground/10 w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px]"
-            />
+            <Input type="text" name="title" placeholder="Module Title" />
           </div>
 
           {/* courseId as a hidden input */}

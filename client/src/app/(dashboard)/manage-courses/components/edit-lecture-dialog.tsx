@@ -15,6 +15,7 @@ import toast from "react-hot-toast";
 import { updateLecture } from "../action";
 import { Lecture } from "../types";
 import { Textarea } from "@/components/components/ui/textarea";
+import { Input } from "@/components/components/ui/input";
 
 interface EditLectureDialogProps {
   isOpen: boolean;
@@ -79,19 +80,18 @@ export default function EditLectureDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="sm:max-w-[550px]">
         <DialogHeader>
           <DialogTitle>Edit Lecture</DialogTitle>
           <DialogDescription>Update the lecture information</DialogDescription>
         </DialogHeader>
 
-        <form action={action} className="space-y-4">
-          <input type="hidden" name="lectureId" value={lecture.id} />
+        <form action={action} className="space-y-4 overflow-x-hidden">
+          <Input type="hidden" name="lectureId" value={lecture.id} />
 
           <div className="space-y-2">
             <Label htmlFor="edit-lecture-title">Lecture Title</Label>
-            <input
-              className="bg-popover-foreground/10 w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px]"
+            <Input
               id="edit-lecture-title"
               name="title"
               defaultValue={lecture.title}
@@ -101,7 +101,6 @@ export default function EditLectureDialog({
           <div className="space-y-2">
             <Label htmlFor="edit-lecture-description">Description</Label>
             <Textarea
-              className=""
               id="edit-lecture-description"
               name="description"
               defaultValue={lecture.description}
@@ -114,7 +113,7 @@ export default function EditLectureDialog({
               Lecture Material (Optional)
             </Label>
             <div className="flex items-center gap-2">
-              <input
+              <Input
                 id="edit-lecture-file"
                 type="file"
                 name="lecture"
@@ -131,14 +130,18 @@ export default function EditLectureDialog({
               </label>
               {filePreview && (
                 <span className="text-sm text-muted-foreground truncate">
-                  {filePreview}
+                  {filePreview.length > 30
+                    ? `${filePreview.slice(0, 30)}...`
+                    : filePreview}
                 </span>
               )}
             </div>
             {filePreview && (
               <div className="mt-2 flex items-center justify-between bg-slate-900 p-3 rounded-md border border-slate-700">
                 <span className="text-sm text-slate-300 truncate">
-                  {filePreview}
+                  {filePreview.length > 30
+                    ? `${filePreview.slice(0, 30)}...`
+                    : filePreview}
                 </span>
                 <button
                   type="button"

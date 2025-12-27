@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import { updateModule } from "../action";
 import { Module } from "../types";
 import { Textarea } from "@/components/components/ui/textarea";
+import { Input } from "@/components/components/ui/input";
 
 interface EditModuleDialogProps {
   isOpen: boolean;
@@ -51,7 +52,7 @@ export default function EditModuleDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="sm:max-w-[550px]">
         <DialogHeader>
           <DialogTitle>Edit Module</DialogTitle>
           <DialogDescription>Update the module information</DialogDescription>
@@ -61,8 +62,7 @@ export default function EditModuleDialog({
           <input type="hidden" name="moduleId" value={module.id} />
           <div className="space-y-2">
             <Label htmlFor="edit-module-title">Module Title</Label>
-            <input
-              className="bg-popover-foreground/10 w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px]"
+            <Input
               id="edit-module-title"
               name="title"
               defaultValue={module.title}

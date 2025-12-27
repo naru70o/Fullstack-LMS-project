@@ -14,6 +14,7 @@ import { useActionState, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { updateLecture } from "../action";
 import { Lecture } from "../types";
+import { Textarea } from "@/components/components/ui/textarea";
 
 interface EditLectureDialogProps {
   isOpen: boolean;
@@ -99,8 +100,8 @@ export default function EditLectureDialog({
 
           <div className="space-y-2">
             <Label htmlFor="edit-lecture-description">Description</Label>
-            <textarea
-              className="bg-popover-foreground/10 w-full max-w-xl p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] text-popover-foreground/70 font-poppins text-[16px] font-normal leading-[24px]"
+            <Textarea
+              className=""
               id="edit-lecture-description"
               name="description"
               defaultValue={lecture.description}

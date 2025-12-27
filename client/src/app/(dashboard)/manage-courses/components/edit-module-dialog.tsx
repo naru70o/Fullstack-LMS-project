@@ -12,6 +12,7 @@ import { useActionState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { updateModule } from "../action";
 import { Module } from "../types";
+import { Textarea } from "@/components/components/ui/textarea";
 
 interface EditModuleDialogProps {
   isOpen: boolean;
@@ -70,7 +71,7 @@ export default function EditModuleDialog({
 
           <div className="space-y-2">
             <Label htmlFor="edit-module-description">Description</Label>
-            <textarea
+            <Textarea
               id="edit-module-description"
               name="description"
               defaultValue={module.description}

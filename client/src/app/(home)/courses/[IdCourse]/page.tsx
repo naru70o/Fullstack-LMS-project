@@ -45,7 +45,7 @@ const Page = async ({
     <>
       <Banner />
       <NavigationFixed />
-      <section className="container max-w-7xl mx-auto py-[60px]">
+      <section className="container max-w-7xl mx-auto py-[60px] ">
         {/* container */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 justify-between content-start items-center relative px-4 py-2">
           {/* course */}

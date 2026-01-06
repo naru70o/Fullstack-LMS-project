@@ -14,6 +14,7 @@ import { SigninButton } from "./signinButton";
 import { SignupButton } from "./singupButton";
 import { Avatar } from "./ui/avatar";
 import { Input } from "./ui/input";
+import { Skeleton } from "./ui/skeleton";
 
 export const Navigation = ({
   userSession,
@@ -63,21 +64,13 @@ export const Navigation = ({
 };
 
 export const NavigationFixed = () => {
-  const { isPending, data, isError, error } = useQuery({
+  const { isPending, data } = useQuery({
     queryKey: ["userSession"],
     queryFn: () => getUserSession(),
   });
 
-  console.log(data);
-
-  useEffect(() => {
-    if (isError) {
-      toast.error(error.message);
-    }
-  }, [error, isError]);
-
   return (
-    <section className="hidden lg:flex fixed top-0 left-0 right-0 z-50 bg-popover shadow-[var(--shadow-search-bar)] py-4">
+    <section className="hidden lg:flex fixed top-0 left-0 right-0 z-50 bg-popover shadow-[var(--shadow-search-bar)] py-4 px-2">
       <div className="container max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-12">
           <Link href="/">
@@ -98,7 +91,7 @@ export const NavigationFixed = () => {
           <Search className="text-[var(--primary-color)] absolute left-0 top-1/2 transform -translate-y-1/2 ml-2" />
         </div>
         {/* Auth-Buttons */}
-        {data ? (
+        {data || isPending ? (
           <div className="flex items-center gap-5">
             <Link href="/my-learning">
               <button className="text-popover-foreground hover:text-popover-foreground/70 transition-all cursor-pointer">
@@ -109,13 +102,17 @@ export const NavigationFixed = () => {
               <Cart className="cursor-pointer" />
             </div>
             <Avatar asChild className="w-9 h-9">
-              <Image
-                src={data.image ? `${data.image}` : `/assets/default.png`}
-                alt="User Image"
-                width={36}
-                height={36}
-                className="rounded-full"
-              />
+              {isPending ? (
+                <Skeleton className="h-[36px] w-[36px] rounded-full" />
+              ) : (
+                <Image
+                  src={data?.image ? `${data?.image}` : `/assets/default.png`}
+                  alt="User Image"
+                  width={36}
+                  height={36}
+                  className="rounded-full"
+                />
+              )}
             </Avatar>
           </div>
         ) : (

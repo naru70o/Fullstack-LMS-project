@@ -1,15 +1,19 @@
-import React from "react";
-import LogoNav from "@/components/../public/assets/logoNav.svg";
-import { ChevronRight, Search } from "lucide-react";
-import Link from "next/link";
-import { SigninButton } from "./signinButton";
-import { Input } from "./ui/input";
-import { SignupButton } from "./singupButton";
-import { UserSession } from "../util/interfaces";
-import Image from "next/image";
+"use client";
 import Cart from "@/components/../public/assets/Cart.svg";
-import { Avatar, AvatarFallback } from "./ui/avatar";
+import LogoNav from "@/components/../public/assets/logoNav.svg";
+import { useQuery } from "@tanstack/react-query";
+import { ChevronRight, Search } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
+import { getUserSession } from "../actions/authentication";
+import { UserSession } from "../util/interfaces";
 import Browse from "./browse";
+import { SigninButton } from "./signinButton";
+import { SignupButton } from "./singupButton";
+import { Avatar } from "./ui/avatar";
+import { Input } from "./ui/input";
 
 export const Navigation = ({
   userSession,
@@ -58,15 +62,23 @@ export const Navigation = ({
   );
 };
 
-export const NavigationFixed = ({
-  userSession,
-}: {
-  userSession: UserSession | null;
-}) => {
-  console.log(userSession);
+export const NavigationFixed = () => {
+  const { isPending, data, isError, error } = useQuery({
+    queryKey: ["userSession"],
+    queryFn: () => getUserSession(),
+  });
+
+  console.log(data);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(error.message);
+    }
+  }, [error, isError]);
+
   return (
     <section className="hidden lg:flex fixed top-0 left-0 right-0 z-50 bg-popover shadow-[var(--shadow-search-bar)] py-4">
-      <div className="container mx-auto flex items-center justify-between">
+      <div className="container max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-12">
           <Link href="/">
             <LogoNav />
@@ -86,7 +98,7 @@ export const NavigationFixed = ({
           <Search className="text-[var(--primary-color)] absolute left-0 top-1/2 transform -translate-y-1/2 ml-2" />
         </div>
         {/* Auth-Buttons */}
-        {userSession ? (
+        {data ? (
           <div className="flex items-center gap-5">
             <Link href="/my-learning">
               <button className="text-popover-foreground hover:text-popover-foreground/70 transition-all cursor-pointer">
@@ -98,11 +110,7 @@ export const NavigationFixed = ({
             </div>
             <Avatar asChild className="w-9 h-9">
               <Image
-                src={
-                  userSession.image
-                    ? `${userSession.image}`
-                    : `/assets/default.png`
-                }
+                src={data.image ? `${data.image}` : `/assets/default.png`}
                 alt="User Image"
                 width={36}
                 height={36}

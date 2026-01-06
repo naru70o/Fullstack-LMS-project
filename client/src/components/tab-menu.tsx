@@ -5,7 +5,7 @@ import CourseCurriculum from "../app/(home)/courses/_components/modules";
 import { ICourse } from "../util/interfaces";
 
 export const TabMenu = ({ data }: { data: ICourse }) => {
-  const [tabMenu, setTabMenu] = useState("reviews");
+  const [tabMenu, setTabMenu] = useState("course");
 
   const HandleTabMenus = (tab: string) => {
     setTabMenu(tab);

@@ -58,8 +58,12 @@ export const Navigation = ({
   );
 };
 
-export const NavigationFixed = () => {
-  const userSession = true; // Replace with actual user session logic
+export const NavigationFixed = ({
+  userSession,
+}: {
+  userSession: UserSession | null;
+}) => {
+  console.log(userSession);
   return (
     <section className="hidden lg:flex fixed top-0 left-0 right-0 z-50 bg-popover shadow-[var(--shadow-search-bar)] py-4">
       <div className="container mx-auto flex items-center justify-between">
@@ -93,7 +97,17 @@ export const NavigationFixed = () => {
               <Cart className="cursor-pointer" />
             </div>
             <Avatar asChild className="w-9 h-9">
-              <AvatarFallback>KN</AvatarFallback>
+              <Image
+                src={
+                  userSession.image
+                    ? `${userSession.image}`
+                    : `/assets/default.png`
+                }
+                alt="User Image"
+                width={36}
+                height={36}
+                className="rounded-full"
+              />
             </Avatar>
           </div>
         ) : (

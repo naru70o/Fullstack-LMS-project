@@ -4,6 +4,7 @@ import { Outfit, Poppins } from "next/font/google";
 import "@/components/app/globals.css";
 import { Toaster } from "react-hot-toast";
 import { RegisterInstructorProvider } from "./instructor/_components/registerInstructorContext";
+import QueryProvider from "@/components/components/queryProvider";
 
 const PoppinsFont = Poppins({
   variable: "--font-poppins",
@@ -32,7 +33,9 @@ export default function RootLayout({
       <body
         className={`${PoppinsFont.variable} ${OutfitFont.variable} antialiased overflow-x-hidden`}
       >
-        <RegisterInstructorProvider>{children}</RegisterInstructorProvider>
+        <RegisterInstructorProvider>
+          <QueryProvider>{children}</QueryProvider>
+        </RegisterInstructorProvider>
         <Toaster />
       </body>
     </html>

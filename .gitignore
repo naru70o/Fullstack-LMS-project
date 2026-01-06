@@ -2,6 +2,9 @@
 .DS_Store
 Thumbs.db
 
+# Ignore Todo.md
+Todo.md
+
 # Ignore common editor/IDE temporary files
 .idea/
 .vscode/

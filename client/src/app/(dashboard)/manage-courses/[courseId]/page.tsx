@@ -29,7 +29,7 @@ export default async function page({
 
   if (!course) {
     return (
-      <main className="min-h-screen bg-background p-6">
+      <div className="bg-background p-6">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-foreground">
             Course not found
@@ -38,12 +38,12 @@ export default async function page({
             <Button className="mt-4">Back to Courses</Button>
           </Link>
         </div>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className="min-h-screen w-full bg-background">
+    <main className="w-full bg-background">
       {/* Header */}
       <div className="border-b border-border bg-card p-6">
         <div className="flex items-center gap-4 relative group">

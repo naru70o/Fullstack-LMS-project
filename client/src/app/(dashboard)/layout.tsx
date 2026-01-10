@@ -30,10 +30,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${PoppinsFont.variable} ${OutfitFont.variable} antialiased flex overflow-x-hidden`}
+        className={`${PoppinsFont.variable} ${OutfitFont.variable} antialiased flex h-screen w-screen overflow-hidden`}
       >
         <Sidebar />
-        {children}
+        <main className="flex-1 overflow-y-auto h-full">{children}</main>
         <Toaster />
       </body>
     </html>

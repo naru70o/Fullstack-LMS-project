@@ -21,7 +21,7 @@ export default async function page() {
   const { data } = await response.json();
   const courses: ICourse[] = data.courses;
   return (
-    <main className="min-h-screen w-full bg-background">
+    <main className="w-full bg-background">
       {/* Header Section */}
       <Header />
 

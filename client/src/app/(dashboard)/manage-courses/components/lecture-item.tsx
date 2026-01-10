@@ -3,29 +3,56 @@
 import { useState } from "react";
 import { Card } from "@/components/components/ui/card";
 import { Button } from "@/components/components/ui/button";
-import { Trash2, Edit2, Play } from "lucide-react";
+import { Trash2, Edit2, Play, GripVertical } from "lucide-react";
 import EditLectureDialog from "./edit-lecture-dialog";
 import durationFormatterString from "@/components/util/durationFormatter";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 import { Lecture } from "../types";
 
 interface LectureItemProps {
   lecture: Lecture;
-  // onDelete: (lectureId: number) => void;
-  // onUpdate: (lectureId: number, updatedData: any) => void;
 }
 
-export default function LectureItem({
-  lecture,
-}: // onDelete,
-// onUpdate,
-LectureItemProps) {
+export default function LectureItem({ lecture }: LectureItemProps) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: lecture.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
 
   return (
     <>
-      <Card className="flex items-start justify-between gap-4 p-4 transition-all hover:shadow-md bg-muted/50 cursor-pointer">
+      <Card
+        ref={setNodeRef}
+        style={style}
+        className={`flex items-start justify-between gap-4 p-4 transition-all hover:shadow-md bg-muted/50 ${
+          isDragging ? "shadow-lg ring-2 ring-primary" : ""
+        }`}
+      >
         <div className="flex flex-1 w-full items-start gap-4">
+          {/* Drag Handle */}
+          <button
+            {...attributes}
+            {...listeners}
+            className="rounded p-1.5 hover:bg-muted cursor-grab active:cursor-grabbing flex-shrink-0 mt-0.5 touch-none"
+            aria-label="Drag to reorder"
+          >
+            <GripVertical className="h-5 w-5 text-muted-foreground" />
+          </button>
+
           <div className="rounded bg-primary/10 p-2.5 flex-shrink-0 mt-0.5">
             <Play className="h-4 w-4 text-primary" />
           </div>
@@ -58,7 +85,6 @@ LectureItemProps) {
                 <Button
                   variant="outline"
                   size="sm"
-                  // onClick={() => onDelete(lecture.id)}
                   className="gap-1 bg-transparent text-destructive cursor-pointer"
                 >
                   <Trash2 className="h-4 w-4" />

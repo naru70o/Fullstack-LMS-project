@@ -32,6 +32,7 @@ export const apiRoutes = {
   lectures: {
     createLecture: `${API_BASE_URL}/course/newlecture`,
     updateLecture: `${API_BASE_URL}/course/updatelecture`,
+    reorderLectures: `${API_BASE_URL}/course/reorderlectures`,
   },
   instructor: {
     registerInstructor: `${API_BASE_URL}//instructor/registe`,

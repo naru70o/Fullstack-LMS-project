@@ -91,15 +91,7 @@ export default function ModuleCard({ module }: ModuleCardProps) {
                 <p className="text-sm text-muted-foreground">No lectures yet</p>
               </div>
             ) : (
-              <LectureList
-                lectures={module.lectures}
-                // onDeleteLecture={(lectureId) =>
-                //   onDeleteLecture(module.id, lectureId)
-                // }
-                // onUpdateLecture={(lectureId, updatedData) =>
-                //   onUpdateLecture(module.id, lectureId, updatedData)
-                // }
-              />
+              <LectureList lectures={module.lectures} moduleId={module.id} />
             )}
           </div>
         )}

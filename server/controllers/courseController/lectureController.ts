@@ -345,3 +345,73 @@ export async function deleteLacture(
     )
   }
 }
+
+/*
+Performance: Since this only happens for the lessons inside one module (usually a small number like 5–20), the database operation is extremely fast and won't cause any lag.
+*/
+
+// Reorder lectures within a module
+export async function reorderLectures(
+  req: Request<{ moduleId: string }, {}, { lectureIds: string[] }>,
+  res: Response,
+  next: NextFunction,
+) {
+  const { moduleId } = req.params
+  const { lectureIds } = req.body
+
+  if (!moduleId) {
+    return next(new AppError('Module ID is required', 400))
+  }
+
+  if (!lectureIds || !Array.isArray(lectureIds) || lectureIds.length === 0) {
+    return next(new AppError('Lecture IDs array is required', 400))
+  }
+
+  const user = req.user
+  if (!user?.roles.includes('instructor')) {
+    return next(new AppError('User not found, please login', 404))
+  }
+
+  try {
+    // Find the module and verify the instructor
+    const module = await prisma.module.findUnique({
+      where: { id: moduleId },
+      include: { course: true },
+    })
+
+    if (!module) {
+      return next(new AppError('Module not found', 404))
+    }
+
+    if (module.course.instructorId.toString() !== user.id.toString()) {
+      return next(
+        new AppError(
+          'You are not authorized to reorder lectures in this module',
+          403,
+        ),
+      )
+    }
+
+    // Update each lecture's order using a transaction
+    await prisma.$transaction(
+      lectureIds.map((lectureId, index) =>
+        prisma.lecture.update({
+          where: { id: lectureId },
+          data: { order: index + 1 },
+        }),
+      ),
+    )
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'Lectures reordered successfully',
+    })
+  } catch (error) {
+    return next(
+      new AppError(
+        `Internal server error while reordering lectures: ${error.message}`,
+        500,
+      ),
+    )
+  }
+}

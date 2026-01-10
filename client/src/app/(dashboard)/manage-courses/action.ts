@@ -464,3 +464,45 @@ export async function updateLecture(
     return { status: "error", message: "Something went wrong" };
   }
 }
+
+// Reorder lectures within a module
+export async function reorderLectures(
+  moduleId: string,
+  lectureIds: string[]
+): Promise<ServerActionResponse> {
+  try {
+    const cookieHeader = await getCookies();
+
+    const response = await fetch(
+      `${apiRoutes.lectures.reorderLectures}/${moduleId}`,
+      {
+        method: "PATCH",
+        headers: {
+          Cookie: cookieHeader,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ lectureIds }),
+        credentials: "include",
+      }
+    );
+
+    if (!response.ok) {
+      let errorMessage = "Failed to reorder lectures";
+      try {
+        const errorData = await response.json();
+        if (errorData.message) errorMessage = errorData.message;
+      } catch {
+        // ignore JSON parse error
+      }
+      return { status: "error", message: errorMessage };
+    }
+
+    revalidatePath("/manage-courses");
+    return {
+      status: "success",
+      message: "Lectures reordered successfully",
+    };
+  } catch {
+    return { status: "error", message: "Something went wrong" };
+  }
+}

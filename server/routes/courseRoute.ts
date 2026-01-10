@@ -22,6 +22,7 @@ import {
   updateLecture,
   getAllLectures,
   deleteAllLectures,
+  reorderLectures,
 } from '../controllers/courseController/lectureController.ts'
 // import { askQuestion } from '../controllers/courseController/questionController.ts'
 import upload from '../utils/multer.ts'
@@ -94,6 +95,9 @@ courseRouter.route('/deletelacture/:lactureId').delete(session, deleteLacture)
 
 // Delete all lectures (use with caution)
 courseRouter.route('/deletelectures').delete(session, deleteAllLectures)
+
+// Reorder lectures within a module
+courseRouter.route('/reorderlectures/:moduleId').patch(session, reorderLectures)
 
 // ==========================================
 // Question Routes (Commented Out)

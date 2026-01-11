@@ -252,3 +252,65 @@ export async function deleteModule(
     )
   }
 }
+
+export async function reordermodules(
+  req: Request<{ courseId: string }, {}, { modulesIds: string[] }>,
+  res: Response,
+  next: NextFunction,
+) {
+  //1 get the course id
+  const { courseId } = req.params
+  if (!courseId) {
+    return next(new AppError('course id is required', 400))
+  }
+
+  try {
+    //2 get the course
+    const course = await prisma.course.findUnique({
+      where: { id: courseId },
+      include: { modules: true },
+    })
+    if (!course) {
+      return next(new AppError('course not found', 404))
+    }
+
+    //3 get the modules order
+    const { modulesIds } = req.body
+    if (!modulesIds) {
+      return next(new AppError('modules ids are required', 400))
+    }
+
+    //4 check if the modules ids are valid
+    const modules = await prisma.module.findMany({
+      where: { id: { in: modulesIds } },
+    })
+    if (modules.length !== modulesIds.length) {
+      return next(new AppError('some modules ids are invalid', 400))
+    }
+
+    //5 reorder the modules
+    await prisma.$transaction(
+      modulesIds.map((moduleId, index) => {
+        return prisma.module.update({
+          where: { id: moduleId },
+          data: { order: index + 1 },
+        })
+      }),
+    )
+
+    return res.status(200).json({
+      status: 'success',
+      data: {
+        modules,
+      },
+      message: 'modules reordered successfully',
+    })
+  } catch (error) {
+    return next(
+      new AppError(
+        `internal server error while reordering modules : ${error.message}`,
+        500,
+      ),
+    )
+  }
+}

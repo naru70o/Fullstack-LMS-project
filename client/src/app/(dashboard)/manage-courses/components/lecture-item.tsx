@@ -47,7 +47,7 @@ export default function LectureItem({ lecture }: LectureItemProps) {
           <button
             {...attributes}
             {...listeners}
-            className="rounded p-1.5 hover:bg-muted cursor-grab active:cursor-grabbing flex-shrink-0 mt-0.5 touch-none"
+            className="rounded p-1.5 hover:bg-muted cursor-grab active:cursor-grabbing flex-shrink-0 mt-0.5 touch-none" // touch-none (CSS touch-action: none) prevents the browser from handling touch gestures like scrolling, which is necessary for drag-and-drop to work correctly on touch devices.
             aria-label="Drag to reorder"
           >
             <GripVertical className="h-5 w-5 text-muted-foreground" />

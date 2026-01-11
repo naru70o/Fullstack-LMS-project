@@ -28,6 +28,7 @@ export const apiRoutes = {
     createModule: `${API_BASE_URL}/course/newmodule`,
     updateModule: `${API_BASE_URL}/course/updatemodule`,
     deleteModule: `${API_BASE_URL}/course/deleteModule`,
+    reorderModules: `${API_BASE_URL}/course/reordermodules`,
   },
   lectures: {
     createLecture: `${API_BASE_URL}/course/newlecture`,

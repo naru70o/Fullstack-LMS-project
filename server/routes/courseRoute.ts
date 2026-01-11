@@ -15,6 +15,7 @@ import {
   deleteModule,
   updateModule,
   getAllModules,
+  reordermodules,
 } from '../controllers/courseController/moduleController.ts'
 import {
   createNewLecture,
@@ -72,6 +73,9 @@ courseRouter.route('/updatemodule/:moduleId').patch(session, updateModule)
 
 // Delete a module by its ID
 courseRouter.route('/deleteModule/:moduleId').delete(session, deleteModule)
+
+// Reorder modules
+courseRouter.route('/reordermodules/:courseId').patch(session, reordermodules)
 
 // ==========================================
 // Lecture Routes

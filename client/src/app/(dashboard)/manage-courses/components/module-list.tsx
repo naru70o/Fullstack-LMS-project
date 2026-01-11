@@ -63,8 +63,10 @@ const ModuleList = ({ modules }: ModuleListProps) => {
     const mappedModulesIds = newItems.map((item) => item.id);
     const courseId = newItems[0].courseId;
 
+    toast.loading("Reordering modules...");
     startTransition(async () => {
       const result = await reorderModules(courseId, mappedModulesIds);
+      toast.dismiss();
       if (result.status === "success") {
         toast.success("Modules reordered successfully");
       } else {

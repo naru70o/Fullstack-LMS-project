@@ -1,5 +1,4 @@
 import prisma from '@/lib/prisma.ts'
-import AppError from '@/utils/error.ts'
 import type { User } from '@/utils/types.ts'
 import type { NextFunction, Request, Response } from 'express'
 
@@ -70,20 +69,5 @@ export async function registerInstructor(
       status: 'error',
       message: 'Internal server error',
     })
-  }
-}
-
-// test: getting the all instructors
-// will be removed later
-export async function getAllInstructors(_req, res, next) {
-  try {
-    const instructors = await prisma.instructor.findMany()
-    console.warn('do not forget to remove this route')
-    return res.status(200).json({
-      status: 'success',
-      data: instructors,
-    })
-  } catch (error) {
-    return next(new AppError('Something went wrong', 500))
   }
 }

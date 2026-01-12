@@ -17,10 +17,9 @@ import userRouter from './routes/userRoutes.ts'
 import courseRouter from './routes/courseRoute.ts'
 import { auth } from './lib/auth.ts'
 import InstructorRouter from './routes/instructorRoute.ts'
+import app from './server.ts'
 // import AppError from "./utils/error.ts";
 dotenv.config()
-
-const app = express()
 
 app.use(cookieParser())
 app.use(
@@ -70,11 +69,7 @@ app.use(express.urlencoded({ extended: true, limit: '10kb' }))
 // })
 
 // logger
-app.use(
-  morgan('dev', (req, res) => {
-    console.log(`${req} / ${res}`)
-  }),
-)
+app.use(morgan('dev'))
 
 // ROUTES
 app.use('/api/v1/auth', authRouter)

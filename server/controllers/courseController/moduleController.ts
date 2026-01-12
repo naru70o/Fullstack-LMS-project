@@ -14,7 +14,7 @@ declare module 'express' {
 export async function getAllModules(
   _req: Request,
   res: Response,
-  _next: NextFunction,
+  next: NextFunction,
 ) {
   try {
     const modules = await prisma.module.findMany({
@@ -36,10 +36,12 @@ export async function getAllModules(
       },
     })
   } catch (error) {
-    return res.status(500).json({
-      message: 'Internal server error',
-      status: 'error',
-    })
+    return next(
+      new AppError(
+        `internal server error: ${error instanceof Error ? error.message : 'unknown error'}`,
+        500,
+      ),
+    )
   }
 }
 
@@ -103,7 +105,9 @@ export async function updateModule(
   } catch (error) {
     return next(
       new AppError(
-        `Internal server error while updating module: ${error.message}`,
+        `Internal server error while updating module: ${
+          error instanceof Error ? error.message : 'unknown error'
+        }`,
         500,
       ),
     )
@@ -159,10 +163,14 @@ export async function createNewModule(
       message: 'module created successfully',
     })
   } catch (error) {
-    return res.status(500).json({
-      message: 'Internal server error',
-      status: 'error',
-    })
+    return next(
+      new AppError(
+        `internal server error while creating module : ${
+          error instanceof Error ? error.message : 'unknown error'
+        }`,
+        500,
+      ),
+    )
   }
 }
 
@@ -246,7 +254,9 @@ export async function deleteModule(
   } catch (error) {
     return next(
       new AppError(
-        `internal server error while deleting module : ${error.message}`,
+        `internal server error while deleting module : ${
+          error instanceof Error ? error.message : 'unknown error'
+        }`,
         500,
       ),
     )
@@ -308,7 +318,9 @@ export async function reordermodules(
   } catch (error) {
     return next(
       new AppError(
-        `internal server error while reordering modules : ${error.message}`,
+        `internal server error while reordering modules : ${
+          error instanceof Error ? error.message : 'unknown error'
+        }`,
         500,
       ),
     )

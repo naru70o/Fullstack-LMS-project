@@ -74,7 +74,6 @@ export default function LectureList({ lectures, moduleId }: LectureListProps) {
     toast.loading("Reordering lectures...");
     startTransition(async () => {
       const result = await reorderLectures(moduleId, lectureIds);
-      console.log(lectureIds);
       toast.dismiss();
       if (result.status === "error") {
         // Revert on error

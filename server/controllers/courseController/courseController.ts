@@ -34,7 +34,7 @@ export async function getAllCourses(
   } catch (error) {
     return next(
       new AppError(
-        `internal server error while fetching courses ${error.message}`,
+        `internal server error while fetching courses ${error instanceof Error ? error.message : 'unknown error'}`,
         500,
       ),
     )
@@ -68,7 +68,7 @@ export async function getYourCourses(
   } catch (error) {
     return next(
       new AppError(
-        `internal server error while fetching your courses ${error.message}`,
+        `internal server error while fetching your courses ${error instanceof Error ? error.message : 'unknown error'}`,
         500,
       ),
     )
@@ -116,7 +116,7 @@ export async function getYourCourse(
   } catch (error) {
     return next(
       new AppError(
-        `internal server error while fetching your course ${error.message}`,
+        `internal server error while fetching your course ${error instanceof Error ? error.message : 'unknown error'}`,
         500,
       ),
     )
@@ -308,7 +308,7 @@ export async function deleteCourse(
     if (error instanceof AppError) {
       return next(
         new AppError(
-          `internal server error while deleting course : ${error.message}`,
+          `internal server error while deleting course : ${error instanceof Error ? error.message : 'unknown error'}`,
           500,
         ),
       )

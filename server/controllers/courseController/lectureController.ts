@@ -28,7 +28,12 @@ export async function getAllLectures(
       },
     })
   } catch (error) {
-    return next(new AppError('internal server error', 500))
+    return next(
+      new AppError(
+        `internal server error: ${error instanceof Error ? error.message : 'unknown error'}`,
+        500,
+      ),
+    )
   }
 }
 
@@ -135,7 +140,9 @@ export async function createNewLecture(
   } catch (error) {
     return next(
       new AppError(
-        `internal server error while creating lecture : ${error.message}`,
+        `internal server error while creating lecture : ${
+          error instanceof Error ? error.message : 'unknown error'
+        }`,
         500,
       ),
     )
@@ -248,7 +255,9 @@ export async function updateLecture(
   } catch (error) {
     return next(
       new AppError(
-        `Internal server error while updating lecture: ${error.message}`,
+        `Internal server error while updating lecture: ${
+          error instanceof Error ? error.message : 'unknown error'
+        }`,
         500,
       ),
     )
@@ -268,7 +277,12 @@ export async function deleteAllLectures(
       status: 'success',
     })
   } catch (error) {
-    return next(new AppError('internal server error', 500))
+    return next(
+      new AppError(
+        `internal server error: ${error instanceof Error ? error.message : 'unknown error'}`,
+        500,
+      ),
+    )
   }
 }
 
@@ -339,7 +353,9 @@ export async function deleteLacture(
   } catch (error) {
     return next(
       new AppError(
-        `internal server error while deleting lecture : ${error.message}`,
+        `internal server error while deleting lecture : ${
+          error instanceof Error ? error.message : 'unknown error'
+        }`,
         500,
       ),
     )
@@ -409,7 +425,9 @@ export async function reorderLectures(
   } catch (error) {
     return next(
       new AppError(
-        `Internal server error while reordering lectures: ${error.message}`,
+        `Internal server error while reordering lectures: ${
+          error instanceof Error ? error.message : 'unknown error'
+        }`,
         500,
       ),
     )

@@ -12,7 +12,10 @@ export async function deleteLectureVideo({ publicId }: { publicId?: string }) {
     await deleteVideo(publicId)
     return { status: 'success', message: 'lecture video deleted successfully' }
   } catch (error) {
-    throw new AppError(`Failed to delete lecture video: ${error.message}`, 500)
+    throw new AppError(
+      `Failed to delete lecture video: ${error instanceof Error ? error.message : 'unknown error'}`,
+      500,
+    )
   }
 }
 
@@ -30,6 +33,9 @@ export async function deleteMultipleLectureVideos({
     await deleteMultipleVideos(publicIds)
     return { status: 'success', message: 'lecture videos deleted successfully' }
   } catch (error) {
-    throw new AppError(`Failed to delete lecture videos: ${error.message}`, 500)
+    throw new AppError(
+      `Failed to delete lecture videos: ${error instanceof Error ? error.message : 'unknown error'}`,
+      500,
+    )
   }
 }

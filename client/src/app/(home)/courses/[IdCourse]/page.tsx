@@ -39,8 +39,8 @@ const Page = async ({
   // this is hard coded now and every course will have a preview lecture
   const previewLecture = course?.modules?.flatMap((m: Module) => m.lectures); // merge all lectures into one array
 
+  // idk if setting the secureUrl to the query is a good idea but it works for now i'm gonna learn more about the correct way of doing this so i can make it better.
   const videoUrl = previewLecture?.[0]?.secureUrl || "";
-
   return (
     <>
       <Banner />
@@ -51,9 +51,12 @@ const Page = async ({
           {/* course */}
           <div className="grid-cols-1 md:col-span-2 flex flex-col justify-start">
             {/* course Video */}
-            <VideoPlayerComponent video={vedio || videoUrl} />
+            <VideoPlayerComponent
+              video={vedio !== "" ? vedio : videoUrl}
+              videoUrl={videoUrl}
+            />
 
-            {/* price card for mobiles*/}
+            {/* price card for mobiles */}
             <div className="block md:hidden py-2">
               <PricingCard course={course} />
             </div>

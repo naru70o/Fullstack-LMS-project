@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ICourse } from "@/components/util/interfaces";
 
 /*
- the rating functionality and also the pricing will be implemented in the future
+ the rating functionality be implemented in the future
 */
 
 function Card({ courses }: { courses: ICourse[] }) {

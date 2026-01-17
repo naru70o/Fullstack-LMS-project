@@ -11,10 +11,17 @@ import {
   VideoPlayerTimeRange,
   VideoPlayerVolumeRange,
 } from "@/components/components/ui/kibo-ui/video-player/index";
-const VideoPlayerComponent = ({ video }: { video: string | undefined }) => {
-  // preventing hydration mismatch
+const VideoPlayerComponent = ({
+  video,
+  videoUrl,
+}: {
+  video: string | undefined;
+  videoUrl: string;
+}) => {
+  if (videoUrl !== undefined) {
+    video = videoUrl;
+  }
   if (!window) return null;
-  console.log(window);
   return (
     <VideoPlayer className="overflow-hidden rounded-lg border mb-4">
       <VideoPlayerContent

@@ -149,9 +149,23 @@ export async function getCourse(
     if (!course) {
       return next(new AppError('no course found with this id', 404))
     }
+
+    let isEnrolled = false
+    if (req.user) {
+      const enrollment = await prisma.enrolledCourse.findFirst({
+        where: {
+          userId: req.user.id,
+          courseId: course.id,
+        },
+      })
+      if (enrollment) {
+        isEnrolled = true
+      }
+    }
+
     res.status(200).json({
       message: 'here is your course',
-      data: course,
+      data: { ...course, isEnrolled },
     })
   } catch (error: unknown) {
     if (error instanceof AppError) {
@@ -420,6 +434,66 @@ export async function updateCourse(
     return next(
       new AppError(
         `internal server error while updating course : ${error instanceof Error ? error.message : 'unknown error'}`,
+        500,
+      ),
+    )
+  }
+}
+
+// enroll course
+export async function enrollCourse(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  //1 getting the params
+  const { courseId } = req.params
+  if (!courseId) {
+    return next(new AppError('course id is required', 400))
+  }
+
+  try {
+    //2 check if the user exist
+    const user = req.user
+    if (!user) {
+      return next(new AppError('user not found', 404))
+    }
+    //3 get the course
+    const course = await prisma.course.findUnique({
+      where: { id: courseId },
+    })
+    if (!course) {
+      return next(new AppError('course not found', 404))
+    }
+
+    // 4 checking if the user is already enrolled in the course
+    const isEnrolled = await prisma.enrolledCourse.findFirst({
+      where: {
+        userId: user.id,
+        courseId: course.id,
+      },
+    })
+    if (isEnrolled) {
+      return next(new AppError('you are already enrolled in this course', 400))
+    }
+
+    // 5 enroll the course
+    const enrolledCourse = await prisma.enrolledCourse.create({
+      data: {
+        userId: user.id,
+        courseId: course.id,
+      },
+    })
+
+    return res.status(200).json({
+      status: 'success',
+      data: { course: enrolledCourse },
+      message: 'course enrolled successfully',
+    })
+  } catch (error) {
+    return next(
+      new AppError(
+        `internal server error while enrolling course : ${error instanceof Error ? error.message : 'unknown error'}`,
         500,
       ),
     )

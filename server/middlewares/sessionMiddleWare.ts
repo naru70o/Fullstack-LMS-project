@@ -28,3 +28,22 @@ export async function session(
     return next(new AppError('Internal Server Error', 500))
   }
 }
+
+export async function optionalSession(
+  req: Request,
+  _res: Response,
+  next: NextFunction,
+) {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    })
+    if (session) {
+      req.user = session.user
+    }
+    next()
+  } catch (error) {
+    // If getting session fails, just continue as guest
+    next()
+  }
+}

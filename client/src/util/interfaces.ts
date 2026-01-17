@@ -44,6 +44,7 @@ export interface ICourse {
   updatedAt: string;
   instructor: IInstructor;
   modules?: Module[];
+  isEnrolled?: boolean;
 }
 
 export interface Lecture {

@@ -1,6 +1,6 @@
 import express from 'express'
 import type { Router } from 'express'
-import { session } from '../middlewares/sessionMiddleWare.ts'
+import { session, optionalSession } from '../middlewares/sessionMiddleWare.ts'
 import {
   getAllCourses,
   deleteCourse,
@@ -9,6 +9,7 @@ import {
   getCourse,
   getYourCourses,
   getYourCourse,
+  enrollCourse,
 } from '../controllers/courseController/courseController.ts'
 import {
   createNewModule,
@@ -40,10 +41,13 @@ courseRouter.route('/').get(getAllCourses)
 courseRouter.route('/yourcourses').get(session, getYourCourses)
 
 // Get a specific course by its ID
-courseRouter.route('/:courseId').get(getCourse)
+courseRouter.route('/:courseId').get(optionalSession, getCourse)
 
 // Get a specific course created by the instructor
 courseRouter.route('/yourcourse/:courseId').get(session, getYourCourse)
+
+// enroll in a course
+courseRouter.route('/enroll/:courseId').post(session, enrollCourse)
 
 // Create a new course (requires thumbnail upload)
 courseRouter

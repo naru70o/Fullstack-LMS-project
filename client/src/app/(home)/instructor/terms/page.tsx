@@ -1,18 +1,12 @@
 import { ScrollArea } from "@/components/components/ui/scroll-area";
 import { FileText } from "lucide-react";
 import TermsButtons from "../_components/terms-buttons";
-import { Navigation } from "@/components/components/navigation";
-import MobileNavigation from "@/components/components/mobileNavigation";
-import Footer from "@/components/components/footer";
 
-export default function TermsOfServicePage() {
+export default async function TermsOfServicePage() {
   // primary color
   const primaryColor = "#FB7A79";
   return (
     <>
-      {/* Navigation -- the session will be added later */}
-      <Navigation />
-      <MobileNavigation />
       <div className="min-h-screen bg-background text-foreground flex items-center justify-center p-4">
         <div className="w-full max-w-4xl">
           <div className="text-center mb-8">
@@ -154,7 +148,6 @@ export default function TermsOfServicePage() {
           </p>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

@@ -8,7 +8,7 @@ export interface UserSession {
   image: string;
   createdAt: string;
   updatedAt: string;
-  roles: Record<Role, string>;
+  roles: Role[];
 }
 
 export interface IInstructor {

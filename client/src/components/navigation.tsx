@@ -28,7 +28,7 @@ export const Navigation = ({
           <Link href="#">
             <LogoNav />
           </Link>
-          <Browse />
+          <Browse userSession={userSession} />
         </div>
         {userSession ? (
           <div className="flex items-center gap-5">

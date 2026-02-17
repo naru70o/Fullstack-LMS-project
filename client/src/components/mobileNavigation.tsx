@@ -1,16 +1,18 @@
 "use client";
 
-import { Search, Menu, Heart, X } from "lucide-react";
+import { Search, Menu, X } from "lucide-react";
 import Link from "next/link";
-import React, { use, useEffect } from "react";
+import React, { useEffect } from "react";
 import NavLogo from "@/components/../public/assets/logoNav.svg";
 import Cart from "@/components/../public/assets/Cart.svg";
 import Image from "next/image";
-import { get } from "http";
 import { getUserSession } from "../actions/authentication";
+import { UserSession } from "../util/interfaces";
 export default function MobileNavigation() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const [userSession, setUserSession] = React.useState<any>(null);
+  const [userSession, setUserSession] = React.useState<UserSession | null>(
+    null,
+  );
 
   useEffect(() => {
     const fetchSession = async () => {

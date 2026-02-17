@@ -6,13 +6,16 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from "./ui/navigation-menu";
 import Link from "next/link";
-import LogoNav from "@/components/../public/assets/logoNav.svg";
 import Image from "next/image";
+import { UserSession } from "../util/interfaces";
 
-export default function Browse() {
+export default function Browse({
+  userSession,
+}: {
+  userSession: UserSession | null;
+}) {
   return (
     <NavigationMenu viewport={false}>
       <NavigationMenuList>
@@ -24,7 +27,7 @@ export default function Browse() {
             <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
               <li className="row-span-3">
                 <NavigationMenuLink asChild>
-                  <a
+                  <Link
                     className="from-muted/50 to-muted flex h-full w-full flex-col justify-end rounded-md bg-linear-to-b p-6 no-underline outline-hidden select-none focus:shadow-md"
                     href="/"
                   >
@@ -40,15 +43,17 @@ export default function Browse() {
                     <p className="text-muted-foreground text-sm leading-tight">
                       Elearning platform for students and professionals.
                     </p>
-                  </a>
+                  </Link>
                 </NavigationMenuLink>
               </li>
               <ListItem href="/how-things-work" title="How Things Work">
                 Understand the structure and features
               </ListItem>
-              <ListItem href="/instructor/terms" title="Be an Instructor">
-                Information on becoming a teacher
-              </ListItem>
+              {!userSession?.roles?.includes("instructor") && (
+                <ListItem href="/instructor/terms" title="Be an Instructor">
+                  Information on becoming a teacher
+                </ListItem>
+              )}
               <ListItem href="/learning-paths" title="Learning Paths">
                 Structured collections of courses
               </ListItem>

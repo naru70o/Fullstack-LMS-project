@@ -1,14 +1,14 @@
 "use client";
 
-import { Badge } from "@/components/components/ui/badge";
-import { Button } from "@/components/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/components/ui/card";
+} from "@/components/ui/card";
 import { useRegisterInstructorContext } from "../_components/registerInstructorContext";
 import { submitForm } from "./action";
 import { InstructorData } from "../zodTypes";
@@ -26,7 +26,7 @@ export default function ReviewPage() {
     // Handle final submission
     //1 submit the data
     const { success, message, redirect } = await submitForm(
-      registerFormData as InstructorData
+      registerFormData as InstructorData,
     );
     if (success === false && message) {
       toast.error(message);

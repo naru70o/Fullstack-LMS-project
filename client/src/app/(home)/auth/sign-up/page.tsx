@@ -1,8 +1,8 @@
 "use client";
-import { signupAction } from "@/components/actions/authentication";
-import MobileNavigation from "@/components/components/mobileNavigation";
-import { Button } from "@/components/components/ui/button";
-import { Input } from "@/components/components/ui/input";
+import { signupAction } from "@/actions/authentication";
+import MobileNavigation from "@/components/mobileNavigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

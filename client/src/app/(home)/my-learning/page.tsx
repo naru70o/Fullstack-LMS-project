@@ -1,6 +1,6 @@
-import { NavigationFixed } from "@/components/components/navigation";
+import { NavigationFixed } from "@/components/navigation";
 import { Card } from "./_components/card";
-import Footer from "@/components/components/footer";
+import Footer from "@/components/footer";
 import Tabs from "./_components/tabs";
 
 const Page = () => {

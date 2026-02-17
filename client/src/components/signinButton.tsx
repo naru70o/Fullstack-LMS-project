@@ -9,12 +9,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/components/ui/dialog";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
-import { signinAction } from "../actions/authentication";
+import { signinAction } from "@/actions/authentication";
 import toast from "react-hot-toast";
 export const SigninButton = () => {
   const [state, formAction, pending] = useActionState(signinAction, null);

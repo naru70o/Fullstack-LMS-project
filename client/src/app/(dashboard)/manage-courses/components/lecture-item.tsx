@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Card } from "@/components/components/ui/card";
-import { Button } from "@/components/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Trash2, Edit2, Play, GripVertical } from "lucide-react";
 import EditLectureDialog from "./edit-lecture-dialog";
-import durationFormatterString from "@/components/util/durationFormatter";
+import durationFormatterString from "@/util/durationFormatter";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 

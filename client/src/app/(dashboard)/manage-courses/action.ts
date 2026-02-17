@@ -1,11 +1,11 @@
 "use server";
 
-import { categories, levels } from "@/components/lib/utils";
+import { categories, levels } from "@/lib/utils";
 import z from "zod";
 import { formatZodErrors } from "../../(home)/instructor/zodTypes";
-import { apiRoutes } from "@/components/lib/apiRoutes";
+import { apiRoutes } from "@/lib/apiRoutes";
 import { cookies } from "next/headers";
-import { getCookies } from "@/components/lib/helpers";
+import { getCookies } from "@/lib/helpers";
 import { revalidatePath } from "next/cache";
 
 type ServerActionResponse =
@@ -41,7 +41,7 @@ const validateCourseData = z.object({
 
 export async function createCourse(
   prev: unknown,
-  formdata: FormData
+  formdata: FormData,
 ): Promise<ServerActionResponse> {
   try {
     const data: CreateCourseData = {
@@ -102,7 +102,7 @@ export async function createCourse(
 
 export async function updateCourse(
   prev: unknown,
-  formdata: FormData
+  formdata: FormData,
 ): Promise<ServerActionResponse> {
   try {
     const data: CreateCourseData = {
@@ -153,7 +153,7 @@ export async function updateCourse(
         headers: { Cookie: cookieHeader },
         body: bodyForm,
         credentials: "include",
-      }
+      },
     );
 
     if (!updatedCourse.ok) {
@@ -175,7 +175,7 @@ const validateModuleData = z.object({
 
 export async function createModule(
   prev: unknown,
-  formdata: FormData
+  formdata: FormData,
 ): Promise<ServerActionResponse> {
   try {
     const data = {
@@ -204,7 +204,7 @@ export async function createModule(
         headers: { Cookie: cookieHeader, "Content-Type": "application/json" },
         body: JSON.stringify(data),
         credentials: "include",
-      }
+      },
     );
     if (!newModule.ok) {
       return { status: "error", message: "Failed to create module" };
@@ -218,7 +218,7 @@ export async function createModule(
 
 export async function updateModule(
   prev: unknown,
-  formdata: FormData
+  formdata: FormData,
 ): Promise<ServerActionResponse> {
   try {
     const data = {
@@ -247,7 +247,7 @@ export async function updateModule(
         headers: { Cookie: cookieHeader, "Content-Type": "application/json" },
         body: JSON.stringify(data),
         credentials: "include",
-      }
+      },
     );
 
     if (!updatedModule.ok) {
@@ -264,7 +264,7 @@ export async function updateModule(
 
 export async function deleteModule(
   prev: unknown,
-  formdata: FormData
+  formdata: FormData,
 ): Promise<ServerActionResponse> {
   try {
     const moduleId = formdata.get("moduleId") as string;
@@ -275,7 +275,7 @@ export async function deleteModule(
         method: "DELETE",
         headers: { Cookie: cookieHeader },
         credentials: "include",
-      }
+      },
     );
 
     if (!deletedModule.ok) {
@@ -292,7 +292,7 @@ export async function deleteModule(
 
 export async function deleteCourse(
   prev: unknown,
-  formdata: FormData
+  formdata: FormData,
 ): Promise<ServerActionResponse> {
   try {
     const courseId = formdata.get("courseId") as string;
@@ -303,7 +303,7 @@ export async function deleteCourse(
         method: "DELETE",
         headers: { Cookie: cookieHeader },
         credentials: "include",
-      }
+      },
     );
 
     if (!deletedCourse.ok) {
@@ -329,7 +329,7 @@ const validateLectureData = z.object({
 
 export async function createLecture(
   prev: unknown,
-  formdata: FormData
+  formdata: FormData,
 ): Promise<ServerActionResponse> {
   try {
     const data = {
@@ -373,7 +373,7 @@ export async function createLecture(
         headers: { Cookie: cookieHeader }, // Do NOT set Content-Type for FormData, browser/fetch sets it with boundary
         body: bodyForm,
         credentials: "include",
-      }
+      },
     );
 
     if (!newLecture.ok) {
@@ -403,7 +403,7 @@ const validateUpdateLectureData = z.object({
 
 export async function updateLecture(
   prev: unknown,
-  formdata: FormData
+  formdata: FormData,
 ): Promise<ServerActionResponse> {
   try {
     const data = {
@@ -442,7 +442,7 @@ export async function updateLecture(
         headers: { Cookie: cookieHeader },
         body: bodyForm,
         credentials: "include",
-      }
+      },
     );
 
     if (!updatedLecture.ok) {
@@ -468,7 +468,7 @@ export async function updateLecture(
 // Reorder lectures within a module
 export async function reorderLectures(
   moduleId: string,
-  lectureIds: string[]
+  lectureIds: string[],
 ): Promise<ServerActionResponse> {
   try {
     const cookieHeader = await getCookies();
@@ -483,7 +483,7 @@ export async function reorderLectures(
         },
         body: JSON.stringify({ lectureIds }),
         credentials: "include",
-      }
+      },
     );
 
     if (!response.ok) {
@@ -510,7 +510,7 @@ export async function reorderLectures(
 // Reorder modules within a course
 export async function reorderModules(
   courseId: string,
-  modulesIds: string[]
+  modulesIds: string[],
 ): Promise<ServerActionResponse> {
   try {
     const cookieHeader = await getCookies();
@@ -525,7 +525,7 @@ export async function reorderModules(
         },
         body: JSON.stringify({ modulesIds: modulesIds }),
         credentials: "include",
-      }
+      },
     );
 
     if (!response.ok) {

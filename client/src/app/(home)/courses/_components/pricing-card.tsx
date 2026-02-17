@@ -7,10 +7,10 @@ import {
   NotebookPen,
   Loader2,
 } from "lucide-react";
-import { Button } from "@/components/components/ui/button";
-import { ICourse } from "@/components/util/interfaces";
-import durationFormatterString from "@/components/util/durationFormatter";
-import { enrollCourseAction } from "@/components/actions/course";
+import { Button } from "@/components/ui/button";
+import { ICourse } from "@/util/interfaces";
+import durationFormatterString from "@/util/durationFormatter";
+import { enrollCourseAction } from "@/actions/course";
 import { useTransition } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";

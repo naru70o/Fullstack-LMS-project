@@ -4,7 +4,7 @@ import Link from "next/link";
 import { AddStepRoutes } from "../types";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { Button } from "@/components/components/ui/button";
+import { Button } from "@/components/ui/button";
 
 const steps = [
   {
@@ -58,7 +58,7 @@ export default function StepNavigation() {
                     currentPath === step.route,
                   "border-3 border-primary bg-foreground group-hover:border-2-white group-hover:text-background/70 text-background/75":
                     currentPath !== step.route,
-                }
+                },
               )}
             >
               {i + 1}
@@ -69,7 +69,7 @@ export default function StepNavigation() {
                 {
                   "font-light": currentPath !== step.route,
                   "font-semibold text-white": currentPath === step.route,
-                }
+                },
               )}
             >
               {step.title}

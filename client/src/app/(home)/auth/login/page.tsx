@@ -1,15 +1,15 @@
 "use client";
-import { signinAction } from "@/components/actions/authentication";
-import MobileNavigation from "@/components/components/mobileNavigation";
-import { Button } from "@/components/components/ui/button";
-import { Input } from "@/components/components/ui/input";
+import { signinAction } from "@/actions/authentication";
+import MobileNavigation from "@/components/mobileNavigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 
-export default function page() {
+export default function Page() {
   const [state, formAction, pending] = useActionState(signinAction, null);
   const router = useRouter();
 
@@ -29,7 +29,7 @@ export default function page() {
         toast.error(state.message);
       }
     }
-  }, [state]);
+  }, [state, router]);
 
   return (
     <>

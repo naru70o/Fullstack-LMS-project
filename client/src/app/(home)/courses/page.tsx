@@ -1,11 +1,11 @@
-import { Feed } from "@/components/app/(home)/courses/_components/feed";
-import { Filtering } from "@/components/app/(home)/courses/_components/filtering";
-import { Banner } from "@/components/components/banner";
-import Footer from "@/components/components/footer";
-import { Hero } from "@/components/components/hero";
-import MobileHero from "@/components/components/mobile-hero";
-import MobileNavigation from "@/components/components/mobileNavigation";
-import { apiRoutes } from "@/components/lib/apiRoutes";
+import { Feed } from "@/app/(home)/courses/_components/feed";
+import { Filtering } from "@/app/(home)/courses/_components/filtering";
+import { Banner } from "@/components/banner";
+import Footer from "@/components/footer";
+import { Hero } from "@/components/hero";
+import MobileHero from "@/components/mobile-hero";
+import MobileNavigation from "@/components/mobileNavigation";
+import { apiRoutes } from "@/lib/apiRoutes";
 import { cookies } from "next/dist/server/request/cookies";
 
 const Page = async function () {

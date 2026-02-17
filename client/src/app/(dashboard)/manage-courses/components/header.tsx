@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/components/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import React, { useState } from "react";
 import CreateCourseDialog from "./createCourse";

@@ -1,5 +1,5 @@
 "use server";
-import { apiRoutes } from "@/components/lib/apiRoutes";
+import { apiRoutes } from "@/lib/apiRoutes";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 

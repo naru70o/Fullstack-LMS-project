@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
-import { Button } from "@/components/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Edit, Zap } from "lucide-react";
 import EditCourseDialog from "./edit-course-dialog";
-import { ICourse } from "@/components/util/interfaces";
+import { ICourse } from "@/util/interfaces";
 
 export default function ActionButtons({ course }: { course: ICourse }) {
   const [openCourseEditModal, setOpenCourseEditModal] = React.useState(false);

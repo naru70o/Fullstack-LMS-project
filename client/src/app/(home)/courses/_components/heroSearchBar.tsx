@@ -8,10 +8,10 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/components/ui/select";
+} from "@/components/ui/select";
 
-import { Button } from "@/components/components/ui/button";
-import { Input } from "@/components/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import Link from "next/link";
 
 interface SelectDemoProps {

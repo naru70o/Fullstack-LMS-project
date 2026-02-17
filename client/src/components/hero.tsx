@@ -1,7 +1,7 @@
 import Image from "next/image";
-import { HeroSearchBar } from "../app/(home)/courses/_components/heroSearchBar";
-import { UserSession } from "../util/interfaces";
-import { Navigation } from "./navigation";
+import { HeroSearchBar } from "@/app/(home)/courses/_components/heroSearchBar";
+import { UserSession } from "@/util/interfaces";
+import { Navigation } from "@/components/navigation";
 export const Hero = ({ userSession }: { userSession: UserSession | null }) => {
   return (
     <section className="hidden h-[85vh] w-screen md:flex flex-col items-center relative bg-[#1B1B1B]/70">

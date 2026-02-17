@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { ChevronDown, ChevronRight, Play } from "lucide-react";
-import { cn } from "@/components/lib/utils";
-import durationFormatterString from "@/components/util/durationFormatter";
+import { cn } from "@/lib/utils";
+import durationFormatterString from "@/util/durationFormatter";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { ICourse, Module, Lecture } from "@/components/util/interfaces";
+import { ICourse, Module, Lecture } from "@/util/interfaces";
 
 const StatusIndicator = ({
   status,
@@ -34,7 +34,7 @@ const StatusIndicator = ({
 
 export default function CourseCurriculum({ course }: { course: ICourse }) {
   const [expandedChapters, setExpandedChapters] = useState<Set<string>>(
-    new Set(["chapter-2"])
+    new Set(["chapter-2"]),
   );
   const searchParam = useSearchParams();
   const router = useRouter();
@@ -64,7 +64,7 @@ export default function CourseCurriculum({ course }: { course: ICourse }) {
         const isExpanded = expandedChapters.has(chapter.id);
         const moduleDuration = chapter.lectures.reduce(
           (total, lecture) => total + lecture.duration,
-          0
+          0,
         );
         return (
           <div

@@ -1,12 +1,12 @@
-import { getUserSession } from "@/components/actions/authentication";
-import MobileNavigation from "@/components/components/mobileNavigation";
-import { NavigationFixed } from "@/components/components/navigation";
-import { Avatar, AvatarImage } from "@/components/components/ui/avatar";
-import { UserSession } from "@/components/util/interfaces";
+import { getUserSession } from "@/actions/authentication";
+import MobileNavigation from "@/components/mobileNavigation";
+import { NavigationFixed } from "@/components/navigation";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { UserSession } from "@/util/interfaces";
 import Tabs from "../my-learning/_components/tabs";
 import ProfileEditor from "./_components/EditProfileImage";
 import Form from "./_components/form";
-import { Skeleton } from "@/components/components/ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default async function page() {
   const userSession: UserSession | null = await getUserSession();

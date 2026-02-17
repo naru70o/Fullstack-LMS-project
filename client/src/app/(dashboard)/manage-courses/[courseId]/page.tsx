@@ -1,5 +1,5 @@
-import { Button } from "@/components/components/ui/button";
-import { getCookies } from "@/components/lib/helpers";
+import { Button } from "@/components/ui/button";
+import { getCookies } from "@/lib/helpers";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import CourseContent from "../components/course-content";
@@ -17,7 +17,7 @@ export default async function page({
     `http://localhost:3000/api/v1/course/yourcourse/${courseId}`,
     {
       headers: { cookie: cookieHeader },
-    }
+    },
   );
   if (!response.ok) {
     throw new Error("Failed to fetch course");

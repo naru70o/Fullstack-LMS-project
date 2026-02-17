@@ -3,8 +3,8 @@
 import { Search, Menu, X } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect } from "react";
-import NavLogo from "@/components/../public/assets/logoNav.svg";
-import Cart from "@/components/../public/assets/Cart.svg";
+import NavLogo from "../../public/assets/logoNav.svg";
+import Cart from "../../public/assets/Cart.svg";
 import Image from "next/image";
 import { getUserSession } from "../actions/authentication";
 import { UserSession } from "../util/interfaces";

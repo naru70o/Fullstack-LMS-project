@@ -1,19 +1,19 @@
 "use client";
-import Cart from "@/components/../public/assets/Cart.svg";
-import LogoNav from "@/components/../public/assets/logoNav.svg";
+import Cart from "../../public/assets/Cart.svg";
+import LogoNav from "../../public/assets/logoNav.svg";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronRight, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { getUserSession } from "../actions/authentication";
-import { UserSession } from "../util/interfaces";
-import Browse from "./browse";
-import { SigninButton } from "./signinButton";
-import { SignupButton } from "./singupButton";
-import { Avatar } from "./ui/avatar";
-import { Input } from "./ui/input";
-import { Skeleton } from "./ui/skeleton";
-import { ThemeToggle } from "./theme-toggle";
+import { getUserSession } from "@/actions/authentication";
+import { UserSession } from "@/util/interfaces";
+import Browse from "@/components/browse";
+import { SigninButton } from "@/components/signinButton";
+import { SignupButton } from "@/components/singupButton";
+import { Avatar } from "@/components/ui/avatar";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export const Navigation = ({
   userSession,

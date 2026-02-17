@@ -1,4 +1,4 @@
-import { ScrollArea } from "@/components/components/ui/scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { FileText } from "lucide-react";
 import TermsButtons from "../_components/terms-buttons";
 

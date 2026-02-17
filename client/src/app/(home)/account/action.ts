@@ -1,7 +1,7 @@
 "use server";
 
-import { apiRoutes } from "@/components/lib/apiRoutes";
-import { getCookies } from "@/components/lib/helpers";
+import { apiRoutes } from "@/lib/apiRoutes";
+import { getCookies } from "@/lib/helpers";
 import { revalidateTag } from "next/cache";
 import z from "zod";
 const validatedUser = z.object({
@@ -11,7 +11,7 @@ const validatedUser = z.object({
 // update user profile
 export const updateProfile = async (
   prev: unknown,
-  formdata: FormData
+  formdata: FormData,
 ): Promise<
   | {
       status: string;
@@ -60,7 +60,7 @@ export const uploadProfileImage = async (formData: FormData) => {
         headers: {
           cookie: await getCookies(),
         },
-      }
+      },
     );
 
     revalidateTag("userSession");

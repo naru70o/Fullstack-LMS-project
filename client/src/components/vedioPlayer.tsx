@@ -10,7 +10,7 @@ import {
   VideoPlayerTimeDisplay,
   VideoPlayerTimeRange,
   VideoPlayerVolumeRange,
-} from "@/components/components/ui/kibo-ui/video-player/index";
+} from "@/components/ui/kibo-ui/video-player/index";
 const VideoPlayerComponent = ({
   video,
   videoUrl,

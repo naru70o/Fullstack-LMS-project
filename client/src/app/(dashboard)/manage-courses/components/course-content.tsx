@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Button } from "@/components/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import NoModuleFound from "./no-module-found";
 import CreateModuleDialog from "./create-module-dialog";

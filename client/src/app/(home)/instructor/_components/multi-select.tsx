@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { Check, ChevronsUpDown, X } from "lucide-react";
-import { cn } from "@/components/lib/utils";
-import { Button } from "@/components/components/ui/button";
-import { Badge } from "@/components/components/ui/badge";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   Command,
   CommandEmpty,
@@ -13,12 +13,12 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "@/components/components/ui/command";
+} from "@/components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/components/ui/popover";
+} from "@/components/ui/popover";
 
 export type Option = {
   label: string;
@@ -50,14 +50,17 @@ export function MultiSelect({
     onChange(selected.filter((item) => item.value !== option.value));
   };
 
-  const groupedOptions = options.reduce((acc, option) => {
-    const category = option.category || "Uncategorized";
-    if (!acc[category]) {
-      acc[category] = [];
-    }
-    acc[category].push(option);
-    return acc;
-  }, {} as Record<string, Option[]>);
+  const groupedOptions = options.reduce(
+    (acc, option) => {
+      const category = option.category || "Uncategorized";
+      if (!acc[category]) {
+        acc[category] = [];
+      }
+      acc[category].push(option);
+      return acc;
+    },
+    {} as Record<string, Option[]>,
+  );
 
   return (
     <Popover open={open} onOpenChange={setOpen} {...props}>
@@ -120,7 +123,7 @@ export function MultiSelect({
                   <CommandGroup heading={category}>
                     {categoryOptions.map((option) => {
                       const isSelected = selected.some(
-                        (item) => item.value === option.value
+                        (item) => item.value === option.value,
                       );
                       return (
                         <CommandItem
@@ -129,16 +132,16 @@ export function MultiSelect({
                             onChange(
                               isSelected
                                 ? selected.filter(
-                                    (item) => item.value !== option.value
+                                    (item) => item.value !== option.value,
                                   )
-                                : [...selected, option]
+                                : [...selected, option],
                             );
                           }}
                         >
                           <Check
                             className={cn(
                               "mr-2 h-4 w-4",
-                              isSelected ? "opacity-100" : "opacity-0"
+                              isSelected ? "opacity-100" : "opacity-0",
                             )}
                           />
                           {option.label}
@@ -147,7 +150,7 @@ export function MultiSelect({
                     })}
                   </CommandGroup>
                 </div>
-              )
+              ),
             )}
           </CommandList>
         </Command>

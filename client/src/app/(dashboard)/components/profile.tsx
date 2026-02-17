@@ -1,13 +1,9 @@
 import React from "react";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/components/ui/avatar";
-import { Button } from "@/components/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
-import { UserSession } from "@/components/util/interfaces";
-import { getUserSession } from "@/components/actions/authentication";
+import { UserSession } from "@/util/interfaces";
+import { getUserSession } from "@/actions/authentication";
 
 export default async function Profile() {
   const userSession: UserSession | null = await getUserSession();

@@ -7,14 +7,14 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/components/ui/dialog";
-import { Button } from "@/components/components/ui/button";
-import { Textarea } from "@/components/components/ui/textarea";
-import { Label } from "@/components/components/ui/label";
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { Loader2, Upload, X } from "lucide-react";
 import { createLecture } from "../action";
 import toast from "react-hot-toast";
-import { Input } from "@/components/components/ui/input";
+import { Input } from "@/components/ui/input";
 
 interface CreateLectureDialogProps {
   isOpen: boolean;
@@ -39,14 +39,14 @@ export default function CreateLectureDialog({
 
   const [state, formAction, isPending] = useActionState(
     createLecture,
-    initialState
+    initialState,
   );
 
   useEffect(() => {
     if (state?.status === "success") {
       if (Array.isArray(state.message)) {
         toast.success(
-          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`
+          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`,
         );
         onOpenChange(false);
       } else {
@@ -60,7 +60,7 @@ export default function CreateLectureDialog({
     } else if (state?.status === "error") {
       if (Array.isArray(state.message)) {
         toast.error(
-          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`
+          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`,
         );
       } else {
         toast.error(state.message ?? "Failed to create lecture");
@@ -79,7 +79,7 @@ export default function CreateLectureDialog({
     setFilePreview("");
     // Reset the file input
     const fileInput = document.getElementById(
-      "lecture-file"
+      "lecture-file",
     ) as HTMLInputElement;
     if (fileInput) fileInput.value = "";
   };

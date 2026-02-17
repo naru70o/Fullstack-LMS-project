@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@/components/components/ui/button";
-import { ICourse } from "@/components/util/interfaces";
+import { Button } from "@/components/ui/button";
+import { ICourse } from "@/util/interfaces";
 import { Edit, Trash2, Users, BookOpen, Clock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

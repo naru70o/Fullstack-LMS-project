@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import { Reviews } from "../app/(home)/courses/_components/reviews";
-import CourseCurriculum from "../app/(home)/courses/_components/modules";
-import { ICourse } from "../util/interfaces";
+import { Reviews } from "@/app/(home)/courses/_components/reviews";
+import CourseCurriculum from "@/app/(home)/courses/_components/modules";
+import { ICourse } from "@/util/interfaces";
 
 export const TabMenu = ({ data }: { data: ICourse }) => {
   const [tabMenu, setTabMenu] = useState("course");

@@ -1,5 +1,5 @@
-import { Checkbox } from "@/components/components/ui/checkbox";
-import { Label } from "@/components/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import clsx from "clsx";
 import React from "react";
 import { SelectInput } from "../../courses/_components/heroSearchBar";
@@ -63,12 +63,12 @@ export function InstructorFormInput({
             updateRegisterDataForm(
               type === "number"
                 ? { [name]: Number(e.target.value) }
-                : { [name]: e.target.value }
+                : { [name]: e.target.value },
             );
           }
         }}
         className={clsx(
-          "bg-[var(--input-bg-color)] w-full max-w-xl p-4 rounded-lg outline-none ring-2 ring-[var(--primary-color)] text-[var(--input-text-color)] font-poppins text-[16px] font-normal leading-[24px] placeholder:overflow-hidden"
+          "bg-[var(--input-bg-color)] w-full max-w-xl p-4 rounded-lg outline-none ring-2 ring-[var(--primary-color)] text-[var(--input-text-color)] font-poppins text-[16px] font-normal leading-[24px] placeholder:overflow-hidden",
         )}
       />
     </>

@@ -1,11 +1,11 @@
-import { Button } from "@/components/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Book } from "lucide-react";
 // import { useState } from "react";
-import { getCookies } from "@/components/lib/helpers";
+import { getCookies } from "@/lib/helpers";
 import CourseCard from "./components/courseCard";
 import Header from "./components/header";
 import Status from "./components/status";
-import { ICourse } from "@/components/util/interfaces";
+import { ICourse } from "@/util/interfaces";
 
 export default async function page() {
   const cookieHeader = await getCookies();
@@ -13,7 +13,7 @@ export default async function page() {
     `http://localhost:3000/api/v1/course/yourcourses`,
     {
       headers: { cookie: cookieHeader },
-    }
+    },
   );
   if (!response.ok) {
     throw new Error("Failed to fetch courses");

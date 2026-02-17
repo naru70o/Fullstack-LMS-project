@@ -1,6 +1,6 @@
 import React from "react";
 
-import Pattern from "@/components/../public/assets/mobile-hero-decoration.svg";
+import Pattern from "../../public/assets/mobile-hero-decoration.svg";
 
 export default function MobileHero() {
   return (

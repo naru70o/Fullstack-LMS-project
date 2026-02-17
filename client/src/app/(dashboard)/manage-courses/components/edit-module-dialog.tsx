@@ -1,19 +1,19 @@
-import { Button } from "@/components/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/components/ui/dialog";
-import { Label } from "@/components/components/ui/label";
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
 import { useActionState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { updateModule } from "../action";
 import { Module } from "../types";
-import { Textarea } from "@/components/components/ui/textarea";
-import { Input } from "@/components/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 
 interface EditModuleDialogProps {
   isOpen: boolean;
@@ -32,7 +32,7 @@ export default function EditModuleDialog({
     if (state?.status === "success") {
       if (Array.isArray(state.message)) {
         toast.success(
-          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`
+          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`,
         );
         onOpenChange(false);
       } else {
@@ -42,7 +42,7 @@ export default function EditModuleDialog({
     } else if (state?.status === "error") {
       if (Array.isArray(state.message)) {
         toast.error(
-          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`
+          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`,
         );
       } else {
         toast.error(state.message ?? "Failed to update module");

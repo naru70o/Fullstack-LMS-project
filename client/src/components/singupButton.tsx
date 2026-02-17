@@ -9,12 +9,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/components/ui/dialog";
+} from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import Image from "next/image";
 import Link from "next/link";
-import { signupAction } from "@/components/actions/authentication";
+import { signupAction } from "@/actions/authentication";
 import toast from "react-hot-toast";
 
 export const SignupButton = () => {

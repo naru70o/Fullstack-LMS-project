@@ -1,7 +1,7 @@
-import { getUserSession } from "@/components/actions/authentication";
-import Footer from "@/components/components/footer";
-import MobileNavigation from "@/components/components/mobileNavigation";
-import { Navigation } from "@/components/components/navigation";
+import { getUserSession } from "@/actions/authentication";
+import Footer from "@/components/footer";
+import MobileNavigation from "@/components/mobileNavigation";
+import { Navigation } from "@/components/navigation";
 import { redirect } from "next/navigation";
 
 export default async function InstructorLayout({

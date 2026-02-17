@@ -1,6 +1,6 @@
 "use client";
-import { Button } from "@/components/components/ui/button";
-import { Dialog, DialogContent } from "@/components/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
@@ -36,7 +36,7 @@ export function ImageCropDialog({ open, setDialogOpen }: ImageCropDialogProps) {
 
     if (naturalWidth < MIN_DIMENSION || naturalHeight < MIN_DIMENSION) {
       setErrorMessage(
-        `Image is too small. Minimum dimensions are ${MIN_DIMENSION}px by ${MIN_DIMENSION}px.`
+        `Image is too small. Minimum dimensions are ${MIN_DIMENSION}px by ${MIN_DIMENSION}px.`,
       );
     } else if (
       naturalHeight > naturalWidth * 4 ||
@@ -49,7 +49,7 @@ export function ImageCropDialog({ open, setDialogOpen }: ImageCropDialogProps) {
       { unit: "%", width: croppedWidth },
       ASPECT_RATIO,
       width,
-      height
+      height,
     );
 
     const centeredCrop = centerCrop(crop, width, height);
@@ -60,7 +60,7 @@ export function ImageCropDialog({ open, setDialogOpen }: ImageCropDialogProps) {
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
       reader.addEventListener("load", () =>
-        setImageUrl(reader.result as string)
+        setImageUrl(reader.result as string),
       );
       reader.readAsDataURL(e.target.files[0]);
     }
@@ -74,8 +74,8 @@ export function ImageCropDialog({ open, setDialogOpen }: ImageCropDialogProps) {
       convertToPixelCrop(
         crop!,
         imageRef?.current!?.width,
-        imageRef?.current!?.height
-      )
+        imageRef?.current!?.height,
+      ),
     );
 
     // convert canvas -> blob
@@ -83,7 +83,7 @@ export function ImageCropDialog({ open, setDialogOpen }: ImageCropDialogProps) {
     if (!canvas) return;
 
     const blob: Blob | null = await new Promise((resolve) =>
-      canvas.toBlob((b) => resolve(b), "image/png")
+      canvas.toBlob((b) => resolve(b), "image/png"),
     );
 
     if (!blob) {

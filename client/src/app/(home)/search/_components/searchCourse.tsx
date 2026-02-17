@@ -1,18 +1,18 @@
 "use client";
 
-import { Button } from "@/components/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/components/ui/collapsible";
+} from "@/components//ui/collapsible";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/components/ui/select";
+} from "@/components/ui/select";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import {
@@ -111,7 +111,7 @@ export default function CourseFilters() {
   const handleFilterChange = (
     category: keyof SelectedFilters,
     value: string,
-    checked: boolean
+    checked: boolean,
   ) => {
     setSelectedFilters((prev) => ({
       ...prev,

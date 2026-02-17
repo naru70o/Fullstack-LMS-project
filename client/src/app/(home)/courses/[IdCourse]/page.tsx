@@ -1,9 +1,9 @@
-import { Banner } from "@/components/components/banner";
-import { NavigationFixed } from "@/components/components/navigation";
-import { TabMenu } from "@/components/components/tab-menu";
-import VideoPlayerComponent from "@/components/components/vedioPlayer";
-import { apiRoutes } from "@/components/lib/apiRoutes";
-import { ICourse, Module } from "@/components/util/interfaces";
+import { Banner } from "@/components/banner";
+import { NavigationFixed } from "@/components/navigation";
+import { TabMenu } from "@/components/tab-menu";
+import VideoPlayerComponent from "@/components/vedioPlayer";
+import { apiRoutes } from "@/lib/apiRoutes";
+import { ICourse, Module } from "@/util/interfaces";
 import { cookies } from "next/headers";
 import InstructorProfile from "../_components/instructorProfile";
 import PricingCard from "../_components/pricing-card";

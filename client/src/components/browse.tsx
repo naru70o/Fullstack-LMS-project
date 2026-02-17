@@ -6,10 +6,10 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "./ui/navigation-menu";
+} from "@/components/ui/navigation-menu";
 import Link from "next/link";
 import Image from "next/image";
-import { UserSession } from "../util/interfaces";
+import { UserSession } from "@/util/interfaces";
 
 export default function Browse({
   userSession,

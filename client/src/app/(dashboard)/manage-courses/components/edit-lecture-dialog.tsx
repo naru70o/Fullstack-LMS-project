@@ -1,21 +1,21 @@
 "use client";
 
-import { Button } from "@/components/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/components/ui/dialog";
-import { Label } from "@/components/components/ui/label";
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { Loader2, Upload, X } from "lucide-react";
 import { useActionState, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { updateLecture } from "../action";
 import { Lecture } from "../types";
-import { Textarea } from "@/components/components/ui/textarea";
-import { Input } from "@/components/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 
 interface EditLectureDialogProps {
   isOpen: boolean;
@@ -35,7 +35,7 @@ export default function EditLectureDialog({
     if (state?.status === "success") {
       if (Array.isArray(state.message)) {
         toast.success(
-          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`
+          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`,
         );
         onOpenChange(false);
       } else {
@@ -47,7 +47,7 @@ export default function EditLectureDialog({
     } else if (state?.status === "error") {
       if (Array.isArray(state.message)) {
         toast.error(
-          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`
+          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`,
         );
       } else {
         toast.error(state.message ?? "Failed to update lecture");
@@ -73,7 +73,7 @@ export default function EditLectureDialog({
     setFilePreview("");
     // Reset the file input
     const fileInput = document.getElementById(
-      "edit-lecture-file"
+      "edit-lecture-file",
     ) as HTMLInputElement;
     if (fileInput) fileInput.value = "";
   };

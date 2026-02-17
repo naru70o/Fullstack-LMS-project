@@ -1,5 +1,5 @@
 "use server";
-import { apiRoutes } from "@/components/lib/apiRoutes";
+import { apiRoutes } from "@/lib/apiRoutes";
 import { cookies } from "next/headers";
 import { parseSetCookie } from "../util/parseSetCookie";
 import { signinSchema, signupSchema } from "./zod";
@@ -35,7 +35,7 @@ export async function getUserSession() {
 
 export async function signupAction(
   previousState: unknown,
-  formData: FormData
+  formData: FormData,
 ): Promise<
   | {
       status: string;
@@ -109,7 +109,7 @@ export async function signupAction(
 
 export async function signinAction(
   previousState: unknown,
-  formData: FormData
+  formData: FormData,
 ): Promise<{
   status: string;
   message: string | string[];

@@ -7,8 +7,8 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/components/ui/dialog";
-import { Button } from "@/components/components/ui/button";
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { deleteModule } from "../action";
 import toast from "react-hot-toast";
 import { Loader2, AlertTriangle } from "lucide-react";

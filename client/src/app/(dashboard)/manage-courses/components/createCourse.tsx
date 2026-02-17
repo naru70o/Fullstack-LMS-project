@@ -8,7 +8,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/components/ui/dialog";
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -17,12 +17,12 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/components/ui/select";
-import { Button } from "@/components/components/ui/button";
-import { Textarea } from "@/components/components/ui/textarea";
-import { Label } from "@/components/components/ui/label";
-import { Input } from "@/components/components/ui/input";
-import { categories, levels } from "@/components/lib/utils";
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { categories, levels } from "@/lib/utils";
 import { createCourse } from "../action";
 import toast from "react-hot-toast";
 
@@ -48,7 +48,7 @@ export default function CreateCourseDialog({
     if (state?.status === "success") {
       if (Array.isArray(state.message)) {
         toast.success(
-          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`
+          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`,
         );
         onOpenChange(false);
       } else {
@@ -58,7 +58,7 @@ export default function CreateCourseDialog({
     } else if (state?.status === "error") {
       if (Array.isArray(state.message)) {
         toast.error(
-          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`
+          `${state.message[0]}: ${state.message[1].split(":")[1].trim()}`,
         );
       } else {
         toast.error(state.message ?? "Failed to create course");

@@ -4,6 +4,7 @@ import { Poppins, Outfit } from "next/font/google";
 import "@/components/app/globals.css";
 import { Toaster } from "react-hot-toast";
 import { Sidebar } from "./components/side-bar";
+import { ThemeProvider } from "@/components/components/theme-provider";
 
 const PoppinsFont = Poppins({
   variable: "--font-poppins",
@@ -28,12 +29,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${PoppinsFont.variable} ${OutfitFont.variable} antialiased flex h-screen w-screen overflow-hidden`}
       >
-        <Sidebar />
-        <main className="flex-1 overflow-y-auto h-full">{children}</main>
+        <ThemeProvider defaultTheme="dark" storageKey="theme">
+          <Sidebar />
+          <main className="flex-1 overflow-y-auto h-full">{children}</main>
+        </ThemeProvider>
         <Toaster />
       </body>
     </html>

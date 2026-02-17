@@ -5,6 +5,7 @@ import "@/components/app/globals.css";
 import { Toaster } from "react-hot-toast";
 import { RegisterInstructorProvider } from "./instructor/_components/registerInstructorContext";
 import QueryProvider from "@/components/components/queryProvider";
+import { ThemeProvider } from "@/components/components/theme-provider";
 
 const PoppinsFont = Poppins({
   variable: "--font-poppins",
@@ -29,13 +30,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${PoppinsFont.variable} ${OutfitFont.variable} antialiased overflow-x-hidden`}
       >
-        <RegisterInstructorProvider>
-          <QueryProvider>{children}</QueryProvider>
-        </RegisterInstructorProvider>
+        <ThemeProvider defaultTheme="dark" storageKey="theme">
+          <RegisterInstructorProvider>
+            <QueryProvider>{children}</QueryProvider>
+          </RegisterInstructorProvider>
+        </ThemeProvider>
         <Toaster />
       </body>
     </html>

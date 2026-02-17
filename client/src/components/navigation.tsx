@@ -5,8 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 import { ChevronRight, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
-import toast from "react-hot-toast";
 import { getUserSession } from "../actions/authentication";
 import { UserSession } from "../util/interfaces";
 import Browse from "./browse";
@@ -15,6 +13,7 @@ import { SignupButton } from "./singupButton";
 import { Avatar } from "./ui/avatar";
 import { Input } from "./ui/input";
 import { Skeleton } from "./ui/skeleton";
+import { ThemeToggle } from "./theme-toggle";
 
 export const Navigation = ({
   userSession,
@@ -37,6 +36,7 @@ export const Navigation = ({
                 my learning
               </button>
             </Link>
+            <ThemeToggle />
             <Cart className="cursor-pointer" />
             <Link href="/account">
               <Image
@@ -54,6 +54,7 @@ export const Navigation = ({
           </div>
         ) : (
           <div className="flex items-center gap-5">
+            <ThemeToggle />
             <SigninButton />
             <SignupButton />
           </div>
@@ -98,6 +99,7 @@ export const NavigationFixed = () => {
                 my learning
               </button>
             </Link>
+            <ThemeToggle />
             <div className="p-2 hover:bg-popover-foreground/7 rounded-md">
               <Cart className="cursor-pointer" />
             </div>
@@ -117,6 +119,7 @@ export const NavigationFixed = () => {
           </div>
         ) : (
           <div className="flex items-center gap-5">
+            <ThemeToggle />
             <SigninButton />
             <SignupButton />
           </div>

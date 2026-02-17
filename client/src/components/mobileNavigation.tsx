@@ -8,6 +8,7 @@ import Cart from "@/components/../public/assets/Cart.svg";
 import Image from "next/image";
 import { getUserSession } from "../actions/authentication";
 import { UserSession } from "../util/interfaces";
+import { ThemeToggle } from "./theme-toggle";
 export default function MobileNavigation() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [userSession, setUserSession] = React.useState<UserSession | null>(
@@ -27,7 +28,6 @@ export default function MobileNavigation() {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const primaryColor = "#FB7A79";
   return (
     <>
       <div className="md:hidden fixed top-0 left-0 right-0 z-10 bg-popover shadow-[var(--shadow-search-bar)] py-4 px-4">
@@ -43,6 +43,7 @@ export default function MobileNavigation() {
             </Link>
             {/* Auth-Buttons */}
             <div className="flex items-center gap-2">
+              <ThemeToggle />
               <div className="p-2 hover:bg-popover-foreground/7 rounded-md">
                 <Search size={20} color="#FB7A79" />
               </div>

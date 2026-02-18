@@ -30,14 +30,18 @@ export const Navigation = ({
           <Browse userSession={userSession} />
         </div>
         {userSession ? (
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-3">
             <Link href="/my-learning">
               <button className="text-white hover:text-white/60 transition-all cursor-pointer">
                 my learning
               </button>
             </Link>
-            <ThemeToggle />
-            <Cart className="cursor-pointer" />
+            <div>
+              <ThemeToggle />
+              <button className="p-2 md:hover:bg-popover/7 hover:cursor-pointer  rounded-md transition-colors group">
+                <Cart className="" />
+              </button>
+            </div>
             <Link href="/account">
               <Image
                 src={

@@ -15,10 +15,13 @@ export function ThemeToggle() {
   if (!mounted) {
     return (
       <button
-        className="p-2 hover:bg-popover-foreground/7 rounded-md transition-colors"
+        className="p-2 md:hover:bg-popover-foreground/7 rounded-md transition-colors group"
         aria-label="Toggle theme"
       >
-        <Sun size={20} className="text-[var(--primary-color)]" />
+        <Sun
+          size={20}
+          className="text-[var(--primary-color)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12"
+        />
       </button>
     );
   }
@@ -26,13 +29,19 @@ export function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      className="p-2 hover:bg-popover-foreground/7 rounded-md transition-colors"
+      className={`p-2 hover:bg-popover-foreground/7 md:hover:bg-popover/7 hover:cursor-pointer  rounded-md transition-colors group`}
       aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
     >
       {resolvedTheme === "dark" ? (
-        <Sun size={20} className="text-[var(--primary-color)]" />
+        <Sun
+          size={20}
+          className="text-[var(--primary-color)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12"
+        />
       ) : (
-        <Moon size={20} className="text-[var(--primary-color)]" />
+        <Moon
+          size={20}
+          className="text-[var(--primary-color)] transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-12"
+        />
       )}
     </button>
   );

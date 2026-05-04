@@ -5,8 +5,8 @@
   "main": "index.ts",
   "type": "module",
   "scripts": {
-    "dev": "prisma generate --schema=./prisma/schema/schema.prisma && tsx watch index.ts",
-    "build": "prisma generate --schema=./prisma/schema/schema.prisma && tsc --build",
+    "dev": "prisma generate --schema=./prisma/schema && tsx watch index.ts",
+    "build": "prisma generate --schema=./prisma/schema && tsc --build",
     "format": "prettier --write .",
     "lint": "eslint . ",
     "lint:fix": "eslint . --fix ",

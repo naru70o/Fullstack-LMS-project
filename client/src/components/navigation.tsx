@@ -45,9 +45,9 @@ export const Navigation = ({
             <Link href="/account">
               <Image
                 src={
-                  userSession.image
-                    ? `${userSession.image}`
-                    : `/assets/default.png`
+                  userSession.image === "default.png"
+                    ? "/assets/default.png"
+                    : userSession.image || "/assets/default.png"
                 }
                 alt="User Image"
                 width={36}
@@ -112,7 +112,7 @@ export const NavigationFixed = () => {
                 <Skeleton className="h-[36px] w-[36px] rounded-full" />
               ) : (
                 <Image
-                  src={data?.image ? `${data?.image}` : `/assets/default.png`}
+                  src={data?.image === "default.png" ? "/assets/default.png" : (data?.image || "/assets/default.png")}
                   alt="User Image"
                   width={36}
                   height={36}

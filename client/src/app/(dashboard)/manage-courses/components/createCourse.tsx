@@ -85,6 +85,15 @@ export default function CreateCourseDialog({
               placeholder="Find courses, skills, software, etc"
             />
           </div>
+          {/* course price */}
+          <div className="space-y-2">
+            <Label htmlFor="price">Price</Label>
+            <Input
+              type="number"
+              name="price"
+              placeholder="Enter course price"
+            />
+          </div>
           {/* course description */}
           <div className="space-y-2">
             <Label htmlFor="description">Description</Label>

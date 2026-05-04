@@ -19,7 +19,7 @@ export async function signupEmailAndPassword(
         name,
         email,
         password,
-        image: image ? image : 'default.png',
+        image: image ? image : '/assets/default.png',
       },
     })
 

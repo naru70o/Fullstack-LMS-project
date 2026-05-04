@@ -94,6 +94,7 @@ export async function createCourse(
     if (!newCourse.ok) {
       return { status: "error", message: "Failed to create course" };
     }
+    revalidatePath("/manage-courses");
     return { status: "success", message: "Course created successfully" };
   } catch {
     return { status: "error", message: "Something went wrong" };

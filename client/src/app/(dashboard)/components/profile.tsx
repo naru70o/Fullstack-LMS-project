@@ -13,7 +13,7 @@ export default async function Profile() {
     <div className="flex items-center justify-between border-b border-border p-4">
       <div className="flex items-center gap-3">
         <Avatar className="h-12 w-12">
-          <AvatarImage src={image || ""} alt={name || ""} />
+          <AvatarImage src={image === "default.png" ? "/assets/default.png" : (image || "")} alt={name || ""} />
           <AvatarFallback>AS</AvatarFallback>
         </Avatar>
         <div className="flex flex-col">

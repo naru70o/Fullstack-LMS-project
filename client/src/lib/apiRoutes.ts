@@ -37,6 +37,6 @@ export const apiRoutes = {
     reorderLectures: `${API_BASE_URL}/course/reorderlectures`,
   },
   instructor: {
-    registerInstructor: `${API_BASE_URL}//instructor/registe`,
+    registerInstructor: `${API_BASE_URL}/instructor/register`,
   },
 };

@@ -1,12 +1,12 @@
 "use server";
 
-import { apiRoutes } from "@/components/lib/apiRoutes";
+import { apiRoutes } from "@/lib/apiRoutes";
 import { AddStepRoutes } from "../types";
 import { InstructorData, stepOneSchema, stepTwoSchema } from "../zodTypes";
-import { getCookies } from "@/components/lib/helpers";
+import { getCookies } from "@/lib/helpers";
 
 export async function submitForm(
-  instructorData: InstructorData
+  instructorData: InstructorData,
 ): Promise<{ success?: boolean; message?: string; redirect?: string }> {
   try {
     const stepOneValidated = stepOneSchema.safeParse(instructorData);

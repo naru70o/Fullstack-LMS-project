@@ -17,7 +17,7 @@ export interface SelectedFormTwoProps {
   sampleContentUrl: string;
 }
 
-export default function page() {
+export default function Page() {
   const [selected, setSelected] = useState<SelectedFormTwoProps>({
     termsAndConditions: false,
     equipment: false,
@@ -26,7 +26,7 @@ export default function page() {
 
   const [state, formAction, pending] = useActionState(
     registerInstructorTwo,
-    null
+    null,
   );
 
   const navigate = useRouter();
@@ -35,7 +35,7 @@ export default function page() {
     if (state?.success) {
       navigate.push("/instructor/review");
     }
-  }, [state]);
+  }, [state, navigate]);
 
   const { updateRegisterDataForm, registerFormData } =
     useRegisterInstructorContext();
@@ -49,12 +49,12 @@ export default function page() {
             termsAndConditions: registerFormData.termsAndConditions,
             equipment: registerFormData.equipment,
             sampleContentUrl: registerFormData.sampleContentUrl,
-          } as SelectedFormTwoProps)
+          }) as SelectedFormTwoProps,
       );
     }
   }, [registerFormData]);
 
-  const handleSelectionChange = (field: string, value: any) => {
+  const handleSelectionChange = (field: string, value: string | boolean) => {
     if (state?.data !== undefined) return null;
     setSelected((prev) => ({ ...prev, [field]: value }));
     updateRegisterDataForm({ [field]: value });

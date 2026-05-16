@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "prisma generate --schema=./prisma/schema && tsx watch index.ts",
-    "build": "npx prisma generate --schema=./prisma/schema && tsc --build",
+    "build": "prisma generate --schema=./prisma/schema && tsc --build",
     "format": "prettier --write .",
     "lint": "eslint . ",
     "lint:fix": "eslint . --fix ",

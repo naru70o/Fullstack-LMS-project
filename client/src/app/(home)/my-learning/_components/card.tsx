@@ -1,4 +1,4 @@
-import { courses } from "@/components/util/damydata";
+import { courses } from "@/util/damydata";
 import { CircleUser } from "lucide-react";
 import Image from "next/image";
 

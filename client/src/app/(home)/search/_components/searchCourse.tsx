@@ -22,7 +22,7 @@ import {
   LevelFilter,
   RatingFilter,
   SoftwareFilter,
-} from "../../../components/ratingFilter";
+} from "@/components/ratingFilter";
 
 // Filter options data
 interface FilterOption {

@@ -1,5 +1,5 @@
 import { NavigationFixed } from "@/components/navigation";
-import CourseFilters from "@/components/searchCourse";
+import CourseFilters from "./_components/searchCourse";
 import React from "react";
 
 const Page = () => {
